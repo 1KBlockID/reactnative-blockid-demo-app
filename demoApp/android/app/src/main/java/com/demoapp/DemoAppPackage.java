@@ -18,7 +18,7 @@ public class DemoAppPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         Log.d("DemoAppPackage ",""+reactContext);
-        List<NativeModule> modules = Arrays.asList(new Fido2Module(reactContext));
+        List<NativeModule> modules = Arrays.asList(new DemoAppModule(reactContext));
         return modules;
     }
 }

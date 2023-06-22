@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Alert,
   Image,
+  NativeEventEmitter,
   NativeModules,
   SafeAreaView,
   StatusBar,
@@ -18,11 +19,11 @@ import Toast from 'react-native-toast-message';
 type Props = NativeStackScreenProps<RootParamList, 'LoginScreen'>;
 
 function LoginScreen({navigation}: Props): JSX.Element {
-  const {Fido2Module} = NativeModules;
+  const {DemoAppModule} = NativeModules;
 
   const handleClick = async () => {
     try {
-      const response = await Fido2Module.enrollBiometricAssets();
+      const response = await DemoAppModule.enrollBiometricAssets();
       if (response === 'OK') {
         Toast.show({
           text2: 'login Successfully !',
@@ -39,6 +40,15 @@ function LoginScreen({navigation}: Props): JSX.Element {
       console.log('enrollBiometric Assets', e);
     }
   };
+
+  useEffect(() => {
+    
+    // const eventEmitter = new NativeEventEmitter(NativeModules.ToastExample);
+    // let eventListener = eventEmitter.addListener('onLiveIdCapture', event => {
+    //   console.log(event.eventProperty); // "someValue"
+    // });
+    // return () => eventListener.remove();
+  }, []);
   return (
     <>
       <View style={[styles.statusBar]}>

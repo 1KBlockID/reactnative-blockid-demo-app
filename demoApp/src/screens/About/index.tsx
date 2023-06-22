@@ -20,11 +20,11 @@ type Props = NativeStackScreenProps<RootParamList, 'AboutScreen'>;
 
 function AboutScreen({navigation}: Props): JSX.Element {
   const version = DeviceInfo.getVersion();
-  const {Fido2Module} = NativeModules;
+  const {DemoAppModule} = NativeModules;
   const [sdkResponse, setSdkResponse] = useState<any>('');
 
   const getInfo = async () => {
-    const response = await Fido2Module.getSDKInfo();
+    const response = await DemoAppModule.getSDKInfo();
     console.log('response', response);
     let sdkInfo = response;
     if (Platform.OS === 'android') {

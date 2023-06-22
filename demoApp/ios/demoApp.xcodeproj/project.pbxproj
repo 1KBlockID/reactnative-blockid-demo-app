@@ -14,10 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		551037562A3058FE008156C8 /* CardReaderBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 551037542A3058FE008156C8 /* CardReaderBridge.m */; };
 		5510375F2A305E4B008156C8 /* CardReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5510375D2A305E4B008156C8 /* CardReader.swift */; };
-		551037602A305E4B008156C8 /* Fido2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5510375E2A305E4B008156C8 /* Fido2.swift */; };
 		551037642A305E77008156C8 /* RCTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 551037622A305E77008156C8 /* RCTBridge.m */; };
 		551BE0DA2A303B09002DA645 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0D92A303B09002DA645 /* Starscream */; };
 		551BE0DD2A303C2A002DA645 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0DC2A303C2A002DA645 /* WalletConnect */; };
+		5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5568A5B42A440D8400CC42CC /* DemoApp.swift */; };
 		556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */; };
 		556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */; };
 		55A2DD192A30667E00632A7F /* demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2DD182A30667E00632A7F /* demo.swift */; };
@@ -52,10 +52,10 @@
 		3B4392A12AC88292D35C810B /* Pods-demoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-demoApp.debug.xcconfig"; path = "Target Support Files/Pods-demoApp/Pods-demoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		551037542A3058FE008156C8 /* CardReaderBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardReaderBridge.m; sourceTree = "<group>"; };
 		5510375D2A305E4B008156C8 /* CardReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardReader.swift; path = modules/CardReader.swift; sourceTree = "<group>"; };
-		5510375E2A305E4B008156C8 /* Fido2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Fido2.swift; path = modules/Fido2.swift; sourceTree = "<group>"; };
 		551037622A305E77008156C8 /* RCTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTBridge.m; path = RCTBridge/RCTBridge.m; sourceTree = "<group>"; };
 		551037632A305E77008156C8 /* RCTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTBridge.h; path = RCTBridge/RCTBridge.h; sourceTree = "<group>"; };
 		551BE0DE2A303C4A002DA645 /* demoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = demoApp.entitlements; path = demoApp/demoApp.entitlements; sourceTree = "<group>"; };
+		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
 		556BE3CF2A3C5EFD00AD6E74 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				5510375D2A305E4B008156C8 /* CardReader.swift */,
-				5510375E2A305E4B008156C8 /* Fido2.swift */,
+				5568A5B42A440D8400CC42CC /* DemoApp.swift */,
 			);
 			name = modules;
 			sourceTree = "<group>";
@@ -498,7 +498,6 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */,
-				551037602A305E4B008156C8 /* Fido2.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */,
 				5510375F2A305E4B008156C8 /* CardReader.swift in Sources */,
@@ -508,6 +507,7 @@
 				55A2DD192A30667E00632A7F /* demo.swift in Sources */,
 				556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */,
 				55B1AE552A3040140073FDC9 /* NetworkController.m in Sources */,
+				5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

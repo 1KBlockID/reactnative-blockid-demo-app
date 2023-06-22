@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -11,6 +11,7 @@ import {
   Alert,
   PermissionsAndroid,
   NativeModules,
+  NativeEventEmitter
 } from 'react-native';
 import {styles} from './style';
 import {Colors} from '../../constants/Colors';
@@ -20,11 +21,12 @@ import {DialogBox} from '../../components/DialogBox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions, StackActions} from '@react-navigation/native';
 
+
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
 function MenuScreen({navigation}: Props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
-  const {Fido2Module} = NativeModules;
+  const {DemoAppModule} = NativeModules;
   const DATA = [
     {
       id: 1,
@@ -51,6 +53,8 @@ function MenuScreen({navigation}: Props): JSX.Element {
       title: 'Reset App',
     },
   ];
+
+
 
   const requestCameraPermission = async () => {
     try {
@@ -88,7 +92,10 @@ function MenuScreen({navigation}: Props): JSX.Element {
     }
     if (index === 3) {
       requestCameraPermission();
-      Fido2Module.StartLiveScan();
+      // Fido2Module.StartLiveScan();
+    }
+    if (index === 4) {
+      navigation.navigate('Fido2Screen');
     }
   };
 

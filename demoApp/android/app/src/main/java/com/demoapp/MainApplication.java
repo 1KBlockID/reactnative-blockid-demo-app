@@ -63,14 +63,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
        BlockIDSDK.initialize(this);
-    //  applicationContext = ;
-      BlockIDSDK instance = BlockIDSDK.getInstance();
-      if(instance != null) {
-          Log.d("BlockIDSDK",""+instance);
-          BlockIDSDK.getInstance().setLicenseKey(AppConstants.licenseKey);
-      }else{
-          Log.d("BlockIDSDK",""+instance);
-      }
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();

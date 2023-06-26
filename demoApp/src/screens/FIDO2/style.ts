@@ -24,20 +24,21 @@ export const styles = StyleSheet.create({
     backgroundColor: 'black',
     marginBottom: 15,
   },
-  buttonTextStyle:{
-    textAlign:'center', color:"white"
+  buttonTextStyle: {
+    textAlign: 'center',
+    color: 'white',
   },
-  headerView:{
+  headerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 0.2,
   },
-  bottomView:{
+  bottomView: {
     flex: 1,
     width: '90%',
     alignSelf: 'center',
   },
-  textInputStyle:{
+  textInputStyle: {
     padding: 15,
     borderWidth: 1,
     borderColor: 'gray',
@@ -45,10 +46,35 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 20,
   },
-  buttonContainer1:{
+  buttonContainer1: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
     marginTop: 10,
-  }
+  },
+  loaderContainer: {
+    zIndex: 10,
+    position: 'absolute',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  indicatorContainer: {
+    backgroundColor: '#FDFEFF',
+    alignSelf: 'center',
+    width: 130,
+    height: 80,
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
+  touchableContainer: {
+    width: '45%',
+    backgroundColor: 'black',
+    padding: 15,
+  },
+  btnText: {
+    textAlign: 'center',
+    color: 'white',
+  },
 });

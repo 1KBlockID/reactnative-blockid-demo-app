@@ -29,6 +29,45 @@ RCT_EXPORT_METHOD(getSDKVersion:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
+RCT_EXPORT_METHOD(registerUserKey:(NSString *)name
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+     [sdk registerUserKey:name];
+   });
+ }
+
+RCT_EXPORT_METHOD(registerCardKey:(NSString *)name pin:(NSString *)pin
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+       [sdk registerCardKey:name pin:pin];
+   });
+ }
+
+ RCT_EXPORT_METHOD(authenticateUserKey:(NSString *)name
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc]initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+     [sdk authenticateUserKey:name];
+   });
+ }
+
+ RCT_EXPORT_METHOD(authenticateCardKey:(NSString *)name  pin:(NSString *)pin
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+     [sdk authenticateCardKey:name pin:pin];
+   });
+ }
 RCT_EXPORT_METHOD(register_Tenant:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -66,10 +105,42 @@ RCT_EXPORT_METHOD(resetSDK:(RCTPromiseResolveBlock)resolveFunction
   dispatch_async(dispatch_get_main_queue(), ^{
     
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                         rejectFunction:rejectFunction];
-      [sdk resetSDK];
+                                             rejectFunction:rejectFunction];
+    [sdk resetSDK];
   });
 }
+  
+  RCT_EXPORT_METHOD(StartLiveScan:(RCTPromiseResolveBlock)resolveFunction
+                    rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+      DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                           rejectFunction:rejectFunction];
+        [sdk StartLiveScan];
+    });
+}
+
+RCT_EXPORT_METHOD(register:(NSString *)name
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+       [sdk register:name];
+   });
+ }
+
+RCT_EXPORT_METHOD(authenticate:(NSString *)name
+                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+   dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                          rejectFunction:rejectFunction];
+       [sdk authenticate:name];
+   });
+ }
+
+
 
 
 @end

@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootParamList, 'HomeScreen'>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
-  const {Fido2Module} = NativeModules;
+  const {DemoAppModule} = NativeModules;
 
   const setInitialScreen = () => {
     getData('isRegister').then(res => {
@@ -59,7 +59,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
     if (index == 0) {
       try {
         setIsLoading(true);
-        await Fido2Module.register_Tenant();
+        await DemoAppModule.register_Tenant();
         storeData(true, 'isRegister');
         setTimeout(() => {
           navigation.navigate('LoginScreen');

@@ -8,10 +8,37 @@
 import Foundation
 import BlockID
 
-@objc class DemoApp: NSObject {
+@objc class DemoApp: NSObject, LiveIDResponseDelegate {
+  func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
+    print("liveIdDidDetectErrorInScanning(\(error))")
+  }
+  
+  func focusOnFaceChanged(isFocused: Bool?) {
+    print("focusOnFaceChanged(\(isFocused))")
+  }
+  
+  func readyForExpression(_ livenessFactor: BlockID.LivenessFactorType) {
+    print("readyForExpression(\(livenessFactor))")
+  }
+  
+  func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, error: BlockID.ErrorResponse?) {
+    print("UIImage(\(UIImage()))")
+    print("signatureToken(\(String()))")
+    print("error(\(error))")
+  }
+  
+  func wrongExpressionDetected(_ livenessFactor: BlockID.LivenessFactorType) {
+    print("wrongExpressionDetected")
+  }
+  
+  func faceLivenessCheckStarted() {
+    print("faceLivenessCheckStarted")
+  }
+  
   private static let errorCode = -1
   private static let resolvedMsg = "OK"
   private static var blockIdVersion = ""
+  private var liveIdScannerHelper: LiveIDScannerHelper?
   
   private let resolveFunction: RCTPromiseResolveBlock
   private let rejectFunction: RCTPromiseRejectBlock
@@ -32,14 +59,30 @@ import BlockID
     initRegistrations();
   }
   
-  
-  
-  
-  
-  
   @objc func initRegistrations() {
     BlockIDSDK.sharedInstance.setLicenseKey(key: Tenant.licenseKey);
-    
+  }
+  
+  @objc func registerUserKey(_ name: String) {
+    registerKey(name, type: .PLATFORM,pin:"")
+  }
+  
+  @objc func registerCardKey(_ name: String, pin: String) {
+    registerKey(name, type: .CROSS_PLATFORM, pin: pin)
+  }
+  @objc func authenticateUserKey(_ name: String) {
+    authenticateKey( name, type: .PLATFORM, pin: "")
+  }
+  
+  @objc func authenticateCardKey(_ name: String, pin: String) {
+    authenticateKey( name, type: .CROSS_PLATFORM, pin: pin)
+  }
+  
+  @objc func register(_ name: String) {
+    webRegister( name, type: .CROSS_PLATFORM)
+  }
+  @objc func authenticate(_ name: String) {
+    webAuthenticate( name, type: .CROSS_PLATFORM)
   }
   
   @objc func getSDKVersion() -> String {
@@ -63,17 +106,18 @@ import BlockID
     let clientTag = clientTenant.tenantTag
     let clientCommunity = clientTenant.community
     let licenseKey = Tenant.licenseKey.prefix(8) + "-xxxx-xxxx-xxxx-xxxxxxxx" + Tenant.licenseKey.suffix(4);
-    //    let DID = BlockIDSDK.sharedInstance.getDID();
-    //    let publicKey = BlockIDSDK.sharedInstance.getWalletPublicKey();
+    let DID = BlockIDSDK.sharedInstance.getDID();
+    let publicKey = BlockIDSDK.sharedInstance.getWalletPublicKey();
     let sdkVersion = BlockIDSDK.sharedInstance.getVersion();
-    print("tenant(\(String(describing: tenant)))");
-    print("tenant(\(licenseKey))");
-    
     let clientTenatDict : [String:Any] = ["community":(clientCommunity ?? ""),"dns":(clientDNS ?? ""),"tenantTag":(clientTag ?? "")]
     let tenatDict : [String:Any] = ["community":(community ?? ""),"communityId":(communityId ?? ""),"dns":(dns ?? ""),"tenantId":(tenantId ?? ""),"tenantTag":(tag ?? "")]
-    let mainDict : [String:Any] = ["DID":"12345","SdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenatDict ),"licenseKey":(licenseKey ),"publicKey":"static public key","tenant":(tenatDict )];
-    print("mainDict(\(mainDict))");
+    let mainDict : [String:Any] = ["DID":(DID ),"SdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenatDict ),"licenseKey":(licenseKey ),"publicKey":(publicKey ),"tenant":(tenatDict )];
     return mainDict
+  }
+  
+  @objc func StartLiveScan(){
+    print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
+    scanFaceId()
   }
   
   
@@ -87,10 +131,9 @@ import BlockID
       verifyBiometric()
     }
   }
-  
-  
-  
 }
+
+
 
 // MARK: - Private methods
 extension DemoApp {
@@ -109,6 +152,16 @@ extension DemoApp {
       
       self.registerTenant()
     }
+  }
+  
+  private func scanFaceId() {
+    if self.liveIdScannerHelper == nil {
+      self.liveIdScannerHelper = LiveIDScannerHelper.init(liveIdResponseDelegate: self)
+      print("liveIdScannerHelper(\(liveIdScannerHelper))")
+    }
+    //4. Start Scanning
+    self.liveIdScannerHelper?.startLiveIDScanning()
+    
   }
   
   private func registerTenant() {
@@ -157,6 +210,7 @@ extension DemoApp {
     }
   }
   
+  
   private func verifyBiometric(){
     BIDAuthProvider.shared.verifyDeviceAuth { success, error, error1 in
       if(success){
@@ -183,6 +237,40 @@ extension DemoApp {
                                                type: type,
                                                pin:pin,
                                                completion: callback)
+  }
+  
+  private func webRegister(_ name: String, type: FIDO2KeyType) {
+    guard
+      let root = RCTPresentedViewController(),
+      let dns = Tenant.clientTenant.dns,
+      let community = Tenant.clientTenant.community
+    else { return }
+    
+    let callback = self.createResultCallback(name)
+    
+    ensureSDKUnlocked()
+    BlockIDSDK.sharedInstance.registerFIDO2Key(userName: name,
+                                               tenantDNS: dns,
+                                               communityName: community,
+                                               fileName: "fido3.html",
+                                               completion: callback)
+  }
+  
+  private func webAuthenticate(_ name: String, type: FIDO2KeyType) {
+    guard
+      let root = RCTPresentedViewController(),
+      let dns = Tenant.clientTenant.dns,
+      let community = Tenant.clientTenant.community
+    else { return }
+    
+    let callback = self.createResultCallback(name)
+    
+    ensureSDKUnlocked()
+    BlockIDSDK.sharedInstance.authenticateFIDO2Key(userName: name,
+                                                   tenantDNS: dns,
+                                                   communityName: community,
+                                                   fileName: "fido3.html",
+                                                   completion: callback)
   }
   
   private func authenticateKey(_ name: String, type: FIDO2KeyType,pin :String) {

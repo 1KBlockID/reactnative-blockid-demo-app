@@ -7,11 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal,
-  Alert,
-  PermissionsAndroid,
   NativeModules,
-  NativeEventEmitter
 } from 'react-native';
 import {styles} from './style';
 import {Colors} from '../../constants/Colors';
@@ -20,7 +16,7 @@ import {RootParamList} from '../../RootStackParams';
 import {DialogBox} from '../../components/DialogBox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions, StackActions} from '@react-navigation/native';
-
+import {checkAndRequestPermissions} from '../../utils/Permissions';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
@@ -54,33 +50,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     },
   ];
 
-
-
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'Cool Photo App Camera Permission',
-          message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
-      } else {
-        console.log('Camera permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const handleClick = (index: number) => {
+  const handleClick = async (index: number) => {
     if (index === 0) {
       navigation.navigate('AboutScreen');
     }
@@ -91,8 +61,10 @@ function MenuScreen({navigation}: Props): JSX.Element {
       setModalVisible(!modalVisible);
     }
     if (index === 3) {
-      requestCameraPermission();
-      // Fido2Module.StartLiveScan();
+      let isPermissionsGranted = await checkAndRequestPermissions();
+      if (isPermissionsGranted) {
+        DemoAppModule.StartLiveScan();
+      }
     }
     if (index === 4) {
       navigation.navigate('Fido2Screen');
@@ -117,7 +89,6 @@ function MenuScreen({navigation}: Props): JSX.Element {
     AsyncStorage.clear()
       .then(res => {
         setModalVisible(false);
-        // navigation.navigate('HomeScreen');
         navigation.dispatch(
           CommonActions.reset({
             index: 1,

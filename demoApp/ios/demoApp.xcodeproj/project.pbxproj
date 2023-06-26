@@ -54,7 +54,6 @@
 		5510375D2A305E4B008156C8 /* CardReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardReader.swift; path = modules/CardReader.swift; sourceTree = "<group>"; };
 		551037622A305E77008156C8 /* RCTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTBridge.m; path = RCTBridge/RCTBridge.m; sourceTree = "<group>"; };
 		551037632A305E77008156C8 /* RCTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTBridge.h; path = RCTBridge/RCTBridge.h; sourceTree = "<group>"; };
-		551BE0DE2A303C4A002DA645 /* demoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = demoApp.entitlements; path = demoApp/demoApp.entitlements; sourceTree = "<group>"; };
 		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 				556BE3C92A3C5C8B00AD6E74 /* utils */,
 				556BE3CC2A3C5ECF00AD6E74 /* SupportingFiles */,
 				5510375C2A305E01008156C8 /* modules */,
-				551BE0DE2A303C4A002DA645 /* demoApp.entitlements */,
 				551037612A305E53008156C8 /* RCTBridge */,
 				551037542A3058FE008156C8 /* CardReaderBridge.m */,
 				55B1AE4B2A3040140073FDC9 /* NetworkController.h */,

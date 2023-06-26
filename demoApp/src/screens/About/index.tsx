@@ -15,6 +15,7 @@ import {RootParamList} from '../../RootStackParams';
 import {CustomStatusBar} from '../../components/StatusBar/CustomStatusBar';
 import DeviceInfo from 'react-native-device-info';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<RootParamList, 'AboutScreen'>;
 
@@ -45,6 +46,11 @@ App Version:\n${version}`;
 
   const copyToClipboard = () => {
     Clipboard.setString(sdkResponse);
+    Toast.show({
+      text2: 'login Successfully !',
+      position: 'bottom',
+      type: 'success',
+    });
   };
 
   return (

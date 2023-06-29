@@ -12,6 +12,7 @@ import {styles} from './style';
 import {Colors} from '../../constants/Colors';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
+import {Strings} from '../../constants/Strings';
 
 type Props = NativeStackScreenProps<RootParamList, 'QRSessionScreen'>;
 
@@ -19,11 +20,11 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
   const ButtonText = [
     {
       id: 1,
-      text: 'OR Session 1 \n (Scan qr ,authenticate with scope data)',
+      text: Strings.ORSession1,
     },
     {
       id: 2,
-      text: 'OR Session 2 \n (Scan qr ,authenticate with preset data)',
+      text: Strings.ORSession2,
     },
   ];
 

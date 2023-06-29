@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   NativeModules,
   SafeAreaView,
@@ -17,6 +16,8 @@ import {RootParamList} from '../../RootStackParams';
 import {Colors} from '../../constants/Colors';
 import {getData, storeData} from '../../databaseService/localStorage';
 import {CommonActions} from '@react-navigation/native';
+import {Images} from '../../constants/Images';
+import {Strings} from '../../constants/Strings';
 type Props = NativeStackScreenProps<RootParamList, 'HomeScreen'>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
@@ -25,7 +26,6 @@ function HomeScreen({navigation}: Props): JSX.Element {
 
   const setInitialScreen = () => {
     getData('isRegister').then(res => {
-      console.log('local Storage isRegister', res);
       if (res) {
         navigation.dispatch(
           CommonActions.reset({
@@ -47,11 +47,11 @@ function HomeScreen({navigation}: Props): JSX.Element {
   const buttonText = [
     {
       id: 1,
-      buttonName: 'Register Default Tenant',
+      buttonName: Strings.RegisterDefaultTenant,
     },
     {
       id: 2,
-      buttonName: 'Restore Account',
+      buttonName: Strings.RestoreAccount,
     },
   ];
 
@@ -69,10 +69,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
         console.log('ERROR IN initRegistrations', e);
         setIsLoading(false);
       }
-    } else {
-      storeData(true, 'isRegister');
-      navigation.navigate('LoginScreen');
-    }
+    } else {}
   };
 
   return (
@@ -82,16 +79,16 @@ function HomeScreen({navigation}: Props): JSX.Element {
         <View style={styles.indicatorOuterContainer}>
           <View style={[styles.indicatorContainer]}>
             <ActivityIndicator
-              color={'#B80F0A'}
+              color={Colors.red}
               size={'small'}
               style={styles.indicatorStyle}
             />
-            <Text style={styles.loaderText}>Please wait ...</Text>
+            <Text style={styles.loaderText}>{Strings.PleaseWait}</Text>
           </View>
         </View>
       )}
       <View style={styles.logoContainer}>
-        <Image source={require('../../assets/logo.png')} style={styles.logo} />
+        <Image source={Images.logo} style={styles.logo} />
       </View>
       <View style={styles.bottomContainer}>
         {buttonText.map((item: any, index: number) => {

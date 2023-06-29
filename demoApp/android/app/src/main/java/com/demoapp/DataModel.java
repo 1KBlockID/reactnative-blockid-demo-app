@@ -1,4 +1,4 @@
-package com.demoapp;
+package com.onekosmos.blockid.rectnative.poc;
 
 import com.onekosmos.blockid.sdk.datamodel.BIDTenant;
 

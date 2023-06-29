@@ -1,49 +1,62 @@
 import {StatusBar, StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
 
-
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
 export const styles = StyleSheet.create({
-   mainContainer:{
-    backgroundColor: 'white',
+  mainContainer: {
     width: '70%',
     alignSelf: 'center',
     borderRadius: 20,
-   },
-   innerContainer:{
+  },
+  innerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-   },
-   warningText:{
-    fontSize: 14, color: 'black', marginTop: 5
-   },
-   separator:{
+  },
+  warningText: {
+    color: Colors.black,
+    marginTop: 5,
+  },
+  separator: {
     borderBottomWidth: 1,
     borderColor: 'gray',
     marginTop: 10,
-   },
-   bottomView:{
+  },
+  bottomView: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: 40,
     alignContent: 'center',
-   },
-   optionStyle:{
-    alignSelf: 'center'
-   },
-   lineStyle:{
+    width: '100%',
+  },
+  optionStyle: {
+    alignSelf: 'center',
+    width: '50%',
+    alignItems: 'center',
+    height: 48,
+    justifyContent: 'center',
+  },
+  lineStyle: {
     borderRightWidth: 1,
     borderColor: 'gray',
-    height: 40,
-   },
-   optionTextStyle:{
-    color:Colors.black
-   },
-   blurBackground:{
-      backgroundColor: 'rgba(0,0,0,0.8)',
-      flex: 1,
-      justifyContent:'center'
-   }
+    height: 48,
+  },
+  optionTextStyle: {
+    fontSize: 16,
+  },
+  blurBackground: {
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  textInputStyle: {
+    backgroundColor: Colors.white,
+    borderColor: Colors.gray,
+    borderWidth: 0.3,
+    width: '90%',
+    alignSelf: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: 10,
+  },
 });

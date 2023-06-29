@@ -1,4 +1,4 @@
-package com.demoapp;
+package com.onekosmos.blockid.rectnative.poc;
 
 import android.os.Bundle;
 

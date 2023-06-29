@@ -5,4 +5,5 @@ export type RootParamList = {
  LoginScreen:undefined;
  QRSessionScreen:undefined
  Fido2Screen:undefined
+ PinScreen:undefined
 };

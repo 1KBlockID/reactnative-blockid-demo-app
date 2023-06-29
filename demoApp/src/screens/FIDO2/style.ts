@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   backArrow: {
-    width: 15,
+    width: 25,
     height: 35,
     marginLeft: 20,
     tintColor: 'black',
@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 0.2,
   },
   bottomView: {
     flex: 1,
@@ -45,6 +44,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     marginBottom: 20,
+    borderRadius: 12,
   },
   buttonContainer1: {
     flexDirection: 'row',
@@ -76,5 +76,12 @@ export const styles = StyleSheet.create({
   btnText: {
     textAlign: 'center',
     color: 'white',
+  },
+  arrowContainer: {
+    height: 50,
+    width: 50,
+  },
+  keyBoardContainer: {
+    backgroundColor: Colors.white,
   },
 });

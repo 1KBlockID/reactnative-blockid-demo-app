@@ -15,6 +15,8 @@ import {Colors} from '../../constants/Colors';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
 import Toast from 'react-native-toast-message';
+import {Strings} from '../../constants/Strings';
+import {Images} from '../../constants/Images';
 
 type Props = NativeStackScreenProps<RootParamList, 'LoginScreen'>;
 
@@ -30,9 +32,7 @@ function LoginScreen({navigation}: Props): JSX.Element {
           position: 'bottom',
           type: 'success',
         });
-        setTimeout(() => {
-          navigation.navigate('MenuScreen');
-        }, 500);
+        navigation.navigate('MenuScreen');
       } else {
         Alert.alert('Please enroll biometric first ');
       }
@@ -42,10 +42,10 @@ function LoginScreen({navigation}: Props): JSX.Element {
   };
 
   useEffect(() => {
-    
-    // const eventEmitter = new NativeEventEmitter(NativeModules.ToastExample);
-    // let eventListener = eventEmitter.addListener('onLiveIdCapture', event => {
-    //   console.log(event.eventProperty); // "someValue"
+    // const eventEmitter = new NativeEventEmitter(NativeModules.DemoAppModule);
+    // console.log("eventEmitter",eventEmitter)
+    // let eventListener = eventEmitter.addListener('NotificationIdentifier', event => {
+    //   console.log("Native event is ",event); // "someValue"
     // });
     // return () => eventListener.remove();
   }, []);
@@ -61,16 +61,11 @@ function LoginScreen({navigation}: Props): JSX.Element {
       </View>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={styles.logo}
-          />
+          <Image source={Images.logo} style={styles.logo} />
         </View>
-        <Text style={styles.loginText}>
-          Please enable the following method for future login
-        </Text>
+        <Text style={styles.loginText}>{Strings.EnableFutureLogin}</Text>
         <TouchableOpacity style={styles.buttonStyle} onPress={handleClick}>
-          <Text style={styles.buttonTextStyle}>TouchID /{'\n'} FaceID</Text>
+          <Text style={styles.buttonTextStyle}>{Strings.TouchAndFaceId}</Text>
         </TouchableOpacity>
         <Toast />
       </View>

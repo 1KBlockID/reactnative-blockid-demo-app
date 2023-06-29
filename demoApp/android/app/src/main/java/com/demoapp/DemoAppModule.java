@@ -1,6 +1,6 @@
-package com.demoapp;
-import static com.demoapp.AppConstants.defaultTenant;
-import static com.demoapp.AppConstants.dvcId;
+package com.onekosmos.blockid.rectnative.poc;
+import static com.onekosmos.blockid.rectnative.poc.AppConstants.defaultTenant;
+import static com.onekosmos.blockid.rectnative.poc.AppConstants.dvcId;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.WritableMap;
@@ -118,13 +118,13 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     @ReactMethod
     public void register(String name, Promise promise) {
         UiThreadUtil.runOnUiThread(() ->
-                webRegister(name, FIDO2KeyType.valueOf(K_FILE_NAME), promise));
+                webRegister(name, K_FILE_NAME, promise));
     }
 
 
     public void authenticate(String name, Promise promise) {
         UiThreadUtil.runOnUiThread(() ->
-                webAuthenticate(name, promise));
+                webAuthenticate(name,K_FILE_NAME, promise));
     }
 
     @ReactMethod
@@ -276,7 +276,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                 });
     }
 
-    private void webRegister(String name, FIDO2KeyType string, Promise promise) {
+    private void webRegister(String name, String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
         ensureSDKUnlocked();
         BlockIDSDK.getInstance().registerFIDO2Key(
@@ -284,7 +284,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                 name,
                 clientTenant.getDns(),
                 clientTenant.getCommunity(),
-                K_FILE_NAME,
+                fileName,
                 (status, errorResponse) -> {
                     BIDAuthProvider.getInstance().lockSDK();
                     if (errorResponse != null) {
@@ -295,6 +295,9 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                     promise.resolve(resolveMsg);
                 });
     }
+
+
+
 
     private void authenticateKey(String name, FIDO2KeyType type, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
@@ -318,7 +321,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     }
 
 
-    private void webAuthenticate(String name, Promise promise) {
+    private void webAuthenticate(String name,String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
         ensureSDKUnlocked();
 
@@ -327,7 +330,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                 name,
                 clientTenant.getDns(),
                 clientTenant.getCommunity(),
-                FIDO2KeyType.valueOf(K_FILE_NAME),
+                fileName,
                 activity.observer,
                 (status, errorResponse) -> {
                     BIDAuthProvider.getInstance().lockSDK();

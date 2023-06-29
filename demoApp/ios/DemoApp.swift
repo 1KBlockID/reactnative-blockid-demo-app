@@ -1,5 +1,5 @@
 //
-//  Fido2.swift
+//  DemoApp.swift
 //  Demo
 //
 //  NDEF should not be present in entitlements according to:
@@ -10,7 +10,7 @@ import BlockID
 
 @objc class DemoApp: NSObject, LiveIDResponseDelegate {
   func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-    print("liveIdDidDetectErrorInScanning(\(error))")
+    print("liveIdDidDetectErrorInScanning(\(error?.message))")
   }
   
   func focusOnFaceChanged(isFocused: Bool?) {
@@ -24,7 +24,9 @@ import BlockID
   func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, error: BlockID.ErrorResponse?) {
     print("UIImage(\(UIImage()))")
     print("signatureToken(\(String()))")
-    print("error(\(error))")
+    print("error(\(error?.message))")
+    
+    
   }
   
   func wrongExpressionDetected(_ livenessFactor: BlockID.LivenessFactorType) {
@@ -52,6 +54,7 @@ import BlockID
   
   
   
+  
   @objc func  resetSDK() {
     print("resetAppNSDK(\(BlockIDSDK.sharedInstance.isReady()))")
     UserDefaults.removeAllValues();
@@ -67,17 +70,27 @@ import BlockID
     registerKey(name, type: .PLATFORM,pin:"")
   }
   
-  @objc func registerCardKey(_ name: String, pin: String) {
+  @objc func registerCardKey(_ name: String) {
+    registerKey(name, type: .CROSS_PLATFORM, pin: "")
+  }
+  
+  
+  @objc func registerCardKeyWithPin(_ name: String, pin: String) {
     registerKey(name, type: .CROSS_PLATFORM, pin: pin)
   }
+  
+  
+  
   @objc func authenticateUserKey(_ name: String) {
     authenticateKey( name, type: .PLATFORM, pin: "")
   }
   
-  @objc func authenticateCardKey(_ name: String, pin: String) {
-    authenticateKey( name, type: .CROSS_PLATFORM, pin: pin)
+  @objc func authenticateCardKey(_ name: String) {
+    authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
   }
-  
+  @objc func authenticateCardKeyWithPin(_ name: String,pin: String) {
+    authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
+  }
   @objc func register(_ name: String) {
     webRegister( name, type: .CROSS_PLATFORM)
   }
@@ -116,12 +129,23 @@ import BlockID
   }
   
   @objc func StartLiveScan(){
-    print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
     scanFaceId()
   }
   
+
   
+  @objc func setFidoPin(_ pin: String){
+    setPin(pin: pin)
+  }
+  @objc func resetPin() {
+    resetFidoPin()
+  }
   
+  @objc func changePin(_ oldPin: String,newPin:String){
+     changeFidoPin(oldPin, newPin: newPin)
+   }
+  
+ 
   
   @objc func enrollBiometricAssets(){
     print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
@@ -154,6 +178,8 @@ extension DemoApp {
     }
   }
   
+  
+  
   private func scanFaceId() {
     if self.liveIdScannerHelper == nil {
       self.liveIdScannerHelper = LiveIDScannerHelper.init(liveIdResponseDelegate: self)
@@ -181,19 +207,11 @@ extension DemoApp {
     }
   }
   
-  
-  
-  
-  
   private func setVersionAndBuildNumber() {
     let (appVer, buildVerHex) = CommonFunctions.getAppBundleVersion()
     UserDefaults.standard.set(appVer, forKey: AppConsants.appVersionKey)
     UserDefaults.standard.set(buildVerHex, forKey: AppConsants.buildVersion)
   }
-  
-  
-  
-  
   
   private func ensureSDKUnlocked() {
     print("ensureSDKUnlocked\(BIDAuthProvider.shared.isSDKUnLocked())");
@@ -210,6 +228,12 @@ extension DemoApp {
     }
   }
   
+  private func changeFidoPin(_ oldPin: String,newPin :String) {
+   let callback = self.createResultCallback("changePin")
+    ensureSDKUnlocked()
+    BlockIDSDK.sharedInstance.changeFido2PIN(oldPin:oldPin, newPin:newPin, completion:callback)
+  }
+  
   
   private func verifyBiometric(){
     BIDAuthProvider.shared.verifyDeviceAuth { success, error, error1 in
@@ -221,6 +245,7 @@ extension DemoApp {
   }
   
   private func registerKey(_ name: String, type: FIDO2KeyType,pin:String) {
+    print("registerKey key with name and pin(\(pin))")
     guard
       let root = RCTPresentedViewController(),
       let dns = Tenant.clientTenant.dns,
@@ -230,14 +255,29 @@ extension DemoApp {
     let callback = self.createResultCallback(name)
     
     ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.registerFIDO2Key(controller: root,
-                                               userName: name,
-                                               tenantDNS: dns,
-                                               communityName: community,
-                                               type: type,
-                                               pin:pin,
-                                               completion: callback)
+    if(pin == ""){
+      print("In if condition(\(pin))")
+      BlockIDSDK.sharedInstance.registerFIDO2Key(controller: root,
+                                                 userName: name,
+                                                 tenantDNS: dns,
+                                                 communityName: community,
+                                                 type: type,
+                                                 completion: callback)
+      
+    }
+    else{
+      BlockIDSDK.sharedInstance.registerFIDO2Key(controller: root,
+                                                 userName: name,
+                                                 tenantDNS: dns,
+                                                 communityName: community,
+                                                 type: type,
+                                                 pin:pin,
+                                                 completion: callback)
+    }
+    
   }
+  
+
   
   private func webRegister(_ name: String, type: FIDO2KeyType) {
     guard
@@ -273,25 +313,6 @@ extension DemoApp {
                                                    completion: callback)
   }
   
-  private func authenticateKey(_ name: String, type: FIDO2KeyType,pin :String) {
-    guard
-      let root = RCTPresentedViewController(),
-      let dns = Tenant.clientTenant.dns,
-      let community = Tenant.clientTenant.community
-    else { return }
-    
-    let callback = self.createResultCallback(name)
-    
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
-                                                   userName: name,
-                                                   tenantDNS: dns,
-                                                   communityName: community,
-                                                   type: type,
-                                                   pin:pin,
-                                                   completion: callback)
-  }
-  
   private func resetFidoPin() {
     let callback = self.createResultCallback("resetPin")
     ensureSDKUnlocked()
@@ -303,6 +324,37 @@ extension DemoApp {
     ensureSDKUnlocked()
     BlockIDSDK.sharedInstance.setFido2PIN(newPin: pin, completion: callback)
   }
+  
+  private func authenticateKey(_ name: String, type: FIDO2KeyType,pin :String) {
+    guard
+      let root = RCTPresentedViewController(),
+      let dns = Tenant.clientTenant.dns,
+      let community = Tenant.clientTenant.community
+    else { return }
+    
+    let callback = self.createResultCallback(name)
+    
+    ensureSDKUnlocked()
+    if(pin == ""){
+      BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
+                                                     userName: name,
+                                                     tenantDNS: dns,
+                                                     communityName: community,
+                                                     type: type,
+                                                     completion: callback)
+    }
+    else{
+      BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
+                                                     userName: name,
+                                                     tenantDNS: dns,
+                                                     communityName: community,
+                                                     type: type,
+                                                     pin:pin,
+                                                     completion: callback)
+    }
+   
+  }
+  
   
   private func handleRejection(error: BlockID.ErrorResponse?) {
     let message = error?.message ?? "unknown error"

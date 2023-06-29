@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   Image,
@@ -8,15 +8,20 @@ import {
   TouchableOpacity,
   View,
   NativeModules,
+  Platform,
 } from 'react-native';
 import {styles} from './style';
 import {Colors} from '../../constants/Colors';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
-import {DialogBox} from '../../components/DialogBox';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions, StackActions} from '@react-navigation/native';
 import {checkAndRequestPermissions} from '../../utils/Permissions';
+import {DialogBox} from '../../components/DialogBox';
+import {Strings} from '../../constants/Strings';
+import {Images} from '../../constants/Images';
+import {setLicenseKey} from '../../connector/Fido2Connector';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
@@ -26,27 +31,31 @@ function MenuScreen({navigation}: Props): JSX.Element {
   const DATA = [
     {
       id: 1,
-      title: 'About',
+      title: Strings.About,
     },
     {
       id: 2,
-      title: 'Device Auth',
+      title: Strings.DeviceAuth,
     },
     {
       id: 3,
-      title: 'Login with QR',
+      title: Strings.LoginWithQR,
     },
     {
       id: 4,
-      title: 'LiveID',
+      title: Strings.LiveID,
     },
     {
       id: 5,
-      title: 'FIDO2',
+      title: Strings.FIDO2,
     },
     {
       id: 6,
-      title: 'Reset App',
+      title: Strings.PinManagement,
+    },
+    {
+      id: 7,
+      title: Strings.ResetApp,
     },
   ];
 
@@ -57,7 +66,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     if (index === 2) {
       navigation.navigate('QRSessionScreen');
     }
-    if (index === 5) {
+    if (index === 6) {
       setModalVisible(!modalVisible);
     }
     if (index === 3) {
@@ -69,23 +78,28 @@ function MenuScreen({navigation}: Props): JSX.Element {
     if (index === 4) {
       navigation.navigate('Fido2Screen');
     }
+    if (index === 5) {
+      navigation.navigate('PinScreen');
+    }
   };
 
-  const renderItem = ({item, index}: {item: any; index: number}) => (
-    <TouchableOpacity
-      key={index}
-      style={styles.buttonStyle}
-      onPress={() => handleClick(index)}>
-      <Text style={styles.buttonText}>{item.title}</Text>
-      {index === 1 && (
-        <Image
-          source={require('../../assets/greenTick.png')}
-          style={styles.tickImageStyle}
-        />
-      )}
-    </TouchableOpacity>
-  );
-  const handleOkPress = () => {
+  const renderItem = ({item, index}: {item: any; index: number}) => {
+    return index !== 5 || Platform.OS === 'ios' ? (
+      <TouchableOpacity
+        key={index}
+        style={styles.buttonStyle}
+        onPress={() => handleClick(index)}>
+        <Text style={styles.buttonText}>{item.title}</Text>
+        {index === 1 && (
+          <Image source={Images.greenTick} style={styles.tickImageStyle} />
+        )}
+      </TouchableOpacity>
+    ) : null;
+  };
+  const handleOkPress = async () => {
+    if (Platform.OS === 'ios') {
+      setLicenseKey();
+    }
     AsyncStorage.clear()
       .then(res => {
         setModalVisible(false);
@@ -112,10 +126,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
       </View>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={styles.logo}
-          />
+          <Image source={Images.logo} style={styles.logo} />
         </View>
         <FlatList data={DATA} renderItem={renderItem} />
 

@@ -16,6 +16,8 @@ import {CustomStatusBar} from '../../components/StatusBar/CustomStatusBar';
 import DeviceInfo from 'react-native-device-info';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
+import {Images} from '../../constants/Images';
+import {Strings} from '../../constants/Strings';
 
 type Props = NativeStackScreenProps<RootParamList, 'AboutScreen'>;
 
@@ -47,9 +49,9 @@ App Version:\n${version}`;
   const copyToClipboard = () => {
     Clipboard.setString(sdkResponse);
     Toast.show({
-      text2: 'login Successfully !',
+      text2: 'Text Copied',
       position: 'bottom',
-      type: 'success',
+      type: 'info',
     });
   };
 
@@ -60,24 +62,24 @@ App Version:\n${version}`;
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
-              source={require('../../assets/backarrow.png')}
+              source={Images.backArrow}
               style={styles.backArrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Text style={styles.headerText}>About</Text>
+          <Text style={styles.headerText}>{Strings.About}</Text>
         </View>
         {sdkResponse && (
           <ScrollView>
             <Text style={styles.textStyle}>{sdkResponse}</Text>
           </ScrollView>
         )}
-
         <TouchableOpacity
           style={styles.copyContainer}
           onPress={() => copyToClipboard()}>
-          <Text style={styles.copyText}>Copy</Text>
+          <Text style={styles.copyText}>{Strings.Copy}</Text>
         </TouchableOpacity>
+        <Toast />
       </View>
     </>
   );

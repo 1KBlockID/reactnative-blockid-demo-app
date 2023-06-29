@@ -97,9 +97,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.demoapp"
+    namespace "com.onekosmos.blockid.rectnative.poc"
     defaultConfig {
-        applicationId "com.demoapp"
+        applicationId "com.onekosmos.blockid.rectnative.poc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -168,10 +168,9 @@ android {
      exclude 'META-INF/DEPENDENCIES'
      exclude 'META-INF/NOTICE.md'
      exclude 'AndroidManifest.xml'
-   exclude 'META-INF/notice.txt'
-      pickFirst '**/libc++_shared.so'
-        pickFirst '**/libfbjni.so'
-        
+     exclude 'META-INF/notice.txt'
+     pickFirst '**/libc++_shared.so'
+     pickFirst '**/libfbjni.so'     
 }
    
 }

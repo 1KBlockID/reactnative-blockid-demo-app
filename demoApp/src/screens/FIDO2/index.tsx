@@ -22,7 +22,6 @@ import {Colors} from '../../constants/Colors';
 import Toast from 'react-native-toast-message';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
-import {string} from 'prop-types';
 import {DialogBox} from '../../components/DialogBox';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -38,9 +37,10 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const [loader, setLoader] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isPinRequired, setIsPinRequired] = useState<boolean>(true);
-  const [activeIndex, setActiveIndex] = useState<number>();
+  const [activeIndex, setActiveIndex] = useState<string>('');
   const [pin, setPin] = useState<string>('');
   const {DemoAppModule} = NativeModules;
+
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
   const ButtonText = [
     {
@@ -104,7 +104,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
         .then((res: string) => {
           console.log('res', res);
           if (res === 'OK') SuccessAlert('Register Successfully');
-          setPin('')
+          setPin('');
           setLoader(false);
         })
         .catch((error: unknown) => {
@@ -134,7 +134,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           console.log('res', res);
           if (res === 'OK') SuccessAlert('Authenticate Successfully');
           setLoader(false);
-          setPin('')
+          setPin('');
         })
         .catch((error: unknown) => {
           setLoader(false);
@@ -154,7 +154,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     }
   };
 
-  const handleButtonClick = (index: number) => {
+  const handleButtonClick = (index: number, action: String) => {
     if (!userName) {
       Toast.show({
         type: 'error',
@@ -163,22 +163,20 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       return;
     }
     setLoader(true);
-    if (index === 0) {
+    if (action === Strings.Register_PlatForm) {
       registerUserKey();
-    } else if (index === 1) {
+    } else if (action === Strings.Authenticate_Platform) {
       authenticateUserKey();
-    } else if (index == 2) {
+    } else if (action === Strings.Register_Security_key) {
       registerCardKey();
-    } else if (index === 3) {
+    } else if (action === Strings.Authenticate_Security_key) {
       authenticateCardKey();
-    } else if (index === 4) {
-      Alert.alert(JSON.stringify(index));
+    } else if (action === Strings.Register_Security_With_Pin) {
       setModalVisible(true);
-      setActiveIndex(index);
+      setActiveIndex(Strings.Register_Security_With_Pin);
     } else {
-      Alert.alert(JSON.stringify(index));
       setModalVisible(true);
-      setActiveIndex(index);
+      setActiveIndex(Strings.Authenticate_Security_With_Pin);
     }
   };
 
@@ -187,7 +185,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       <TouchableOpacity
         key={index}
         style={styles.buttonContainer}
-        onPress={() => handleButtonClick(index)}>
+        onPress={() => handleButtonClick(index, item.title)}>
         <Text style={styles.buttonTextStyle}>{item.title}</Text>
       </TouchableOpacity>
     ) : null;
@@ -236,17 +234,20 @@ function Fido2Screen({navigation}: Props): JSX.Element {
 
   const handleCancelClick = () => {
     setModalVisible(false);
-    if (isPinRequired && activeIndex === 4) {
+    if (isPinRequired && activeIndex === Strings.Register_Security_With_Pin) {
       registerCardKey();
-    } else if (isPinRequired && activeIndex === 5) {
+    } else if (
+      isPinRequired &&
+      activeIndex === Strings.Authenticate_Security_With_Pin
+    ) {
       authenticateCardKey();
     }
   };
 
-  const handleOKClick=()=>{
+  const handleOKClick = () => {
     setLoader(false);
     setModalVisible(false);
-  }
+  };
   return (
     <KeyboardAwareScrollView
       style={styles.keyBoardContainer}

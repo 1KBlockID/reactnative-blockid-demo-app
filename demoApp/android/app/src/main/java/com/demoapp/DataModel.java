@@ -1,4 +1,4 @@
-package com.onekosmos.blockid.rectnative.poc;
+package com.onekosmos.blockid.reactnative.poc;
 
 import com.onekosmos.blockid.sdk.datamodel.BIDTenant;
 

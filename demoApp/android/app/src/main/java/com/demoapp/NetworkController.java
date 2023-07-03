@@ -1,4 +1,4 @@
-package com.arculus.demo;
+package com.demoapp;
 
 import com.facebook.react.modules.network.NetworkingModule;
 import java.util.concurrent.TimeUnit;

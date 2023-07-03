@@ -25,8 +25,6 @@ import BlockID
     print("UIImage(\(UIImage()))")
     print("signatureToken(\(String()))")
     print("error(\(error?.message))")
-    
-    
   }
   
   func wrongExpressionDetected(_ livenessFactor: BlockID.LivenessFactorType) {
@@ -41,6 +39,9 @@ import BlockID
   private static let resolvedMsg = "OK"
   private static var blockIdVersion = ""
   private var liveIdScannerHelper: LiveIDScannerHelper?
+  private weak var responseDelegate: LiveIDResponseDelegate?
+  
+  
   
   private let resolveFunction: RCTPromiseResolveBlock
   private let rejectFunction: RCTPromiseRejectBlock
@@ -129,10 +130,17 @@ import BlockID
   }
   
   @objc func StartLiveScan(){
-    scanFaceId()
+    ensureSDKUnlocked()
+    var delegate: LiveIDResponseDelegate
+    if self.liveIdScannerHelper == nil {
+      self.liveIdScannerHelper = LiveIDScannerHelper.init(liveIdResponseDelegate: responseDelegate!)
+      print("liveIdScannerHelper(\(liveIdScannerHelper))")
+    }
+    //4. Start Scanning
+    self.liveIdScannerHelper?.startLiveIDScanning()
   }
   
-
+  
   
   @objc func setFidoPin(_ pin: String){
     setPin(pin: pin)
@@ -142,10 +150,10 @@ import BlockID
   }
   
   @objc func changePin(_ oldPin: String,newPin:String){
-     changeFidoPin(oldPin, newPin: newPin)
-   }
+    changeFidoPin(oldPin, newPin: newPin)
+  }
   
- 
+  
   
   @objc func enrollBiometricAssets(){
     print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
@@ -229,7 +237,7 @@ extension DemoApp {
   }
   
   private func changeFidoPin(_ oldPin: String,newPin :String) {
-   let callback = self.createResultCallback("changePin")
+    let callback = self.createResultCallback("changePin")
     ensureSDKUnlocked()
     BlockIDSDK.sharedInstance.changeFido2PIN(oldPin:oldPin, newPin:newPin, completion:callback)
   }
@@ -277,7 +285,7 @@ extension DemoApp {
     
   }
   
-
+  
   
   private func webRegister(_ name: String, type: FIDO2KeyType) {
     guard
@@ -352,7 +360,7 @@ extension DemoApp {
                                                      pin:pin,
                                                      completion: callback)
     }
-   
+    
   }
   
   

@@ -9,6 +9,8 @@ import {
   View,
   NativeModules,
   Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import {styles} from './style';
 import {Colors} from '../../constants/Colors';
@@ -73,6 +75,9 @@ function MenuScreen({navigation}: Props): JSX.Element {
       let isPermissionsGranted = await checkAndRequestPermissions();
       if (isPermissionsGranted) {
         DemoAppModule.StartLiveScan();
+      } else {
+        console.log('ON else part');
+        Linking.openSettings();
       }
     }
     if (index === 4) {

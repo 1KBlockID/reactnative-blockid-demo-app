@@ -1,42 +1,22 @@
 import {Platform} from 'react-native';
-import {
-  checkMultiple,
-  PERMISSIONS,
-  requestMultiple,
-  RESULTS,
-} from 'react-native-permissions';
+import {PERMISSIONS, request, RESULTS, check} from 'react-native-permissions';
 
 const REQUIRED_PERMISSIONS =
-  Platform.OS === 'ios'
-    ? [PERMISSIONS.IOS.CAMERA]
-    : [PERMISSIONS.ANDROID.CAMERA];
-
-function isPermissionsGranted(statuses) {
-  return REQUIRED_PERMISSIONS.every(
-    permission =>
-      statuses[permission] === RESULTS.UNAVAILABLE ||
-      statuses[permission] === RESULTS.GRANTED,
-  );
-}
+  Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
 
 export const checkAndRequestPermissions = async () => {
-  const statuses = await checkMultiple(REQUIRED_PERMISSIONS);
+  const statuses = await check(REQUIRED_PERMISSIONS);
   console.log('REQUIRED_PERMISSIONS', statuses);
-  if (isPermissionsGranted(statuses)) {
+  if (statuses === RESULTS.GRANTED) {
     return true;
   } else {
-    const askPermissions = REQUIRED_PERMISSIONS.filter(
-      permission => statuses[permission] === RESULTS.DENIED);
-    if (askPermissions.length) {
-      requestMultiple(REQUIRED_PERMISSIONS).then(results => {
-        if (isPermissionsGranted(results)) {
-          return true;
-        } else {
-          return checkAndRequestPermissions();
-        }
-      });
-    } else {
-      return true;
-    }
+    request(REQUIRED_PERMISSIONS).then(results => {
+      console.log('results', results);
+      if (results === RESULTS.GRANTED) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 };

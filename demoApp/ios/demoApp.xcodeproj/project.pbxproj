@@ -17,6 +17,7 @@
 		551037642A305E77008156C8 /* RCTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 551037622A305E77008156C8 /* RCTBridge.m */; };
 		551BE0DA2A303B09002DA645 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0D92A303B09002DA645 /* Starscream */; };
 		551BE0DD2A303C2A002DA645 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0DC2A303C2A002DA645 /* WalletConnect */; };
+		5565927C2A55976C00F01E57 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5565927B2A55976C00F01E57 /* main.storyboard */; };
 		5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5568A5B42A440D8400CC42CC /* DemoApp.swift */; };
 		556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */; };
 		556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */; };
@@ -24,6 +25,7 @@
 		55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B1AE482A303FAF0073FDC9 /* AppConstants.swift */; };
 		55B1AE542A3040140073FDC9 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B1AE4C2A3040140073FDC9 /* test.swift */; };
 		55B1AE552A3040140073FDC9 /* NetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B1AE4D2A3040140073FDC9 /* NetworkController.m */; };
+		55BC123F2A56782F004E848B /* LiveIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC123E2A56782F004E848B /* LiveIDViewController.swift */; };
 		7699B88040F8A987B510C191 /* libPods-demoApp-demoAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-demoApp-demoAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,7 @@
 		5510375D2A305E4B008156C8 /* CardReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardReader.swift; path = modules/CardReader.swift; sourceTree = "<group>"; };
 		551037622A305E77008156C8 /* RCTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTBridge.m; path = RCTBridge/RCTBridge.m; sourceTree = "<group>"; };
 		551037632A305E77008156C8 /* RCTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTBridge.h; path = RCTBridge/RCTBridge.h; sourceTree = "<group>"; };
+		5565927B2A55976C00F01E57 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 		55B1AE4B2A3040140073FDC9 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		55B1AE4C2A3040140073FDC9 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		55B1AE4D2A3040140073FDC9 /* NetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkController.m; sourceTree = "<group>"; };
+		55BC123E2A56782F004E848B /* LiveIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveIDViewController.swift; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-demoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-demoApp.release.xcconfig"; path = "Target Support Files/Pods-demoApp/Pods-demoApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-demoApp-demoAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-demoApp-demoAppTests.debug.xcconfig"; path = "Target Support Files/Pods-demoApp-demoAppTests/Pods-demoApp-demoAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-demoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-demoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +135,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */,
 				55A2DD182A30667E00632A7F /* demo.swift */,
+				5565927B2A55976C00F01E57 /* main.storyboard */,
+				55BC123E2A56782F004E848B /* LiveIDViewController.swift */,
 			);
 			name = demoApp;
 			sourceTree = "<group>";
@@ -325,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				5565927C2A55976C00F01E57 /* main.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,6 +501,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55BC123F2A56782F004E848B /* LiveIDViewController.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -588,6 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = demoApp/demoApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -605,10 +614,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.arculus.keymanager.onekosmos;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onekosmos.blockid.reactnative.poc;
 				PRODUCT_NAME = demoApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ak_manager_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = reactNative_dev_poc;
 				SWIFT_OBJC_BRIDGING_HEADER = "demoApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -623,6 +632,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = demoApp/demoApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -639,10 +649,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.arculus.keymanager.onekosmos;
+				PRODUCT_BUNDLE_IDENTIFIER = com.onekosmos.blockid.reactnative.poc;
 				PRODUCT_NAME = demoApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ak_manager_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = reactNative_dev_poc;
 				SWIFT_OBJC_BRIDGING_HEADER = "demoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

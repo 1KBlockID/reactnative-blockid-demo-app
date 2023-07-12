@@ -53,7 +53,6 @@ function PinScreen({navigation}: Props): JSX.Element {
     setErrorMessage('');
   };
 
-  //start
 
   const errorHandler = (error: Fido2Error): void => {
     Alert.alert(`${error?.message} ${error?.code}`, 'Please try again.', [
@@ -136,13 +135,14 @@ function PinScreen({navigation}: Props): JSX.Element {
   //changeFIDO2 Pin
   async function changeFidoKey() {
     const pinResponse = await ChangePin(payload);
-    console.log('Change Pin Response os ', pinResponse);
     if (pinResponse === 'OK') {
       Alert.alert('Pin Changed Successfully');
       handleResetStates();
     }
   }
 
+
+  //Reset Pin functionality
   const handleResetPin = async () => {
     Alert.alert('Reset fun');
     const resetResponse = await resetPin(payload);
@@ -152,7 +152,7 @@ function PinScreen({navigation}: Props): JSX.Element {
       handleResetStates();
     }
   };
-  //end
+
 
   const buttonText = [
     {id: 1, name: Strings.SetPin},
@@ -161,23 +161,27 @@ function PinScreen({navigation}: Props): JSX.Element {
   ];
 
   const handleDonePress = async () => {
-    let isValidData = await validationCheck();
-    console.log('validationCheck', isValidData);
-    if (isValidData) {
-      if (currentPin === '' && !isResetFido) {
-        setFidoKey();
-      } else if (isResetFido) {
-        handleResetPin();
-      } else {
-        changeFidoKey();
+    if (isResetFido) {
+      handleResetPin();
+    } else {
+      let isValidData = await validationCheck();
+      if (isValidData) {
+        if (currentPin === '' && !isResetFido) {
+          setFidoKey();
+        } else {
+          changeFidoKey();
+        }
       }
     }
   };
 
-  const handleButtonClick = (index: number) => {
+  const handleButtonClick = (index: number, actionType: String) => {
     setModalVisible(true);
-    if (index === 1) setIsChangePin(true);
-    else if (index === 2) setIsResetFido(true);
+    if (actionType === Strings.ChangePin) setIsChangePin(true);
+    else if (actionType === Strings.ResetFIDO) {
+      Alert.alert(JSON.stringify(actionType));
+      setIsResetFido(true);
+    }
   };
 
   return (
@@ -201,7 +205,7 @@ function PinScreen({navigation}: Props): JSX.Element {
             <TouchableOpacity
               key={index}
               onPress={() => {
-                handleButtonClick(index);
+                handleButtonClick(index, item.name);
               }}
               style={[
                 styles.buttonTouchable,

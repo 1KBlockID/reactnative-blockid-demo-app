@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -24,6 +24,7 @@ import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import {DialogBox} from '../../components/DialogBox';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {getData, storeData} from '../../databaseService/localStorage';
 
 type Props = NativeStackScreenProps<RootParamList, 'Fido2Screen'>;
 
@@ -78,7 +79,10 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       .then((res: string) => {
         console.log('registerUserKey', res);
         setLoader(false);
-        if (res === 'OK') SuccessAlert('Register Successfully');
+        if (res === 'OK') {
+          storeData(userName, 'userName');
+          SuccessAlert('Register Successfully');
+        }
       })
       .catch((error: unknown) => {
         setLoader(false);
@@ -90,7 +94,10 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     DemoAppModule.authenticateUserKey(userName)
       .then((res: string) => {
         setLoader(false);
-        if (res === 'OK') SuccessAlert('Authenticate Successfully');
+        if (res === 'OK') {
+          storeData(userName, 'userName');
+          SuccessAlert('Authenticate Successfully');
+        }
       })
       .catch((error: unknown) => {
         setLoader(false);
@@ -103,9 +110,12 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       DemoAppModule.registerCardKeyWithPin(userName, pin)
         .then((res: string) => {
           console.log('res', res);
-          if (res === 'OK') SuccessAlert('Register Successfully');
-          setPin('');
-          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Register Successfully');
+            setPin('');
+            setLoader(false);
+          }
         })
         .catch((error: unknown) => {
           setLoader(false);
@@ -115,8 +125,11 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       DemoAppModule.registerCardKey(userName)
         .then((res: string) => {
           console.log('res', res);
-          if (res === 'OK') SuccessAlert('Register Successfully');
-          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Register Successfully');
+            setLoader(false);
+          }
         })
         .catch((error: unknown) => {
           setLoader(false);
@@ -202,8 +215,11 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     setLoader(true);
     DemoAppModule.register(userName)
       .then((response: String) => {
-        if (response === 'Ok') SuccessAlert('You have Successfully Registered');
-        setLoader(false);
+        if (response === 'Ok') {
+          storeData(userName, 'userName');
+          SuccessAlert('You have Successfully Registered');
+          setLoader(false);
+        }
       })
       .catch((error: unknown) => {
         setLoader(false);
@@ -222,9 +238,11 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     setLoader(true);
     DemoAppModule.authenticate(userName)
       .then((response: String) => {
-        if (response === 'Ok')
+        if (response === 'Ok') {
+          storeData(userName, 'userName');
           SuccessAlert('You have Successfully authenticated');
-        setLoader(false);
+          setLoader(false);
+        }
       })
       .catch((error: unknown) => {
         setLoader(false);
@@ -248,6 +266,15 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     setLoader(false);
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    getData('userName').then(async res => {
+      console.log('user response from local storage', res);
+      if (res) {
+        setUserName(JSON.parse(res));
+      }
+    });
+  }, []);
   return (
     <KeyboardAwareScrollView
       style={styles.keyBoardContainer}

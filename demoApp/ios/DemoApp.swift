@@ -8,40 +8,16 @@
 import Foundation
 import BlockID
 
-@objc class DemoApp: NSObject, LiveIDResponseDelegate {
-  func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-    print("liveIdDidDetectErrorInScanning(\(error?.message))")
-  }
-  
-  func focusOnFaceChanged(isFocused: Bool?) {
-    print("focusOnFaceChanged(\(isFocused))")
-  }
-  
-  func readyForExpression(_ livenessFactor: BlockID.LivenessFactorType) {
-    print("readyForExpression(\(livenessFactor))")
-  }
-  
-  func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, error: BlockID.ErrorResponse?) {
-    print("UIImage(\(UIImage()))")
-    print("signatureToken(\(String()))")
-    print("error(\(error?.message))")
-  }
-  
-  func wrongExpressionDetected(_ livenessFactor: BlockID.LivenessFactorType) {
-    print("wrongExpressionDetected")
-  }
-  
-  func faceLivenessCheckStarted() {
-    print("faceLivenessCheckStarted")
-  }
-  
+
+
+
+
+@objc class DemoApp: NSObject {
   private static let errorCode = -1
   private static let resolvedMsg = "OK"
   private static var blockIdVersion = ""
   private var liveIdScannerHelper: LiveIDScannerHelper?
   private weak var responseDelegate: LiveIDResponseDelegate?
-  
-  
   
   private let resolveFunction: RCTPromiseResolveBlock
   private let rejectFunction: RCTPromiseRejectBlock
@@ -60,7 +36,6 @@ import BlockID
     print("resetAppNSDK(\(BlockIDSDK.sharedInstance.isReady()))")
     UserDefaults.removeAllValues();
     BlockIDSDK.sharedInstance.resetSDK(licenseKey: Tenant.licenseKey)
-    initRegistrations();
   }
   
   @objc func initRegistrations() {
@@ -129,16 +104,7 @@ import BlockID
     return mainDict
   }
   
-  @objc func StartLiveScan(){
-    ensureSDKUnlocked()
-    var delegate: LiveIDResponseDelegate
-    if self.liveIdScannerHelper == nil {
-      self.liveIdScannerHelper = LiveIDScannerHelper.init(liveIdResponseDelegate: responseDelegate!)
-      print("liveIdScannerHelper(\(liveIdScannerHelper))")
-    }
-    //4. Start Scanning
-    self.liveIdScannerHelper?.startLiveIDScanning()
-  }
+
   
   
   
@@ -187,16 +153,7 @@ extension DemoApp {
   }
   
   
-  
-  private func scanFaceId() {
-    if self.liveIdScannerHelper == nil {
-      self.liveIdScannerHelper = LiveIDScannerHelper.init(liveIdResponseDelegate: self)
-      print("liveIdScannerHelper(\(liveIdScannerHelper))")
-    }
-    //4. Start Scanning
-    self.liveIdScannerHelper?.startLiveIDScanning()
-    
-  }
+
   
   private func registerTenant() {
     print("registerTenant(\(BlockIDSDK.sharedInstance.isReady()))")

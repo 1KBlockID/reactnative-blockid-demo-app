@@ -37,15 +37,15 @@ function LoginScreen({navigation}: Props): JSX.Element {
         Alert.alert('Please enroll biometric first ');
       }
     } catch (e) {
-      console.log('enrollBiometric Assets', e);
+      __DEV__ && console.log('enrollBiometric Assets', e);
     }
   };
 
   useEffect(() => {
     // const eventEmitter = new NativeEventEmitter(NativeModules.DemoAppModule);
-    // console.log("eventEmitter",eventEmitter)
+    // __DEV__ && console.log("eventEmitter",eventEmitter)
     // let eventListener = eventEmitter.addListener('NotificationIdentifier', event => {
-    //   console.log("Native event is ",event); // "someValue"
+    //   __DEV__ && console.log("Native event is ",event); // "someValue"
     // });
     // return () => eventListener.remove();
   }, []);

@@ -28,7 +28,7 @@ function AboutScreen({navigation}: Props): JSX.Element {
 
   const getInfo = async () => {
     const response = await DemoAppModule.getSDKInfo();
-    console.log('response', response);
+    __DEV__ && console.log('response', response);
     let sdkInfo = response;
     if (Platform.OS === 'android') {
       sdkInfo = JSON.parse(response);

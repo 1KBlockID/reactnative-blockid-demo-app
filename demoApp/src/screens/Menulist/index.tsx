@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -23,12 +23,12 @@ import {checkAndRequestPermissions} from '../../utils/Permissions';
 import {DialogBox} from '../../components/DialogBox';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
-import {setLicenseKey} from '../../connector/Fido2Connector';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
 function MenuScreen({navigation}: Props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLiveIdRegistered, setIsLiveIdRegistered] = useState(false);
   const {DemoAppModule} = NativeModules;
   const DATA = [
     {
@@ -76,7 +76,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
       if (isPermissionsGranted) {
         DemoAppModule.StartLiveScan();
       } else {
-        console.log('ON else part');
+        __DEV__ && console.log('ON else part');
         Linking.openSettings();
       }
     }
@@ -87,6 +87,18 @@ function MenuScreen({navigation}: Props): JSX.Element {
       navigation.navigate('PinScreen');
     }
   };
+  useEffect(() => {
+    DemoAppModule.getIsLiveIdRegister()
+      .then((res: any) => {
+        if (res === 'Yes') {
+          __DEV__ && console.log('Response', res);
+          setIsLiveIdRegistered(true);
+        }
+      })
+      .catch((error: any) => {
+        __DEV__ && console.log('error', error);
+      });
+  }, []);
 
   const renderItem = ({item, index}: {item: any; index: number}) => {
     return index !== 5 || Platform.OS === 'ios' ? (
@@ -95,19 +107,23 @@ function MenuScreen({navigation}: Props): JSX.Element {
         style={styles.buttonStyle}
         onPress={() => handleClick(index)}>
         <Text style={styles.buttonText}>{item.title}</Text>
-        {index === 1 && (
+        {(index === 1 || (index === 3 && isLiveIdRegistered)) && (
           <Image source={Images.greenTick} style={styles.tickImageStyle} />
         )}
       </TouchableOpacity>
     ) : null;
   };
   const handleOkPress = async () => {
-    if (Platform.OS === 'ios') {
-      setLicenseKey();
-    }
     AsyncStorage.clear()
       .then(res => {
         setModalVisible(false);
+        if (Platform.OS === 'ios') {
+          try {
+            DemoAppModule.resetSDK();
+          } catch (error) {
+            __DEV__ && console.log('error ', error);
+          }
+        }
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
@@ -116,7 +132,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
         );
       })
       .catch(error => {
-        console.log('Error', error);
+        __DEV__ && console.log('Error', error);
       });
   };
   return (

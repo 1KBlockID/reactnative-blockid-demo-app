@@ -9,25 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="s0d-6b-0kx">
-            <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="123" y="-34"/>
-        </scene>
         <!--LiveID View Controller-->
         <scene sceneID="SkK-QT-Gwc">
             <objects>
-                <viewController storyboardIdentifier="LiveIDViewController" id="u3B-Nz-CXy" customClass="LiveIDViewController" customModule="BlockIDTestApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LiveIDViewController" id="u3B-Nz-CXy" customClass="LiveIDViewController" customModule="demoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pDw-bV-hqm">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -159,11 +144,136 @@
             </objects>
             <point key="canvasLocation" x="1466" y="88"/>
         </scene>
+        <!--Scan View Controller-->
+        <scene sceneID="8M0-Ys-CC0">
+            <objects>
+                <viewController storyboardIdentifier="QRScanViewController" id="NLS-vE-sB8" customClass="QRScanViewController" customModule="demoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tV0-bU-ovm">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2lk-Q0-jmi">
+                                <rect key="frame" x="0.0" y="104" width="393" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="1cQ-xm-1fi">
+                                        <rect key="frame" x="39.333333333333343" y="10" width="314.33333333333326" height="60"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="hRK-QD-5Tt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="                       QR Session 1(Scan Qr, authenticate with scope data)"/>
+                                        <connections>
+                                            <action selector="qrOptionButtonClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="g6k-wZ-lua"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4Zs-hA-R4P">
+                                        <rect key="frame" x="39.333333333333343" y="100" width="314.33333333333326" height="60"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="AAt-1i-ed4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="                      QR Session 2(Scan Qr, authenticate with preset data)"/>
+                                        <connections>
+                                            <action selector="qrOptionButtonClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="Nbe-zd-HUA"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="3Go-2B-jv4"/>
+                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="centerX" secondItem="2lk-Q0-jmi" secondAttribute="centerX" id="Agy-Xd-7TV"/>
+                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="top" secondItem="1cQ-xm-1fi" secondAttribute="bottom" constant="30" id="CZ6-lY-sj2"/>
+                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="width" secondItem="2lk-Q0-jmi" secondAttribute="width" multiplier="0.8" id="OI1-sw-a35"/>
+                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="top" secondItem="2lk-Q0-jmi" secondAttribute="top" constant="10" id="XuW-DP-Idi"/>
+                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="centerX" secondItem="2lk-Q0-jmi" secondAttribute="centerX" id="bUZ-2Z-yf4"/>
+                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="width" secondItem="2lk-Q0-jmi" secondAttribute="width" multiplier="0.8" id="hwk-lx-bM4"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGN-8y-WNk">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Scan QR Code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVY-cF-42L">
+                                        <rect key="frame" x="98.666666666666671" y="60.333333333333329" width="195.66666666666663" height="33.666666666666671"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="28"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gp-t8-oDQ" customClass="BIDScannerView" customModule="BlockID">
+                                        <rect key="frame" x="39.333333333333343" y="114" width="314.33333333333326" height="531"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qrScanner" translatesAutoresizingMaskIntoConstraints="NO" id="gU6-1c-KN7">
+                                        <rect key="frame" x="39.333333333333343" y="114" width="314.33333333333326" height="531"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="centerY" secondItem="YGN-8y-WNk" secondAttribute="centerY" id="6Cn-lj-PPZ"/>
+                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="Q93-aX-inc"/>
+                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="TeQ-L1-GJX"/>
+                                    <constraint firstItem="eVY-cF-42L" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="V3Z-en-gzJ"/>
+                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="top" secondItem="eVY-cF-42L" secondAttribute="bottom" constant="20" id="YMt-2q-b3i"/>
+                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="height" secondItem="0gp-t8-oDQ" secondAttribute="height" id="cXB-5B-eGc"/>
+                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="centerY" secondItem="YGN-8y-WNk" secondAttribute="centerY" id="dXz-fd-woI"/>
+                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="width" secondItem="YGN-8y-WNk" secondAttribute="width" multiplier="0.8" id="o7u-0R-LEf"/>
+                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="width" secondItem="0gp-t8-oDQ" secondAttribute="width" id="qSi-8B-1Dw"/>
+                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="height" secondItem="YGN-8y-WNk" secondAttribute="height" multiplier="0.7" id="rmf-wR-3uc"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xjl-aY-SdY">
+                                <rect key="frame" x="59" y="755" width="275" height="48"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="ymn-fE-yZK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="7PY-DK-A6M"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1ru-8i-JId"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="YGN-8y-WNk" firstAttribute="trailing" secondItem="1ru-8i-JId" secondAttribute="trailing" id="H5g-V6-K8A"/>
+                            <constraint firstItem="1ru-8i-JId" firstAttribute="bottom" secondItem="Xjl-aY-SdY" secondAttribute="bottom" constant="15" id="HUy-4l-jEJ"/>
+                            <constraint firstItem="YGN-8y-WNk" firstAttribute="top" secondItem="1ru-8i-JId" secondAttribute="top" id="MEc-Lg-wOb"/>
+                            <constraint firstItem="YGN-8y-WNk" firstAttribute="bottom" secondItem="1ru-8i-JId" secondAttribute="bottom" id="NCR-W7-dDx"/>
+                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="trailing" secondItem="1ru-8i-JId" secondAttribute="trailing" id="WBO-wf-3XV"/>
+                            <constraint firstItem="Xjl-aY-SdY" firstAttribute="centerX" secondItem="tV0-bU-ovm" secondAttribute="centerX" id="XZB-ts-Q3w"/>
+                            <constraint firstItem="YGN-8y-WNk" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="Zdf-fl-apI"/>
+                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="gVu-f0-hrm"/>
+                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="top" secondItem="1ru-8i-JId" secondAttribute="top" constant="45" id="jgU-qa-AiW"/>
+                            <constraint firstItem="1ru-8i-JId" firstAttribute="trailing" secondItem="YGN-8y-WNk" secondAttribute="trailing" id="kv1-Ed-S8s"/>
+                            <constraint firstItem="YGN-8y-WNk" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="qhe-bH-W1Q"/>
+                            <constraint firstItem="Xjl-aY-SdY" firstAttribute="width" secondItem="YGN-8y-WNk" secondAttribute="width" multiplier="0.7" id="r1t-AB-EVZ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_qrView" destination="YGN-8y-WNk" id="yQa-L2-98l"/>
+                        <outlet property="_viewBtn" destination="2lk-Q0-jmi" id="Jtl-P5-Z7n"/>
+                        <outlet property="_viewQRScan" destination="0gp-t8-oDQ" id="AZf-4U-6g6"/>
+                        <outlet property="btnQr1" destination="1cQ-xm-1fi" id="Z3d-H6-hgD"/>
+                        <outlet property="btnQr2" destination="4Zs-hA-R4P" id="KpF-Ay-UnD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7OO-Z3-Nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3255.072463768116" y="138.61607142857142"/>
+        </scene>
     </scenes>
     <resources>
         <image name="group3Copy" width="452" height="452"/>
         <image name="iconWarning" width="20" height="20"/>
         <image name="qrErrorBg" width="347" height="40"/>
+        <image name="qrScanner" width="346" height="378"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

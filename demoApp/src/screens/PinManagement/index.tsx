@@ -53,7 +53,6 @@ function PinScreen({navigation}: Props): JSX.Element {
     setErrorMessage('');
   };
 
-
   const errorHandler = (error: Fido2Error): void => {
     Alert.alert(`${error?.message} ${error?.code}`, 'Please try again.', [
       {
@@ -126,7 +125,7 @@ function PinScreen({navigation}: Props): JSX.Element {
   //setFIDO2 Pin
   async function setFidoKey() {
     const pinResponse = await setFidoPin(payload);
-    console.log('Pin Response os ', pinResponse);
+    __DEV__ && console.log('Pin Response os ', pinResponse);
     if (pinResponse) {
       Alert.alert('Pin set Successfully');
       handleResetStates();
@@ -141,18 +140,16 @@ function PinScreen({navigation}: Props): JSX.Element {
     }
   }
 
-
   //Reset Pin functionality
   const handleResetPin = async () => {
     Alert.alert('Reset fun');
     const resetResponse = await resetPin(payload);
-    console.log('REset Pin Response', resetResponse);
+    __DEV__ && console.log('REset Pin Response', resetResponse);
     if (resetResponse === 'OK') {
       Alert.alert('Pin Reset Successfully');
       handleResetStates();
     }
   };
-
 
   const buttonText = [
     {id: 1, name: Strings.SetPin},

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Alert,
   FlatList,
+  NativeModules,
   SafeAreaView,
   StatusBar,
   Text,
@@ -13,11 +14,11 @@ import {Colors} from '../../constants/Colors';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
 import {Strings} from '../../constants/Strings';
-import { qrLogin } from '../../connector/QRLogin';
 
 type Props = NativeStackScreenProps<RootParamList, 'QRSessionScreen'>;
 
 function QRSessionScreen({navigation}: Props): JSX.Element {
+  const {DemoAppModule} = NativeModules;
   const ButtonText = [
     {
       id: 1,
@@ -31,7 +32,7 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
 
   const handleQRLogin = (actionType: string) => {
     if (actionType === Strings.ORSession1) {
-      qrLogin()
+      DemoAppModule.ScanQRCode();
     } else {
       Alert.alert('Second  tab');
     }

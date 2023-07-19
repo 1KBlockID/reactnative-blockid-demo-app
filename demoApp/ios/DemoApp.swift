@@ -1,6 +1,6 @@
 //
 //  DemoApp.swift
-//  Demo
+//  demoApp
 //
 //  NDEF should not be present in entitlements according to:
 //  https://www.themobileentity.com/home/how-to-fix-ndef-is-disallowed-error-when-uploading-nfc-enabled-app-to-app-store-connect
@@ -76,6 +76,9 @@ import BlockID
   
   @objc func getSDKVersion() -> String {
     return BlockIDSDK.sharedInstance.getVersion() ?? ""
+  }
+  @objc func getIsLiveIdRegister() -> String {
+    return BlockIDSDK.sharedInstance.isLiveIDRegisterd() ? "Yes" : "NO"
   }
   
   @objc func register_Tenant()  {

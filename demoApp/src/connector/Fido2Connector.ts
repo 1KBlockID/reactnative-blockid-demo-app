@@ -12,7 +12,7 @@ export const setFidoPin = async (
     const setPinResponse = await DemoAppModule.setFidoPin(pin);
     return setPinResponse;
   } catch (error) {
-    console.log('SetFido2Pin action failed:', error);
+    __DEV__ && console.log('SetFido2Pin action failed:', error);
     errorHandler?.(error);
     return null;
   }
@@ -27,13 +27,11 @@ export const resetPin = async (
     const resetPinResponse = await DemoAppModule.resetPin();
     return resetPinResponse;
   } catch (error) {
-    console.log('ResetPin action failed:', error);
+    __DEV__ && console.log('ResetPin action failed:', error);
     errorHandler?.(error);
     return null;
   }
 };
-
-
 
 //BlockId change pin functionality
 export const ChangePin = async (
@@ -45,20 +43,19 @@ export const ChangePin = async (
     return changePinResponse;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('change Pin action failed:', error);
+    __DEV__ && console.log('change Pin action failed:', error);
     errorHandler?.(error);
     return null;
   }
 };
 
-
 export const setLicenseKey = async () => {
   try {
     await DemoAppModule.initRegistrations();
-        // eslint-disable-next-line no-console
-        console.log('initRegistrations Success');
+    // eslint-disable-next-line no-console
+    __DEV__ && console.log('initRegistrations Success');
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log('ERROR IN initRegistrations', e);
+    __DEV__ && console.log('ERROR IN initRegistrations', e);
   }
 };

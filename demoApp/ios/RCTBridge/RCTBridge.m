@@ -22,16 +22,7 @@ RCT_EXPORT_METHOD(initRegistrations:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
-RCT_EXPORT_METHOD(pushVC:(NSString *)vcName){
-  
-  dispatch_async(dispatch_get_main_queue(), ^{
-    LiveIDViewController *picker = [[LiveIDViewController alloc] init];
-    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    [rootViewController presentViewController:picker animated:YES completion:nil];
-    
-  });
-  
-}
+
 RCT_EXPORT_METHOD(getSDKVersion:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -39,6 +30,15 @@ RCT_EXPORT_METHOD(getSDKVersion:(RCTPromiseResolveBlock)resolveFunction
                                              rejectFunction:rejectFunction];
     NSString* BlockIdVersion = [sdk getSDKVersion];
     resolveFunction(BlockIdVersion);
+  });
+}
+RCT_EXPORT_METHOD(getIsLiveIdRegister:(RCTPromiseResolveBlock)resolveFunction
+                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                             rejectFunction:rejectFunction];
+    NSString* isLiveIdRegister = [sdk getIsLiveIdRegister];
+    resolveFunction(isLiveIdRegister);
   });
 }
 
@@ -145,11 +145,23 @@ RCT_EXPORT_METHOD(resetSDK:(RCTPromiseResolveBlock)resolveFunction
 RCT_EXPORT_METHOD(StartLiveScan:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
-    LiveIDViewController *picker = [[LiveIDViewController alloc] init];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"main" bundle:nil];
+    QRScanViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"LiveIDViewController"];
+    
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    [rootViewController presentViewController:picker animated:YES completion:nil];
+    [rootViewController presentViewController:myViewController animated:NO completion:nil];
   });
-  
+}
+RCT_EXPORT_METHOD(ScanQRCode:(RCTPromiseResolveBlock)resolveFunction
+                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"main" bundle:nil];
+    QRScanViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"QRScanViewController"];
+    
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    [rootViewController presentViewController:myViewController animated:NO completion:nil];
+  });
 }
 
 RCT_EXPORT_METHOD(register:(NSString *)name

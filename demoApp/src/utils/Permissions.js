@@ -6,12 +6,12 @@ const REQUIRED_PERMISSIONS =
 
 export const checkAndRequestPermissions = async () => {
   const statuses = await check(REQUIRED_PERMISSIONS);
-  console.log('REQUIRED_PERMISSIONS', statuses);
+  __DEV__ && console.log('REQUIRED_PERMISSIONS', statuses);
   if (statuses === RESULTS.GRANTED) {
     return true;
   } else {
     request(REQUIRED_PERMISSIONS).then(results => {
-      console.log('results', results);
+      __DEV__ && console.log('results', results);
       if (results === RESULTS.GRANTED) {
         return true;
       } else {

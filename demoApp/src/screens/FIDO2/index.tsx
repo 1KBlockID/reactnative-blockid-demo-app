@@ -77,7 +77,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const registerUserKey = () => {
     DemoAppModule.registerUserKey(userName)
       .then((res: string) => {
-        console.log('registerUserKey', res);
+        __DEV__ && console.log('registerUserKey', res);
         setLoader(false);
         if (res === 'OK') {
           storeData(userName, 'userName');
@@ -109,7 +109,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     if (Platform.OS === 'ios' && pin !== '') {
       DemoAppModule.registerCardKeyWithPin(userName, pin)
         .then((res: string) => {
-          console.log('res', res);
+          __DEV__ && console.log('res', res);
           if (res === 'OK') {
             storeData(userName, 'userName');
             SuccessAlert('Register Successfully');
@@ -124,7 +124,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     } else {
       DemoAppModule.registerCardKey(userName)
         .then((res: string) => {
-          console.log('res', res);
+          __DEV__ && console.log('res', res);
           if (res === 'OK') {
             storeData(userName, 'userName');
             SuccessAlert('Register Successfully');
@@ -133,7 +133,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
         })
         .catch((error: unknown) => {
           setLoader(false);
-          console.log('error', error);
+          __DEV__ && console.log('error', error);
           Alert.alert(JSON.stringify(error));
         });
     }
@@ -144,7 +144,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     if (Platform.OS === 'ios' && pin !== '') {
       DemoAppModule.authenticateCardKeyWithPin(userName, pin)
         .then((res: string) => {
-          console.log('res', res);
+          __DEV__ && console.log('res', res);
           if (res === 'OK') SuccessAlert('Authenticate Successfully');
           setLoader(false);
           setPin('');
@@ -156,7 +156,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     } else {
       DemoAppModule.authenticateCardKey(userName)
         .then((res: string) => {
-          console.log('res', res);
+          __DEV__ && console.log('res', res);
           if (res === 'OK') SuccessAlert('Authenticate Successfully');
           setLoader(false);
         })
@@ -269,7 +269,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
 
   useEffect(() => {
     getData('userName').then(async res => {
-      console.log('user response from local storage', res);
+      __DEV__ && console.log('user response from local storage', res);
       if (res) {
         setUserName(JSON.parse(res));
       }

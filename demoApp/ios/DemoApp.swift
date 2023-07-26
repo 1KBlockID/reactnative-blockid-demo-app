@@ -31,11 +31,7 @@ import BlockID
   }
   
   
-  
-  
-  
   @objc func  resetSDK() {
-    print("resetAppNSDK(\(BlockIDSDK.sharedInstance.isReady()))")
     UserDefaults.removeAllValues();
     BlockIDSDK.sharedInstance.resetSDK(licenseKey: Tenant.licenseKey)
   }
@@ -136,21 +132,16 @@ import BlockID
     changeFidoPin(oldPin, newPin: newPin)
   }
   
-  @objc func  autheticate_user(_ userId: String, session :String, creds:String, scope:String, sessionUrl:String, tag:String,name:String){
-    print("userId",userId);
-    print("session",session);
-    print("creds",creds);
-    print("scope",scope);
-    print("sessionUrl",sessionUrl);
-    var bidOrigin = BIDOrigin()
+  @objc func  autheticate_user(_ userId: String, session :String, creds:String, scope:String, sessionUrl:String,tag:String,name:String,pubicKey:String){
+    let bidOrigin = BIDOrigin()
     bidOrigin.tag=tag
     bidOrigin.name=name
+    bidOrigin.publicKey=pubicKey
     var dataModel: AuthRequestModel
-    dataModel = AuthRequestModel(lat: self.location.0, lon: self.location.1, session: session, creds: creds , scopes: scope , origin:bidOrigin, isConsentGiven: true, userId: userId , sessionUrl: sessionUrl)
+    dataModel = AuthRequestModel(lat: self.location.0, lon: self.location.1, session: session, creds: creds , scopes: scope , origin:bidOrigin, isConsentGiven: true, userId: nil , sessionUrl: sessionUrl)
     authenticateUserWithScopes(dataModel: dataModel)
   }
   @objc func enrollBiometricAssets(){
-    print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
     if(BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()){
       enrollBiometric()
     }else{
@@ -181,58 +172,38 @@ extension DemoApp {
   }
   
   private func authenticateUserWithScopes(dataModel: AuthRequestModel) {
-    print("authenticateUserWithScopes user \(dataModel)")
     BlockIDSDK.sharedInstance.authenticateUser(sessionId: dataModel.session, sessionURL: dataModel.sessionUrl, creds: dataModel.creds, scopes: dataModel.scopes, lat: dataModel.lat, lon: dataModel.lon, origin: dataModel.origin, userId: dataModel.userId) { [self](status, sessionid, error) in
       //          self?.view.hideToastActivity()
       
       if status {
-        print("authenticateUserWithScopes user \(dataModel)")
         resolveFunction(status)
-        //if success
-        //              self?.view.makeToast("You have successfully authenticated to Log In", duration: 3.0, position: .center, title: "Success", completion: {_ in
-        //                  self?.goBack()
-        //                  self?.delegate?.onAuthenticate(status: true)
-        //                  return
-        //              })
         
       } else {
-        print("if status is false",error?.message);
-        resolveFunction(error?.message)
-        //              if error?.code == NSURLErrorNotConnectedToInternet ||
-        //                  error?.code == CustomErrors.Network.OFFLINE.code {
-        //                  let localizedMessage = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
-        //                  self?.view.makeToast(localizedMessage,
-        //                                       duration: 3.0,
-        //                                       position: .center,
-        //                                       title: ErrorConfig.noInternet.title, completion: {_ in })
-        //              } else if (error)?.code == CustomErrors.kUnauthorizedAccess.code {
-        //                  self?.view.makeToast(error!.message, duration: 3.0, position: .center, title: "", completion: {_ in
-        //                      self?.goBack()
-        //                      self?.delegate?.unauthorisedUser()
-        //                  })
-        //              } else {
-        //                  self?.view.makeToast(error!.message, duration: 3.0, position: .center, title: "", completion: {_ in
-        //                      self?.goBack()
-        //                      self?.delegate?.onAuthenticate(status: false)
-        //                  })
-        //              }
+        
+        if error?.code == NSURLErrorNotConnectedToInternet ||
+            error?.code == CustomErrors.Network.OFFLINE.code {
+          let localizedMessage = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
+          resolveFunction(ErrorConfig.noInternet.title)
+        } else if (error)?.code == CustomErrors.kUnauthorizedAccess.code {
+          
+          resolveFunction(error!.message)
+        } else {
+          resolveFunction(error!.message)
+        }
       }
     }
   }
   
-
+  
   
   private func registerTenant() {
-    print("registerTenant(\(BlockIDSDK.sharedInstance.isReady()))")
     BlockIDSDK.sharedInstance.registerTenant(tenant: Tenant.defaultTenant) {
       status, error, tenant in
-      print("registerTenant(\(status))")
       if(status){
         BlockIDSDK.sharedInstance.commitApplicationWallet()
         self.resolveFunction(DemoApp.resolvedMsg)
       }
       else{
-        print("error(\(error))")
         self.handleRejection(error: error);
         
       }
@@ -246,7 +217,6 @@ extension DemoApp {
   }
   
   private func ensureSDKUnlocked() {
-    print("ensureSDKUnlocked\(BIDAuthProvider.shared.isSDKUnLocked())");
     guard !BIDAuthProvider.shared.isSDKUnLocked() else {return }
     BIDAuthProvider.shared.unLockSDK()
   }
@@ -254,7 +224,6 @@ extension DemoApp {
   private func enrollBiometric() {
     BIDAuthProvider.shared.enrollDeviceAuth { isRegister, data, data1 in
       if(isRegister){
-        print("isRegister\(isRegister)")
         self.resolveFunction(DemoApp.resolvedMsg)
       }
     }
@@ -270,14 +239,12 @@ extension DemoApp {
   private func verifyBiometric(){
     BIDAuthProvider.shared.verifyDeviceAuth { success, error, error1 in
       if(success){
-        print("verifyBiometric\(success)")
         self.resolveFunction(DemoApp.resolvedMsg)
       }
     }
   }
   
   private func registerKey(_ name: String, type: FIDO2KeyType,pin:String) {
-    print("registerKey key with name and pin(\(pin))")
     guard
       let root = RCTPresentedViewController(),
       let dns = Tenant.clientTenant.dns,
@@ -288,7 +255,6 @@ extension DemoApp {
     
     ensureSDKUnlocked()
     if(pin == ""){
-      print("In if condition(\(pin))")
       BlockIDSDK.sharedInstance.registerFIDO2Key(controller: root,
                                                  userName: name,
                                                  tenantDNS: dns,
@@ -392,10 +358,8 @@ extension DemoApp {
                                                      creds: creds,
                                                      origin: origin,
                                                      userId: userId) { scopesAttributesDict, error in
-      print("getScopesAttributesDic response  \(scopesAttributesDict)")
       if let scopeDictionary = scopesAttributesDict {
         if let  errorUW = error, errorUW.code == CustomErrors.kUnauthorizedAccess.code {
-          //                  self.showAppLogin()
           completion(nil)
         } else {
           completion(scopeDictionary)

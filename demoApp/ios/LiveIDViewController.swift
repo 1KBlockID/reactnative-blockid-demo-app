@@ -121,9 +121,8 @@ class LiveIDViewController: UIViewController {
       if !response {
         //2. Show Alert
         DispatchQueue.main.async {
-          //                    self.alertForCameraAccess()
-        }
-      }
+          self.dismiss(animated: true, completion: nil);
+        }      }
       else {
         DispatchQueue.main.async {
           //3. Initialize LiveIDScannerHelper
@@ -144,7 +143,6 @@ class LiveIDViewController: UIViewController {
   }
   
   @IBAction func cancelTapped(_ sender: Any) {
-    debugPrint("cancelTapped")
     let alert = UIAlertController(title: "Cancellation warning!", message: "Do you want to cancel the registration process?", preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
     alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {_ in
@@ -191,8 +189,8 @@ class LiveIDViewController: UIViewController {
     var msg: String? = nil
     if error?.code == NSURLErrorNotConnectedToInternet ||
         error?.code == CustomErrors.Network.OFFLINE.code {
-      //            msg = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
-      //            title = ErrorConfig.noInternet.title
+                  msg = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
+                  title = ErrorConfig.noInternet.title
     }
     else if (error != nil && error?.code == CustomErrors.kUnauthorizedAccess.code) {
       //            self.showAppLogin()
@@ -200,9 +198,9 @@ class LiveIDViewController: UIViewController {
     else {
       msg = error!.message
     }
-    //        self.view.makeToast(msg, duration: 3.0, position: .center, title: title, completion: {_ in
-    //            self.goBack()
-    //        })
+            self.view.makeToast(msg, duration: 3.0, position: .center, title: title, completion: {_ in
+                self.goBack()
+            })
   }
   
   private func stopLiveIDScanning() {

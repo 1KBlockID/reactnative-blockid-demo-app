@@ -33,6 +33,7 @@ function AuthenticateScreen({navigation}: Props): JSX.Element {
       sessionData?.sessionUrl,
       sessionData?.tag ?? '',
       sessionData?.name ?? '',
+      sessionData?.publicKey ?? '',
     )
       .then((response: any) => {
         __DEV__ && console.log('response 1', response);

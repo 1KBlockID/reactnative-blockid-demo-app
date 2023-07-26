@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  SafeAreaView,
-  NativeModules,
-  Alert,
-} from 'react-native';
+import {Text, TouchableOpacity, View, NativeModules, Alert} from 'react-native';
 import {styles} from './style';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
 import {CustomStatusBar} from '../../components/StatusBar/CustomStatusBar';
+
 import {Loader} from '../../components/loader';
 import ScopeData, {
   scopeDataResponseType,
@@ -24,9 +18,12 @@ function AuthenticateScreen({navigation}: Props): JSX.Element {
   const scopeData: scopeDataResponseType = ScopeData.getScopeData();
   const sessionData: sessionDataResponseType = ScopeData.getSessionData();
 
+  const navigateToHomeScreen = () => {
+    navigation.navigate('MenuScreen');
+  };
+
   const onAuthenticate = () => {
     setIsLoading(true);
-    // let data = ScopeData.getSessionData();
     console.log('data ', sessionData);
     DemoAppModule.authenticateUser(
       scopeData?.userId ?? '',
@@ -40,14 +37,13 @@ function AuthenticateScreen({navigation}: Props): JSX.Element {
       .then((response: any) => {
         __DEV__ && console.log('response 1', response);
         if (response === true) {
-          // status is true here
           Alert.alert('You have successfully authenticated to Log In');
-          navigation.navigate('MenuScreen');
+          navigateToHomeScreen();
         } else {
           Alert.alert(response);
           __DEV__ && console.log('response', response);
+          navigateToHomeScreen();
           setIsLoading(false);
-          navigation.navigate('MenuScreen');
         }
       })
       .catch((error: any) => {

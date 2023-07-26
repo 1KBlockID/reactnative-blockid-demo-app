@@ -225,7 +225,7 @@ RCT_EXPORT_METHOD(getScopeData:(NSString *)scope  creds:(NSString *)creds userId
   });
 }
 
-RCT_EXPORT_METHOD(authenticateUser:(NSString *)userId session:(NSString *)session creds:(NSString *)creds scope:(NSString *)scope sessionUrl:(NSString *)sessionUrl tag:(NSDictionary *)tag name:(NSDictionary *)name
+RCT_EXPORT_METHOD(authenticateUser:(NSString *)userId session:(NSString *)session creds:(NSString *)creds scope:(NSString *)scope sessionUrl:(NSString *)sessionUrl tag:(NSString *)tag name:(NSString *)name
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{

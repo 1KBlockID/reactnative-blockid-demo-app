@@ -72,13 +72,14 @@ function MenuScreen({navigation}: Props): JSX.Element {
       setModalVisible(!modalVisible);
     }
     if (index === 3) {
-      let isPermissionsGranted = await checkAndRequestPermissions();
-      if (isPermissionsGranted) {
-        DemoAppModule.StartLiveScan();
-      } else {
-        __DEV__ && console.log('ON else part');
-        Linking.openSettings();
-      }
+      await checkAndRequestPermissions()
+        .then(isGranted => {
+          DemoAppModule.StartLiveScan();
+        })
+        .catch(error => {
+          Alert.alert(Strings.CameraAccessAlertMessage);
+          Linking.openSettings();
+        });
     }
     if (index === 4) {
       navigation.navigate('Fido2Screen');
@@ -91,7 +92,6 @@ function MenuScreen({navigation}: Props): JSX.Element {
     DemoAppModule.getIsLiveIdRegister()
       .then((res: any) => {
         if (res === 'Yes') {
-          __DEV__ && console.log('Response', res);
           setIsLiveIdRegistered(true);
         }
       })

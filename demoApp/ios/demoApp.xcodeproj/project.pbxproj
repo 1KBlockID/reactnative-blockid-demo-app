@@ -17,6 +17,11 @@
 		551037642A305E77008156C8 /* RCTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 551037622A305E77008156C8 /* RCTBridge.m */; };
 		551BE0DA2A303B09002DA645 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0D92A303B09002DA645 /* Starscream */; };
 		551BE0DD2A303C2A002DA645 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 551BE0DC2A303C2A002DA645 /* WalletConnect */; };
+		5526B6872A6A509A0038C82D /* RNEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5526B6862A6A509A0038C82D /* RNEventEmitter.m */; };
+		5526B6892A6A50D10038C82D /* RNEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526B6882A6A50D10038C82D /* RNEventEmitter.swift */; };
+		5526D2C82A67C4A000960A40 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526D2C72A67C4A000960A40 /* ViewControllerExtension.swift */; };
+		5526D2CC2A67DD8900960A40 /* ErrorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526D2CB2A67DD8900960A40 /* ErrorConfig.swift */; };
+		5526D2CE2A67DE0600960A40 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526D2CD2A67DE0600960A40 /* StringExtension.swift */; };
 		552D96492A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D96482A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift */; };
 		552D964C2A64FD1300C6A8E9 /* GetSessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D964B2A64FD1300C6A8E9 /* GetSessionData.swift */; };
 		552D964E2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D964D2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift */; };
@@ -60,6 +65,11 @@
 		5510375D2A305E4B008156C8 /* CardReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardReader.swift; path = modules/CardReader.swift; sourceTree = "<group>"; };
 		551037622A305E77008156C8 /* RCTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTBridge.m; path = RCTBridge/RCTBridge.m; sourceTree = "<group>"; };
 		551037632A305E77008156C8 /* RCTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTBridge.h; path = RCTBridge/RCTBridge.h; sourceTree = "<group>"; };
+		5526B6862A6A509A0038C82D /* RNEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNEventEmitter.m; sourceTree = "<group>"; };
+		5526B6882A6A50D10038C82D /* RNEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNEventEmitter.swift; sourceTree = "<group>"; };
+		5526D2C72A67C4A000960A40 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		5526D2CB2A67DD8900960A40 /* ErrorConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorConfig.swift; sourceTree = "<group>"; };
+		5526D2CD2A67DE0600960A40 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		552D96482A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationPayloadV1.swift; sourceTree = "<group>"; };
 		552D964B2A64FD1300C6A8E9 /* GetSessionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSessionData.swift; sourceTree = "<group>"; };
 		552D964D2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationPayloadV2.swift; sourceTree = "<group>"; };
@@ -68,7 +78,6 @@
 		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
-		556BE3CF2A3C5EFD00AD6E74 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		55A2DD182A30667E00632A7F /* demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = demo.swift; sourceTree = "<group>"; };
 		55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "demoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		55B1AE482A303FAF0073FDC9 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -127,6 +136,7 @@
 		13B07FAE1A68108700A75B9A /* demoApp */ = {
 			isa = PBXGroup;
 			children = (
+				5526D2CF2A67E25600960A40 /* View */,
 				552D964A2A64FD0700C6A8E9 /* APIs */,
 				552D96472A64FC0E00C6A8E9 /* Model */,
 				55F2AC6B2A60185700AC4062 /* Controller */,
@@ -148,6 +158,7 @@
 				55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */,
 				55A2DD182A30667E00632A7F /* demo.swift */,
 				5565927B2A55976C00F01E57 /* main.storyboard */,
+				5526B6882A6A50D10038C82D /* RNEventEmitter.swift */,
 			);
 			name = demoApp;
 			sourceTree = "<group>";
@@ -176,8 +187,25 @@
 			children = (
 				551037632A305E77008156C8 /* RCTBridge.h */,
 				551037622A305E77008156C8 /* RCTBridge.m */,
+				5526B6862A6A509A0038C82D /* RNEventEmitter.m */,
 			);
 			name = RCTBridge;
+			sourceTree = "<group>";
+		};
+		5526D2C62A67C48D00960A40 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5526D2C72A67C4A000960A40 /* ViewControllerExtension.swift */,
+				5526D2CD2A67DE0600960A40 /* StringExtension.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
+		5526D2CF2A67E25600960A40 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		552D96472A64FC0E00C6A8E9 /* Model */ = {
@@ -208,6 +236,7 @@
 		556BE3C92A3C5C8B00AD6E74 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				5526D2CB2A67DD8900960A40 /* ErrorConfig.swift */,
 				556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */,
 			);
 			name = utils;
@@ -216,8 +245,8 @@
 		556BE3CC2A3C5ECF00AD6E74 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				5526D2C62A67C48D00960A40 /* Extension */,
 				552D964F2A64FFCC00C6A8E9 /* Utils */,
-				556BE3CF2A3C5EFD00AD6E74 /* ViewControllerExtension.swift */,
 				556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */,
 			);
 			name = SupportingFiles;
@@ -549,10 +578,14 @@
 			files = (
 				55BC123F2A56782F004E848B /* LiveIDViewController.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				5526D2C82A67C4A000960A40 /* ViewControllerExtension.swift in Sources */,
 				55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				5526B6872A6A509A0038C82D /* RNEventEmitter.m in Sources */,
 				556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */,
 				552D96492A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift in Sources */,
+				5526D2CE2A67DE0600960A40 /* StringExtension.swift in Sources */,
+				5526D2CC2A67DD8900960A40 /* ErrorConfig.swift in Sources */,
 				5510375F2A305E4B008156C8 /* CardReader.swift in Sources */,
 				551037562A3058FE008156C8 /* CardReaderBridge.m in Sources */,
 				551037642A305E77008156C8 /* RCTBridge.m in Sources */,
@@ -560,6 +593,7 @@
 				55B1AE542A3040140073FDC9 /* test.swift in Sources */,
 				55A2DD192A30667E00632A7F /* demo.swift in Sources */,
 				55E62B262A6663FD005E2025 /* QRScanViewController.swift in Sources */,
+				5526B6892A6A50D10038C82D /* RNEventEmitter.swift in Sources */,
 				556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */,
 				552D964C2A64FD1300C6A8E9 /* GetSessionData.swift in Sources */,
 				55B1AE552A3040140073FDC9 /* NetworkController.m in Sources */,

@@ -8,13 +8,14 @@ import HomeScreen from './src/screens/Home';
 import {RootParamList} from './src/RootStackParams';
 import AboutScreen from './src/screens/About';
 import MenuScreen from './src/screens/Menulist';
-import {LogBox, NativeModules, Platform} from 'react-native';
+import {LogBox, NativeModules, Platform, NativeModule} from 'react-native';
 import LoginScreen from './src/screens/login';
 import QRSessionScreen from './src/screens/QRSession';
 import {getData} from './src/databaseService/localStorage';
 import Fido2Screen from './src/screens/FIDO2';
 import PinScreen from './src/screens/PinManagement';
-import { setLicenseKey } from './src/connector/Fido2Connector';
+import {setLicenseKey} from './src/connector/Fido2Connector';
+import AuthenticateScreen from './src/screens/Authenticate';
 
 LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createNativeStackNavigator<RootParamList>();
@@ -22,8 +23,6 @@ export const RootNavigation = createNavigationContainerRef<RootParamList>();
 
 export default function App() {
   const {DemoAppModule} = NativeModules;
-
-;
 
   async function prepare() {
     getData('isRegister').then(async res => {
@@ -36,7 +35,7 @@ export default function App() {
   }
   React.useEffect(() => {
     prepare();
-  },[]);
+  }, []);
 
   return (
     <NavigationContainer ref={RootNavigation}>
@@ -51,6 +50,10 @@ export default function App() {
         <Stack.Screen name="QRSessionScreen" component={QRSessionScreen} />
         <Stack.Screen name="Fido2Screen" component={Fido2Screen} />
         <Stack.Screen name="PinScreen" component={PinScreen} />
+        <Stack.Screen
+          name="AuthenticateScreen"
+          component={AuthenticateScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

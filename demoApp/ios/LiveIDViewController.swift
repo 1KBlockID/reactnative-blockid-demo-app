@@ -146,7 +146,6 @@ class LiveIDViewController: UIViewController {
   @IBAction func cancelTapped(_ sender: Any) {
     debugPrint("cancelTapped")
     let alert = UIAlertController(title: "Cancellation warning!", message: "Do you want to cancel the registration process?", preferredStyle: .alert)
-    
     alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
     alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {_ in
       self.stopLiveIDScanning()

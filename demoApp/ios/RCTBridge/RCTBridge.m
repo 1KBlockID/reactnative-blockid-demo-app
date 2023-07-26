@@ -135,7 +135,6 @@ RCT_EXPORT_METHOD(getSDKInfo:(RCTPromiseResolveBlock)resolveFunction
 RCT_EXPORT_METHOD(resetSDK:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
-    
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
     [sdk resetSDK];
@@ -215,8 +214,26 @@ RCT_EXPORT_METHOD(resetPin:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
+RCT_EXPORT_METHOD(getScopeData:(NSString *)scope  creds:(NSString *)creds userId:(NSString *)userId
+                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                             rejectFunction:rejectFunction];
+    [sdk getScopeData:scope creds:creds userId: userId];
+  
+  });
+}
 
-
+RCT_EXPORT_METHOD(authenticateUser:(NSString *)userId session:(NSString *)session creds:(NSString *)creds scope:(NSString *)scope sessionUrl:(NSString *)sessionUrl tag:(NSDictionary *)tag name:(NSDictionary *)name
+                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                             rejectFunction:rejectFunction];
+    [sdk autheticate_user:userId session:session creds:creds scope:scope sessionUrl:sessionUrl tag:tag name:name];
+  });
+}
 @end
 
 

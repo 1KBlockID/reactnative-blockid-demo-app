@@ -145,126 +145,126 @@
             <point key="canvasLocation" x="1466" y="88"/>
         </scene>
         <!--Scan View Controller-->
-        <scene sceneID="8M0-Ys-CC0">
+        <scene sceneID="6zu-sS-sZV">
             <objects>
-                <viewController storyboardIdentifier="QRScanViewController" id="NLS-vE-sB8" customClass="QRScanViewController" customModule="demoApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tV0-bU-ovm">
+                <viewController storyboardIdentifier="QRScanViewController" id="ClU-gm-L1C" customClass="QRScanViewController" customModule="demoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FpH-Lj-N4Y">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2lk-Q0-jmi">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zej-bo-Gks">
                                 <rect key="frame" x="0.0" y="104" width="393" height="200"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="1cQ-xm-1fi">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pyG-oh-IWx">
                                         <rect key="frame" x="39.333333333333343" y="10" width="314.33333333333326" height="60"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="hRK-QD-5Tt"/>
+                                            <constraint firstAttribute="height" constant="60" id="pPg-fa-QDX"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="                       QR Session 1(Scan Qr, authenticate with scope data)"/>
                                         <connections>
-                                            <action selector="qrOptionButtonClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="g6k-wZ-lua"/>
+                                            <action selector="qrOptionButtonClicked:" destination="ClU-gm-L1C" eventType="touchUpInside" id="7FQ-7b-rba"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4Zs-hA-R4P">
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mfz-GA-2Pc">
                                         <rect key="frame" x="39.333333333333343" y="100" width="314.33333333333326" height="60"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="AAt-1i-ed4"/>
+                                            <constraint firstAttribute="height" constant="60" id="Ida-YO-uwu"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="                      QR Session 2(Scan Qr, authenticate with preset data)"/>
                                         <connections>
-                                            <action selector="qrOptionButtonClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="Nbe-zd-HUA"/>
+                                            <action selector="qrOptionButtonClicked:" destination="ClU-gm-L1C" eventType="touchUpInside" id="dar-WZ-jY0"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="3Go-2B-jv4"/>
-                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="centerX" secondItem="2lk-Q0-jmi" secondAttribute="centerX" id="Agy-Xd-7TV"/>
-                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="top" secondItem="1cQ-xm-1fi" secondAttribute="bottom" constant="30" id="CZ6-lY-sj2"/>
-                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="width" secondItem="2lk-Q0-jmi" secondAttribute="width" multiplier="0.8" id="OI1-sw-a35"/>
-                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="top" secondItem="2lk-Q0-jmi" secondAttribute="top" constant="10" id="XuW-DP-Idi"/>
-                                    <constraint firstItem="1cQ-xm-1fi" firstAttribute="centerX" secondItem="2lk-Q0-jmi" secondAttribute="centerX" id="bUZ-2Z-yf4"/>
-                                    <constraint firstItem="4Zs-hA-R4P" firstAttribute="width" secondItem="2lk-Q0-jmi" secondAttribute="width" multiplier="0.8" id="hwk-lx-bM4"/>
+                                    <constraint firstItem="pyG-oh-IWx" firstAttribute="centerX" secondItem="zej-bo-Gks" secondAttribute="centerX" id="35u-gn-NUC"/>
+                                    <constraint firstItem="mfz-GA-2Pc" firstAttribute="width" secondItem="zej-bo-Gks" secondAttribute="width" multiplier="0.8" id="6U4-k9-dqG"/>
+                                    <constraint firstItem="mfz-GA-2Pc" firstAttribute="centerX" secondItem="zej-bo-Gks" secondAttribute="centerX" id="NbT-j8-8H5"/>
+                                    <constraint firstAttribute="height" constant="200" id="bXj-hZ-qeF"/>
+                                    <constraint firstItem="pyG-oh-IWx" firstAttribute="top" secondItem="zej-bo-Gks" secondAttribute="top" constant="10" id="iSG-Hc-RNI"/>
+                                    <constraint firstItem="mfz-GA-2Pc" firstAttribute="top" secondItem="pyG-oh-IWx" secondAttribute="bottom" constant="30" id="kX7-hc-Ydf"/>
+                                    <constraint firstItem="pyG-oh-IWx" firstAttribute="width" secondItem="zej-bo-Gks" secondAttribute="width" multiplier="0.8" id="mKc-7O-szC"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGN-8y-WNk">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yf4-dq-JjC">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Scan QR Code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVY-cF-42L">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Scan QR Code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogc-g6-OTE">
                                         <rect key="frame" x="98.666666666666671" y="60.333333333333329" width="195.66666666666663" height="33.666666666666671"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="28"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gp-t8-oDQ" customClass="BIDScannerView" customModule="BlockID">
+                                    <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0hS-1S-6yz" customClass="BIDScannerView" customModule="BlockID">
                                         <rect key="frame" x="39.333333333333343" y="114" width="314.33333333333326" height="531"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qrScanner" translatesAutoresizingMaskIntoConstraints="NO" id="gU6-1c-KN7">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qrScanner" translatesAutoresizingMaskIntoConstraints="NO" id="wS2-EJ-K9A">
                                         <rect key="frame" x="39.333333333333343" y="114" width="314.33333333333326" height="531"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="centerY" secondItem="YGN-8y-WNk" secondAttribute="centerY" id="6Cn-lj-PPZ"/>
-                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="Q93-aX-inc"/>
-                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="TeQ-L1-GJX"/>
-                                    <constraint firstItem="eVY-cF-42L" firstAttribute="centerX" secondItem="YGN-8y-WNk" secondAttribute="centerX" id="V3Z-en-gzJ"/>
-                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="top" secondItem="eVY-cF-42L" secondAttribute="bottom" constant="20" id="YMt-2q-b3i"/>
-                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="height" secondItem="0gp-t8-oDQ" secondAttribute="height" id="cXB-5B-eGc"/>
-                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="centerY" secondItem="YGN-8y-WNk" secondAttribute="centerY" id="dXz-fd-woI"/>
-                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="width" secondItem="YGN-8y-WNk" secondAttribute="width" multiplier="0.8" id="o7u-0R-LEf"/>
-                                    <constraint firstItem="gU6-1c-KN7" firstAttribute="width" secondItem="0gp-t8-oDQ" secondAttribute="width" id="qSi-8B-1Dw"/>
-                                    <constraint firstItem="0gp-t8-oDQ" firstAttribute="height" secondItem="YGN-8y-WNk" secondAttribute="height" multiplier="0.7" id="rmf-wR-3uc"/>
+                                    <constraint firstItem="0hS-1S-6yz" firstAttribute="width" secondItem="yf4-dq-JjC" secondAttribute="width" multiplier="0.8" id="89r-lY-2B0"/>
+                                    <constraint firstItem="wS2-EJ-K9A" firstAttribute="width" secondItem="0hS-1S-6yz" secondAttribute="width" id="9xQ-Zg-9gE"/>
+                                    <constraint firstItem="0hS-1S-6yz" firstAttribute="centerY" secondItem="yf4-dq-JjC" secondAttribute="centerY" id="CVF-iL-Dpu"/>
+                                    <constraint firstItem="wS2-EJ-K9A" firstAttribute="centerX" secondItem="yf4-dq-JjC" secondAttribute="centerX" id="JlJ-N2-gZ5"/>
+                                    <constraint firstItem="0hS-1S-6yz" firstAttribute="top" secondItem="ogc-g6-OTE" secondAttribute="bottom" constant="20" id="Pec-p8-RYz"/>
+                                    <constraint firstItem="ogc-g6-OTE" firstAttribute="centerX" secondItem="yf4-dq-JjC" secondAttribute="centerX" id="RCU-CZ-yqH"/>
+                                    <constraint firstItem="0hS-1S-6yz" firstAttribute="height" secondItem="yf4-dq-JjC" secondAttribute="height" multiplier="0.7" id="deK-42-rIN"/>
+                                    <constraint firstItem="wS2-EJ-K9A" firstAttribute="height" secondItem="0hS-1S-6yz" secondAttribute="height" id="lcw-F8-zbR"/>
+                                    <constraint firstItem="wS2-EJ-K9A" firstAttribute="centerY" secondItem="yf4-dq-JjC" secondAttribute="centerY" id="qCd-A4-VsX"/>
+                                    <constraint firstItem="0hS-1S-6yz" firstAttribute="centerX" secondItem="yf4-dq-JjC" secondAttribute="centerX" id="vNH-S3-JwS"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xjl-aY-SdY">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jLV-72-tbI">
                                 <rect key="frame" x="59" y="755" width="275" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="ymn-fE-yZK"/>
+                                    <constraint firstAttribute="height" constant="48" id="GRG-GC-0Jf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                 <state key="normal" title="Cancel">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="cancelClicked:" destination="NLS-vE-sB8" eventType="touchUpInside" id="7PY-DK-A6M"/>
+                                    <action selector="cancelClicked:" destination="ClU-gm-L1C" eventType="touchUpInside" id="zN7-1L-2u2"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="1ru-8i-JId"/>
+                        <viewLayoutGuide key="safeArea" id="d3V-sK-frC"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="YGN-8y-WNk" firstAttribute="trailing" secondItem="1ru-8i-JId" secondAttribute="trailing" id="H5g-V6-K8A"/>
-                            <constraint firstItem="1ru-8i-JId" firstAttribute="bottom" secondItem="Xjl-aY-SdY" secondAttribute="bottom" constant="15" id="HUy-4l-jEJ"/>
-                            <constraint firstItem="YGN-8y-WNk" firstAttribute="top" secondItem="1ru-8i-JId" secondAttribute="top" id="MEc-Lg-wOb"/>
-                            <constraint firstItem="YGN-8y-WNk" firstAttribute="bottom" secondItem="1ru-8i-JId" secondAttribute="bottom" id="NCR-W7-dDx"/>
-                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="trailing" secondItem="1ru-8i-JId" secondAttribute="trailing" id="WBO-wf-3XV"/>
-                            <constraint firstItem="Xjl-aY-SdY" firstAttribute="centerX" secondItem="tV0-bU-ovm" secondAttribute="centerX" id="XZB-ts-Q3w"/>
-                            <constraint firstItem="YGN-8y-WNk" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="Zdf-fl-apI"/>
-                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="gVu-f0-hrm"/>
-                            <constraint firstItem="2lk-Q0-jmi" firstAttribute="top" secondItem="1ru-8i-JId" secondAttribute="top" constant="45" id="jgU-qa-AiW"/>
-                            <constraint firstItem="1ru-8i-JId" firstAttribute="trailing" secondItem="YGN-8y-WNk" secondAttribute="trailing" id="kv1-Ed-S8s"/>
-                            <constraint firstItem="YGN-8y-WNk" firstAttribute="leading" secondItem="1ru-8i-JId" secondAttribute="leading" id="qhe-bH-W1Q"/>
-                            <constraint firstItem="Xjl-aY-SdY" firstAttribute="width" secondItem="YGN-8y-WNk" secondAttribute="width" multiplier="0.7" id="r1t-AB-EVZ"/>
+                            <constraint firstItem="yf4-dq-JjC" firstAttribute="leading" secondItem="d3V-sK-frC" secondAttribute="leading" id="1Q9-Ku-TWK"/>
+                            <constraint firstItem="yf4-dq-JjC" firstAttribute="bottom" secondItem="d3V-sK-frC" secondAttribute="bottom" id="2SN-AC-tZR"/>
+                            <constraint firstItem="yf4-dq-JjC" firstAttribute="top" secondItem="d3V-sK-frC" secondAttribute="top" id="4gM-l0-PJL"/>
+                            <constraint firstItem="yf4-dq-JjC" firstAttribute="leading" secondItem="d3V-sK-frC" secondAttribute="leading" id="GZt-kt-bDg"/>
+                            <constraint firstItem="yf4-dq-JjC" firstAttribute="trailing" secondItem="d3V-sK-frC" secondAttribute="trailing" id="MEd-3t-Z1f"/>
+                            <constraint firstItem="zej-bo-Gks" firstAttribute="top" secondItem="d3V-sK-frC" secondAttribute="top" constant="45" id="NH8-AQ-Eyc"/>
+                            <constraint firstItem="jLV-72-tbI" firstAttribute="width" secondItem="yf4-dq-JjC" secondAttribute="width" multiplier="0.7" id="Sx7-IZ-mmJ"/>
+                            <constraint firstItem="jLV-72-tbI" firstAttribute="centerX" secondItem="FpH-Lj-N4Y" secondAttribute="centerX" id="YDi-2W-V5h"/>
+                            <constraint firstItem="d3V-sK-frC" firstAttribute="trailing" secondItem="yf4-dq-JjC" secondAttribute="trailing" id="cau-Cg-7si"/>
+                            <constraint firstItem="d3V-sK-frC" firstAttribute="bottom" secondItem="jLV-72-tbI" secondAttribute="bottom" constant="15" id="kvg-Rs-zH9"/>
+                            <constraint firstItem="zej-bo-Gks" firstAttribute="trailing" secondItem="d3V-sK-frC" secondAttribute="trailing" id="o7b-Hs-awb"/>
+                            <constraint firstItem="zej-bo-Gks" firstAttribute="leading" secondItem="d3V-sK-frC" secondAttribute="leading" id="vPX-3c-bsW"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="_qrView" destination="YGN-8y-WNk" id="yQa-L2-98l"/>
-                        <outlet property="_viewBtn" destination="2lk-Q0-jmi" id="Jtl-P5-Z7n"/>
-                        <outlet property="_viewQRScan" destination="0gp-t8-oDQ" id="AZf-4U-6g6"/>
-                        <outlet property="btnQr1" destination="1cQ-xm-1fi" id="Z3d-H6-hgD"/>
-                        <outlet property="btnQr2" destination="4Zs-hA-R4P" id="KpF-Ay-UnD"/>
+                        <outlet property="_qrView" destination="yf4-dq-JjC" id="MDp-yV-s4e"/>
+                        <outlet property="_viewBtn" destination="zej-bo-Gks" id="3OO-J5-A9e"/>
+                        <outlet property="_viewQRScan" destination="0hS-1S-6yz" id="Bnh-x1-MbB"/>
+                        <outlet property="btnQr1" destination="pyG-oh-IWx" id="iZA-xy-1Sx"/>
+                        <outlet property="btnQr2" destination="mfz-GA-2Pc" id="6ak-KP-xab"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7OO-Z3-Nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0pK-8v-shc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3255.072463768116" y="138.61607142857142"/>
         </scene>

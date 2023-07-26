@@ -18,6 +18,8 @@ import BlockID
   private static var blockIdVersion = ""
   private var liveIdScannerHelper: LiveIDScannerHelper?
   private weak var responseDelegate: LiveIDResponseDelegate?
+  public  var qrModel: AuthenticationPayloadV1!
+  var location: (Double, Double) = (0.0, 0.0)
   
   private let resolveFunction: RCTPromiseResolveBlock
   private let rejectFunction: RCTPromiseRejectBlock
@@ -107,9 +109,21 @@ import BlockID
     return mainDict
   }
   
-
+  @objc func getScopeData(_ scope: String, creds: String,userId:String ){
+    getScopeDataWithCreds(scope: scope, creds: creds, userId: userId, completion: { [self] dict in
+      resolveFunction(dict)
+    })
+  }
   
-  
+  func getScopeDataWithCreds(scope: String, creds: String,userId:String, completion: @escaping ([String: Any]?) -> Void)  {
+    qrModel = AuthenticationPayloadV1.init()
+    getScopesAttributesDict(scopes: scope ,
+                            creds: creds ,
+                            origin: qrModel.getBidOrigin()!,
+                            userId:userId != "" ? userId : nil) { scopeDict in
+      completion(scopeDict)
+    }
+  }
   
   @objc func setFidoPin(_ pin: String){
     setPin(pin: pin)
@@ -122,8 +136,19 @@ import BlockID
     changeFidoPin(oldPin, newPin: newPin)
   }
   
-  
-  
+  @objc func  autheticate_user(_ userId: String, session :String, creds:String, scope:String, sessionUrl:String, tag:String,name:String){
+    print("userId",userId);
+    print("session",session);
+    print("creds",creds);
+    print("scope",scope);
+    print("sessionUrl",sessionUrl);
+    var bidOrigin = BIDOrigin()
+    bidOrigin.tag=tag
+    bidOrigin.name=name
+    var dataModel: AuthRequestModel
+    dataModel = AuthRequestModel(lat: self.location.0, lon: self.location.1, session: session, creds: creds , scopes: scope , origin:bidOrigin, isConsentGiven: true, userId: userId , sessionUrl: sessionUrl)
+    authenticateUserWithScopes(dataModel: dataModel)
+  }
   @objc func enrollBiometricAssets(){
     print("enrollBiometricAssets && isSdk ready",BlockIDSDK.sharedInstance.isReady());
     if(BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()){
@@ -155,6 +180,45 @@ extension DemoApp {
     }
   }
   
+  private func authenticateUserWithScopes(dataModel: AuthRequestModel) {
+    print("authenticateUserWithScopes user \(dataModel)")
+    BlockIDSDK.sharedInstance.authenticateUser(sessionId: dataModel.session, sessionURL: dataModel.sessionUrl, creds: dataModel.creds, scopes: dataModel.scopes, lat: dataModel.lat, lon: dataModel.lon, origin: dataModel.origin, userId: dataModel.userId) { [self](status, sessionid, error) in
+      //          self?.view.hideToastActivity()
+      
+      if status {
+        print("authenticateUserWithScopes user \(dataModel)")
+        resolveFunction(status)
+        //if success
+        //              self?.view.makeToast("You have successfully authenticated to Log In", duration: 3.0, position: .center, title: "Success", completion: {_ in
+        //                  self?.goBack()
+        //                  self?.delegate?.onAuthenticate(status: true)
+        //                  return
+        //              })
+        
+      } else {
+        print("if status is false",error?.message);
+        resolveFunction(error?.message)
+        //              if error?.code == NSURLErrorNotConnectedToInternet ||
+        //                  error?.code == CustomErrors.Network.OFFLINE.code {
+        //                  let localizedMessage = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
+        //                  self?.view.makeToast(localizedMessage,
+        //                                       duration: 3.0,
+        //                                       position: .center,
+        //                                       title: ErrorConfig.noInternet.title, completion: {_ in })
+        //              } else if (error)?.code == CustomErrors.kUnauthorizedAccess.code {
+        //                  self?.view.makeToast(error!.message, duration: 3.0, position: .center, title: "", completion: {_ in
+        //                      self?.goBack()
+        //                      self?.delegate?.unauthorisedUser()
+        //                  })
+        //              } else {
+        //                  self?.view.makeToast(error!.message, duration: 3.0, position: .center, title: "", completion: {_ in
+        //                      self?.goBack()
+        //                      self?.delegate?.onAuthenticate(status: false)
+        //                  })
+        //              }
+      }
+    }
+  }
   
 
   
@@ -322,6 +386,26 @@ extension DemoApp {
     }
     
   }
+  
+  private func getScopesAttributesDict(scopes: String, creds: String, origin: BIDOrigin, userId: String? = nil, completion: @escaping ([String: Any]?) -> Void) {
+    BlockIDSDK.sharedInstance.getScopesAttributesDic(scopes: scopes,
+                                                     creds: creds,
+                                                     origin: origin,
+                                                     userId: userId) { scopesAttributesDict, error in
+      print("getScopesAttributesDic response  \(scopesAttributesDict)")
+      if let scopeDictionary = scopesAttributesDict {
+        if let  errorUW = error, errorUW.code == CustomErrors.kUnauthorizedAccess.code {
+          //                  self.showAppLogin()
+          completion(nil)
+        } else {
+          completion(scopeDictionary)
+        }
+      } else {
+        completion(nil)
+      }
+    }
+  }
+  
   
   
   private func handleRejection(error: BlockID.ErrorResponse?) {

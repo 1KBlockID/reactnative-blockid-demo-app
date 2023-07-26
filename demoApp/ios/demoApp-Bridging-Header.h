@@ -11,3 +11,4 @@
 #import <React/RCTComponent.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTDevLoadingView.h>
+#import <React/RCTEventEmitter.h>

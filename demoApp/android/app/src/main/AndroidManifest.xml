@@ -18,6 +18,10 @@
       android:theme="@style/AppTheme"
       tools:replace="android:allowBackup,android:label,android:theme"
       >
+        <activity android:name="com.demoapp.ScanQRCodeActivity"
+            android:exported="true"
+            />
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

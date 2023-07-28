@@ -1,5 +1,4 @@
-package com.demoapp;
-
+package com.onekosmos.blockid.reactnative.poc;
 import com.facebook.react.modules.network.NetworkingModule;
 import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;

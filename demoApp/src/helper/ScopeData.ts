@@ -6,34 +6,38 @@ type origin = {
   url: string;
 };
 export type sessionDataResponseType = {
-  api: string;
-  authPage: string;
-  authtype: string;
-  community: string;
-  metadata: {};
-  publicKey: string;
-  scopes: string;
-  session: string;
-  sessionUrl: string;
-  tag: string;
-  creds: string;
-  name: string;
+  api?: string;
+  authPage?: string;
+  authtype?: string;
+  community?: string;
+  metadata?: {};
+  publicKey?: string;
+  scopes?: string;
+  session?: string;
+  sessionUrl?: string;
+  tag?: string;
+  creds?: string;
+  name?: string;
+  communityName?: string;
+  url?: string;
+  sessionURL?: string;
+  userId?: string;
 };
 export type scopeDataResponseType = {
   device_info: {
-    device_name: string;
-    device_os: string;
-    deviceid: string;
-    network_info: string;
-    user_agent: string;
+    device_name?: string;
+    device_os?: string;
+    deviceid?: string;
+    network_info?: string;
+    user_agent?: string;
   };
-  did: string;
-  ial: string;
-  location: {
-    lat: string;
-    lon: string;
+  did?: string;
+  ial?: string;
+  location?: {
+    lat?: string;
+    lon?: string;
   };
-  userId: string;
+  userId?: string;
 };
 
 class ScopeData {
@@ -48,6 +52,7 @@ class ScopeData {
         network_info: '',
         user_agent: '',
       },
+
       did: '',
       ial: '',
       location: {
@@ -69,6 +74,8 @@ class ScopeData {
       tag: '',
       creds: '',
       name: '',
+      communityName: '',
+      url: '',
     };
   }
 

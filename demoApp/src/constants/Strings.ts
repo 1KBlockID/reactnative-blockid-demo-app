@@ -51,4 +51,8 @@ export const Strings = {
   PinsDoNotMatch: 'Pins do not match',
   InvalidPin: 'Invalid Pin',
   CameraAccessAlertMessage: 'Please Enable the settings from device Settings',
+  Successfully_Authenticated_Text:
+    'You have successfully authenticated to Log In',
+  Did: 'Did',
+  Authenticate: 'Authenticate',
 };

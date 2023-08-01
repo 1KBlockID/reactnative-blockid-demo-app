@@ -201,7 +201,7 @@ dependencies {
     }
 
     // BlockID SDK
-   implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.9.30.6459F5DB'
+implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.9.40.6495ABDF'
 
    // Gson
 implementation 'com.google.code.gson:gson:2.9.0'

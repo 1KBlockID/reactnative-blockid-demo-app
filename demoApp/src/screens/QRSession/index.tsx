@@ -2,8 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {
   Alert,
   FlatList,
+  Linking,
   NativeEventEmitter,
   NativeModules,
+  Platform,
   SafeAreaView,
   StatusBar,
   Text,
@@ -17,6 +19,7 @@ import {RootParamList} from '../../RootStackParams';
 import {Strings} from '../../constants/Strings';
 import ScopeData from '../../helper/ScopeData';
 import {Loader} from '../../components/loader';
+import {checkAndRequestPermissions} from '../../utils/Permissions';
 
 type Props = NativeStackScreenProps<RootParamList, 'QRSessionScreen'>;
 
@@ -34,9 +37,16 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
     },
   ];
 
-  const handleQRLogin = (actionType: string) => {
+  const handleQRLogin = async (actionType: string) => {
     if (actionType === Strings.ORSession1) {
-      DemoAppModule.ScanQRCode();
+      await checkAndRequestPermissions()
+        .then(isGranted => {
+          DemoAppModule.ScanQRCode();
+        })
+        .catch(error => {
+          Alert.alert(Strings.CameraAccessAlertMessage);
+          Linking.openSettings();
+        });
     } else {
       Alert.alert('Second  tab');
     }
@@ -50,28 +60,43 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
     </TouchableOpacity>
   );
 
+  const handleSuccess = (res: any) => {
+    ScopeData.addScopeData(res);
+    navigation.navigate('AuthenticateScreen');
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(NativeModules.RNEventEmitter);
+    const eventEmitter = new NativeEventEmitter(
+      Platform.OS === 'ios'
+        ? NativeModules.RNEventEmitter
+        : NativeModules.DemoAppModule,
+    );
     let eventListener = eventEmitter.addListener('OnQRScanResult', event => {
       if (event) {
         setIsLoading(true);
-        __DEV__ && console.log('OnQRScanResult', event); //
         ScopeData.addSessionData(event);
-        DemoAppModule.getScopeData(
-          event?.scope ?? '',
-          event?.creds ?? '',
-          event?.userId ?? '',
-        )
-          .then((response: any) => {
-            __DEV__ && console.log('scope data', event);
-            ScopeData.addScopeData(response);
-            navigation.navigate('AuthenticateScreen');
-            setIsLoading(false);
-          })
-          .catch((error: any) => {
-            setIsLoading(false);
-            __DEV__ && console.log('error when getting scope data ', error);
-          });
+        if (Platform.OS === 'ios') {
+          DemoAppModule.getScopeData(
+            event?.scope ?? '',
+            event?.creds ?? '',
+            event?.userId ?? '',
+          )
+            .then((response: any) => {
+              handleSuccess(response);
+            })
+            .catch((error: any) => {
+              setIsLoading(false);
+            });
+        } else {
+          DemoAppModule.getScopeData(event?.scopes ?? '', event?.creds ?? '')
+            .then((response: any) => {
+              handleSuccess(response);
+            })
+            .catch((error: any) => {
+              setIsLoading(false);
+            });
+        }
       }
     });
     return () => eventListener.remove();

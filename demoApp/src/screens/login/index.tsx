@@ -43,9 +43,10 @@ function LoginScreen({navigation}: Props): JSX.Element {
 
   useEffect(() => {
     // const eventEmitter = new NativeEventEmitter(NativeModules.DemoAppModule);
-    // __DEV__ && console.log("eventEmitter",eventEmitter)
-    // let eventListener = eventEmitter.addListener('NotificationIdentifier', event => {
-    //   __DEV__ && console.log("Native event is ",event); // "someValue"
+    // __DEV__ && console.log('eventEmitter', eventEmitter);
+    // let eventListener = eventEmitter.addListener('onLiveIdCapture', event => {
+    //   Alert.alert(JSON.stringify(event));
+    //   __DEV__ && console.log('Native event is ', event); // "someValue"
     // });
     // return () => eventListener.remove();
   }, []);

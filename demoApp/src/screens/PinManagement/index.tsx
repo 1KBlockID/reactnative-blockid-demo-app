@@ -125,7 +125,6 @@ function PinScreen({navigation}: Props): JSX.Element {
   //setFIDO2 Pin
   async function setFidoKey() {
     const pinResponse = await setFidoPin(payload);
-    __DEV__ && console.log('Pin Response os ', pinResponse);
     if (pinResponse) {
       Alert.alert('Pin set Successfully');
       handleResetStates();
@@ -142,9 +141,7 @@ function PinScreen({navigation}: Props): JSX.Element {
 
   //Reset Pin functionality
   const handleResetPin = async () => {
-    Alert.alert('Reset fun');
     const resetResponse = await resetPin(payload);
-    __DEV__ && console.log('REset Pin Response', resetResponse);
     if (resetResponse === 'OK') {
       Alert.alert('Pin Reset Successfully');
       handleResetStates();

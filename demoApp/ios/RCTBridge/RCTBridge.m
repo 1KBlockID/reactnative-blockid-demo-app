@@ -141,6 +141,18 @@ RCT_EXPORT_METHOD(resetSDK:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
+
+
+RCT_EXPORT_METHOD(register:(NSString *)name
+                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
+                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
+                                              rejectFunction:rejectFunction];
+    [sdk registerWeb:name];
+   });
+ }
+
 RCT_EXPORT_METHOD(StartLiveScan:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -163,16 +175,7 @@ RCT_EXPORT_METHOD(ScanQRCode:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
-RCT_EXPORT_METHOD(register:(NSString *)name
-                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
-                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                             rejectFunction:rejectFunction];
-    
-    [sdk register:name];
-  });
-}
+
 
 RCT_EXPORT_METHOD(authenticate:(NSString *)name
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction

@@ -40,6 +40,10 @@ import BlockID
     BlockIDSDK.sharedInstance.setLicenseKey(key: Tenant.licenseKey);
   }
   
+  @objc func registerWeb(_ name: String) {
+    webRegister(name, type: .CROSS_PLATFORM)
+  }
+  
   @objc func registerUserKey(_ name: String) {
     registerKey(name, type: .PLATFORM,pin:"")
   }
@@ -65,9 +69,7 @@ import BlockID
   @objc func authenticateCardKeyWithPin(_ name: String,pin: String) {
     authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
   }
-  @objc func register(_ name: String) {
-    webRegister( name, type: .CROSS_PLATFORM)
-  }
+ 
   @objc func authenticate(_ name: String) {
     webAuthenticate( name, type: .CROSS_PLATFORM)
   }
@@ -285,7 +287,6 @@ extension DemoApp {
     else { return }
     
     let callback = self.createResultCallback(name)
-    
     ensureSDKUnlocked()
     BlockIDSDK.sharedInstance.registerFIDO2Key(userName: name,
                                                tenantDNS: dns,
@@ -334,7 +335,7 @@ extension DemoApp {
     
     ensureSDKUnlocked()
     if(pin == ""){
-      BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
+    BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
                                                      userName: name,
                                                      tenantDNS: dns,
                                                      communityName: community,
@@ -342,7 +343,7 @@ extension DemoApp {
                                                      completion: callback)
     }
     else{
-      BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
+    BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
                                                      userName: name,
                                                      tenantDNS: dns,
                                                      communityName: community,

@@ -8,7 +8,6 @@ import {
   NativeModules,
   Platform,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   Text,
   TextInput,
@@ -32,7 +31,10 @@ type Item = {
   id: number;
   title: String;
 };
-
+type Error = {
+  userInfo?: string;
+  message?: string;
+};
 function Fido2Screen({navigation}: Props): JSX.Element {
   const [userName, setUserName] = useState('');
   const [loader, setLoader] = useState<boolean>(false);
@@ -41,7 +43,6 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const [activeIndex, setActiveIndex] = useState<string>('');
   const [pin, setPin] = useState<string>('');
   const {DemoAppModule} = NativeModules;
-
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
   const ButtonText = [
     {
@@ -81,12 +82,12 @@ function Fido2Screen({navigation}: Props): JSX.Element {
         setLoader(false);
         if (res === 'OK') {
           storeData(userName, 'userName');
-          SuccessAlert('Register Successfully');
+          SuccessAlert('Platform key registered successfully.');
         }
       })
-      .catch((error: unknown) => {
+      .catch((error: Error) => {
         setLoader(false);
-        Alert.alert(JSON.stringify(error));
+        Alert.alert(JSON.stringify(error?.message ?? error));
       });
   };
 
@@ -96,12 +97,12 @@ function Fido2Screen({navigation}: Props): JSX.Element {
         setLoader(false);
         if (res === 'OK') {
           storeData(userName, 'userName');
-          SuccessAlert('Authenticate Successfully');
+          SuccessAlert('Platform key authenticated successfully.');
         }
       })
-      .catch((error: unknown) => {
+      .catch((error: Error) => {
         setLoader(false);
-        Alert.alert(JSON.stringify(error));
+        Alert.alert(JSON.stringify(error?.message ?? error));
       });
   };
 
@@ -112,14 +113,15 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
             storeData(userName, 'userName');
-            SuccessAlert('Register Successfully');
+            SuccessAlert('Security key registered successfully.');
             setPin('');
             setLoader(false);
           }
         })
-        .catch((error: unknown) => {
+        .catch((error: Error) => {
           setLoader(false);
-          Alert.alert(JSON.stringify(error));
+          setPin('');
+          Alert.alert(JSON.stringify(error?.message ?? error));
         });
     } else {
       DemoAppModule.registerCardKey(userName)
@@ -127,14 +129,13 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
             storeData(userName, 'userName');
-            SuccessAlert('Register Successfully');
+            SuccessAlert('Security key registered successfully.');
             setLoader(false);
           }
         })
-        .catch((error: unknown) => {
+        .catch((error: Error) => {
           setLoader(false);
-          __DEV__ && console.log('error', error);
-          Alert.alert(JSON.stringify(error));
+          Alert.alert(JSON.stringify(error?.message ?? error));
         });
     }
   };
@@ -145,24 +146,29 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       DemoAppModule.authenticateCardKeyWithPin(userName, pin)
         .then((res: string) => {
           __DEV__ && console.log('res', res);
-          if (res === 'OK') SuccessAlert('Authenticate Successfully');
+          if (res === 'OK') {
+            SuccessAlert('Security key is authenticated successfully.');
+            setLoader(false);
+            setPin('');
+          }
+        })
+        .catch((error: Error) => {
           setLoader(false);
           setPin('');
-        })
-        .catch((error: unknown) => {
-          setLoader(false);
-          Alert.alert(JSON.stringify(error));
+          Alert.alert(JSON.stringify(error?.message ?? error));
         });
     } else {
       DemoAppModule.authenticateCardKey(userName)
         .then((res: string) => {
           __DEV__ && console.log('res', res);
-          if (res === 'OK') SuccessAlert('Authenticate Successfully');
-          setLoader(false);
+          if (res === 'OK') {
+            SuccessAlert('Security key is authenticated successfully.');
+            setLoader(false);
+          }
         })
-        .catch((error: unknown) => {
+        .catch((error: Error) => {
           setLoader(false);
-          Alert.alert(JSON.stringify(error));
+          Alert.alert(JSON.stringify(error?.message ?? error));
         });
     }
   };
@@ -215,15 +221,15 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     setLoader(true);
     DemoAppModule.register(userName)
       .then((response: String) => {
-        if (response === 'Ok') {
+        if (response === 'OK') {
           storeData(userName, 'userName');
-          SuccessAlert('You have Successfully Registered');
+          SuccessAlert('Your FIDO2 key has been successfully registered.');
           setLoader(false);
         }
       })
-      .catch((error: unknown) => {
+      .catch((error: Error) => {
         setLoader(false);
-        Alert.alert(JSON.stringify(error));
+        Alert.alert(JSON.stringify(error?.message ?? error));
       });
   };
 
@@ -238,15 +244,17 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     setLoader(true);
     DemoAppModule.authenticate(userName)
       .then((response: String) => {
-        if (response === 'Ok') {
+        if (response === 'OK') {
           storeData(userName, 'userName');
-          SuccessAlert('You have Successfully authenticated');
+          SuccessAlert(
+            'You have successfully authenticated with your FIDO2 key.',
+          );
           setLoader(false);
         }
       })
-      .catch((error: unknown) => {
+      .catch((error: Error) => {
         setLoader(false);
-        Alert.alert(JSON.stringify(error));
+        Alert.alert(JSON.stringify(error?.message ?? error));
       });
   };
 
@@ -278,7 +286,8 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   return (
     <KeyboardAwareScrollView
       style={styles.keyBoardContainer}
-      contentInsetAdjustmentBehavior="always">
+      contentInsetAdjustmentBehavior="always"
+      keyboardShouldPersistTaps={'always'}>
       <SafeAreaView style={styles.safeAreaContainer}>
         {loader && (
           <View style={styles.loaderContainer}>

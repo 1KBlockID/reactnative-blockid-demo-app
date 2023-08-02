@@ -39,16 +39,11 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
 
   const handleQRLogin = async (actionType: string) => {
     if (actionType === Strings.ORSession1) {
-      await checkAndRequestPermissions()
-        .then(isGranted => {
-          DemoAppModule.ScanQRCode();
-        })
-        .catch(error => {
-          Alert.alert(Strings.CameraAccessAlertMessage);
-          Linking.openSettings();
-        });
+      if (checkAndRequestPermissions()) {
+        DemoAppModule.ScanQRCode();
+      }
     } else {
-      Alert.alert('Second  tab');
+      //QR Scan with Preset Data
     }
   };
 
@@ -67,6 +62,7 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
   };
 
   useEffect(() => {
+    checkAndRequestPermissions();
     const eventEmitter = new NativeEventEmitter(
       Platform.OS === 'ios'
         ? NativeModules.RNEventEmitter

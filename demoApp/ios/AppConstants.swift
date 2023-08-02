@@ -10,7 +10,7 @@ public struct Tenant {
   static let defaultTenant =  BIDTenant.makeTenant(tag:"1kosmos",
                                                    community: "default",
                                                    dns:"https://1k-dev.1kosmos.net")
-  static let clientTenant = BIDTenant.makeTenant(tag: "blockidpilot",
+  static let clientTenant = BIDTenant.makeTenant(tag: "blockiddev-1kosmos",
                                                  community:"default",
                                                  dns:"https://blockid-dev.1kosmos.net");
                                                                                                  

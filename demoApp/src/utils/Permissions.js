@@ -1,21 +1,37 @@
-import {Platform} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {PERMISSIONS, request, RESULTS, check} from 'react-native-permissions';
 
-const REQUIRED_PERMISSIONS =
-  Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
-
-export const checkAndRequestPermissions = async () => {
-  const statuses = await check(REQUIRED_PERMISSIONS);
-  if (statuses === RESULTS.GRANTED) {
-    return true;
-  } else {
-    request(REQUIRED_PERMISSIONS).then(results => {
-      __DEV__ && console.log('results', results);
-      if (results === RESULTS.GRANTED) {
-        return true;
-      } else {
-        return false;
+export const checkAndRequestPermissions = () => {
+  return check(
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,
+  )
+    .then(result => {
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          Alert.alert('This feature is not available on this device');
+          return false;
+          break;
+        case RESULTS.DENIED:
+          request(
+            Platform.OS === 'ios'
+              ? PERMISSIONS.IOS.CAMERA
+              : PERMISSIONS.ANDROID.CAMERA,
+          ).then(result => {
+            switch (result) {
+              case RESULTS.GRANTED:
+                return true;
+                break;
+            }
+          });
+          break;
+        case RESULTS.GRANTED:
+          return true;
+          break;
       }
+    })
+    .catch(error => {
+      console.log(error);
+      return false;
     });
-  }
+  return false;
 };

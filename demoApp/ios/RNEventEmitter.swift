@@ -15,6 +15,6 @@ open class RNEventEmitter: RCTEventEmitter {
   }
 
   open override func supportedEvents() -> [String] {
-    ["OnQRScanResult", "onPending", "onFailure"]      // etc.
+    ["OnQRScanResult", "OnLiveResult"]
   }
 }

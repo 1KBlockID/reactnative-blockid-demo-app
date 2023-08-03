@@ -173,7 +173,6 @@ function PinScreen({navigation}: Props): JSX.Element {
     setModalVisible(true);
     if (actionType === Strings.ChangePin) setIsChangePin(true);
     else if (actionType === Strings.ResetFIDO) {
-      Alert.alert(JSON.stringify(actionType));
       setIsResetFido(true);
     }
   };

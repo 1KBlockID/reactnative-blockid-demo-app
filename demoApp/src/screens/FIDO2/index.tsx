@@ -199,6 +199,13 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     }
   };
 
+  const removeSpaces = (userName: string) => {
+    const name = userName;
+    const withoutSpace = name.replace(/ /g, '');
+    console.log(withoutSpace);
+    return withoutSpace;
+  };
+
   const renderItem = ({item, index}: {item: Item; index: number}) => {
     return index <= 3 || Platform.OS === 'ios' ? (
       <TouchableOpacity
@@ -219,7 +226,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       return;
     }
     setLoader(true);
-    DemoAppModule.register(userName)
+    DemoAppModule.register(
+      Platform.OS === 'ios' ? removeSpaces(userName) : userName,
+    )
       .then((response: String) => {
         if (response === 'OK') {
           storeData(userName, 'userName');
@@ -241,8 +250,11 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       });
       return;
     }
+
     setLoader(true);
-    DemoAppModule.authenticate(userName)
+    DemoAppModule.authenticate(
+      Platform.OS === 'ios' ? removeSpaces(userName) : userName,
+    )
       .then((response: String) => {
         if (response === 'OK') {
           storeData(userName, 'userName');

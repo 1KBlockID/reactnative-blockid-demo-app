@@ -66,7 +66,6 @@ function HomeScreen({navigation}: Props): JSX.Element {
         }, 1000);
         setIsLoading(false);
       } catch (e) {
-        __DEV__ && console.log('ERROR IN initRegistrations', e);
         setIsLoading(false);
       }
     }

@@ -49,7 +49,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_scan_qrcode);
         isFromWalletConnect = getIntent().hasExtra(IS_FROM_WALLET_CONNECT) &&
                 getIntent().getBooleanExtra(IS_FROM_WALLET_CONNECT, false);
@@ -197,7 +196,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
     private void processScope(AuthenticationPayloadV1 authenticationPayloadV1) {
         Gson gson1 = new Gson();
         String json = gson1.toJson(authenticationPayloadV1);
-        Log.e("processScope 12345", "processScope 12345"+ json);
         DemoAppModule.onQRScanResult("OnQRScanResult",json );
         finish();
     }

@@ -9,16 +9,14 @@ import {
   View,
   NativeModules,
   Platform,
-  Alert,
-  Linking,
+  NativeEventEmitter,
 } from 'react-native';
 import {styles} from './style';
 import {Colors} from '../../constants/Colors';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParamList} from '../../RootStackParams';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CommonActions, StackActions} from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 import {checkAndRequestPermissions} from '../../utils/Permissions';
 import {DialogBox} from '../../components/DialogBox';
 import {Strings} from '../../constants/Strings';
@@ -72,14 +70,9 @@ function MenuScreen({navigation}: Props): JSX.Element {
       setModalVisible(!modalVisible);
     }
     if (index === 3) {
-      await checkAndRequestPermissions()
-        .then(isGranted => {
-          DemoAppModule.StartLiveScan();
-        })
-        .catch(error => {
-          Alert.alert(Strings.CameraAccessAlertMessage);
-          Linking.openSettings();
-        });
+      if (checkAndRequestPermissions()) {
+        DemoAppModule.StartLiveScan();
+      }
     }
     if (index === 4) {
       navigation.navigate('Fido2Screen');
@@ -89,6 +82,9 @@ function MenuScreen({navigation}: Props): JSX.Element {
     }
   };
   useEffect(() => {
+    /**
+     * call SDK method to check is liveID is enrolled or not
+     */
     DemoAppModule.getIsLiveIdRegister()
       .then((res: any) => {
         if (res === 'Yes') {
@@ -98,6 +94,22 @@ function MenuScreen({navigation}: Props): JSX.Element {
       .catch((error: any) => {
         __DEV__ && console.log('error', error);
       });
+  }, []);
+
+  useEffect(() => {
+    /**
+     * Call When liveId is enrolled successfully
+     */
+    if (Platform.OS === 'ios') {
+      const eventEmitter = new NativeEventEmitter(NativeModules.RNEventEmitter);
+      let eventListener = eventEmitter.addListener('OnQRScanResult', event => {
+        console.log('OnLiveIdCapture', event);
+        if (event === 'OK') {
+          setIsLiveIdRegistered(true);
+        }
+      });
+      return () => eventListener.remove();
+    }
   }, []);
 
   const renderItem = ({item, index}: {item: any; index: number}) => {
@@ -113,6 +125,10 @@ function MenuScreen({navigation}: Props): JSX.Element {
       </TouchableOpacity>
     ) : null;
   };
+
+  /**
+   * ResetApp functionality
+   */
   const handleOkPress = async () => {
     AsyncStorage.clear()
       .then(res => {

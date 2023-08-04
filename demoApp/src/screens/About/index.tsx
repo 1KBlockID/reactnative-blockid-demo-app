@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   View,
   NativeModules,
-  Alert,
   ScrollView,
   Platform,
 } from 'react-native';
@@ -25,6 +24,10 @@ function AboutScreen({navigation}: Props): JSX.Element {
   const version = DeviceInfo.getVersion();
   const {DemoAppModule} = NativeModules;
   const [sdkResponse, setSdkResponse] = useState<any>('');
+
+  /**
+   * get info from SDK
+   */
 
   const getInfo = async () => {
     const response = await DemoAppModule.getSDKInfo();

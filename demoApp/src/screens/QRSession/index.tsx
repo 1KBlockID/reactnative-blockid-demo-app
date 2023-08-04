@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Alert,
   FlatList,
-  Linking,
   NativeEventEmitter,
   NativeModules,
   Platform,
@@ -37,6 +35,10 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
     },
   ];
 
+  /**
+   * handle QR Scan functionality
+   */
+
   const handleQRLogin = async (actionType: string) => {
     if (actionType === Strings.ORSession1) {
       if (checkAndRequestPermissions()) {
@@ -68,9 +70,17 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
         ? NativeModules.RNEventEmitter
         : NativeModules.DemoAppModule,
     );
+
+    /**
+     * handle QR Scan response
+     */
     let eventListener = eventEmitter.addListener('OnQRScanResult', event => {
       if (event) {
         setIsLoading(true);
+
+        /**
+         * get Scope Data api
+         */
         ScopeData.addSessionData(event);
         if (Platform.OS === 'ios') {
           DemoAppModule.getScopeData(

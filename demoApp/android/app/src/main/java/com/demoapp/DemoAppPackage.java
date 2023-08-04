@@ -16,7 +16,6 @@ public class DemoAppPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        Log.d("DemoAppPackage ",""+reactContext);
         List<NativeModule> modules = Arrays.asList(new com.onekosmos.blockid.reactnative.poc.DemoAppModule(reactContext));
         return modules;
     }

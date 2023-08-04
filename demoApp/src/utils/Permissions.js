@@ -1,6 +1,10 @@
 import {Alert, Platform} from 'react-native';
 import {PERMISSIONS, request, RESULTS, check} from 'react-native-permissions';
 
+/**
+ * check and ask for Camera Permission
+ */
+
 export const checkAndRequestPermissions = () => {
   return check(
     Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,

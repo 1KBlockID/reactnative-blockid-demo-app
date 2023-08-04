@@ -170,6 +170,7 @@ class LiveIDViewController: UIViewController {
       }
       // SUCCESS
       self.stopLiveIDScanning()
+      RNEventEmitter.emitter.sendEvent(withName: "OnLiveResult", body:"OK")
       DispatchQueue.main.async {
         let alert = UIAlertController(title: "Success", message:"Live ID enrolled successfully", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in

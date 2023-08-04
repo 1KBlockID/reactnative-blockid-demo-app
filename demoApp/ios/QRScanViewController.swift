@@ -49,7 +49,6 @@ class QRScanViewController: UIViewController {
   }
   
   private func goBack() {
-    //        self.navigationController?.popViewController(animated: true)
     DispatchQueue.main.async {
       self.dismiss(animated: true, completion: nil);
     }
@@ -120,13 +119,11 @@ extension QRScanViewController: QRScanResponseDelegate {
       
       GetSessionData.sharedInstance.getSessionData(url: data) { [self] response, message, isSuccess in
         if isSuccess {
-          print("getSessionData isSuccess", isSuccess);
           let authQRUWL2 = CommonFunctions.jsonStringToObject(json: response ?? "") as AuthenticationPayloadV2?
           let authQRUWL1 = authQRUWL2?.getAuthRequestModel(sessionUrl: data)
           processScope(qrModel: authQRUWL1, response : response)
         } else {
           // Show toast
-          print("getSessionData error");
           self.view.makeToast(message, duration: 3.0, position: .center, title: "Error", completion: {_ in
             self.goBack()
             return
@@ -135,7 +132,6 @@ extension QRScanViewController: QRScanResponseDelegate {
       }
     } else {
       // Show toast
-      print("Suspicious QR Code");
       self.view.makeToast("Suspicious QR Code", duration: 3.0, position: .center, title: "Error", completion: {_ in
         self.goBack()
         return

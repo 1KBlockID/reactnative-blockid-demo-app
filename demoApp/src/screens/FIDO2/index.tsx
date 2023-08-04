@@ -75,6 +75,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     Alert.alert('SUCCESS', message);
   };
 
+  /**
+   * register through Platform
+   */
   const registerUserKey = () => {
     DemoAppModule.registerUserKey(userName)
       .then((res: string) => {
@@ -91,6 +94,10 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       });
   };
 
+  /**
+   * authenticate through Platform
+   */
+
   const authenticateUserKey = () => {
     DemoAppModule.authenticateUserKey(userName)
       .then((res: string) => {
@@ -105,6 +112,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
         Alert.alert(JSON.stringify(error?.message ?? error));
       });
   };
+  /**
+   * register through key
+   */
 
   const registerCardKey = () => {
     if (Platform.OS === 'ios' && pin !== '') {
@@ -140,6 +150,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     }
   };
 
+  /**
+   * authenticate through Key
+   */
   const authenticateCardKey = () => {
     //Check pin for IOS
     if (Platform.OS === 'ios' && pin !== '') {
@@ -199,6 +212,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     }
   };
 
+  /**
+   * Remove spaces from name
+   */
   const removeSpaces = (userName: string) => {
     const name = userName;
     const withoutSpace = name.replace(/ /g, '');
@@ -217,6 +233,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     ) : null;
   };
 
+  /**
+   * register through web
+   */
   const webRegistration = () => {
     if (!userName) {
       Toast.show({
@@ -242,6 +261,9 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       });
   };
 
+  /**
+   * authenticate through web
+   */
   const webAuthentication = () => {
     if (!userName) {
       Toast.show({
@@ -289,7 +311,6 @@ function Fido2Screen({navigation}: Props): JSX.Element {
 
   useEffect(() => {
     getData('userName').then(async res => {
-      __DEV__ && console.log('user response from local storage', res);
       if (res) {
         setUserName(JSON.parse(res));
       }

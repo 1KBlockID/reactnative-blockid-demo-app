@@ -2,6 +2,7 @@ import {NativeModules} from 'react-native';
 import {sessionDataResponseType} from '../helper/ScopeData';
 const {DemoAppModule} = NativeModules;
 
+// user authenticate IOS
 export const onUserAuthenticate = async (
   sessionData: sessionDataResponseType,
 ): Promise<string | boolean> => {
@@ -29,6 +30,7 @@ export const onUserAuthenticate = async (
     });
 };
 
+// user authenticate Android
 export const authenticateUserAndroid = async (
   sessionData: sessionDataResponseType,
 ): Promise<string | boolean> => {
@@ -44,7 +46,6 @@ export const authenticateUserAndroid = async (
     sessionData?.authPage ?? '',
   )
     .then((response: any) => {
-      __DEV__ && console.log('In helper class', response);
       if (response === true) {
         return true;
       } else {

@@ -1,6 +1,3 @@
-//package com.onekosmos.blockidsample.util;
-//package com.onekosmos.blockid.reactnative.poc;
-
 package com.demoapp;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,15 +12,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
-//import com.onekosmos.blockidsample.R;
-
 import com.onekosmos.blockid.reactnative.poc.R;
 
 import java.util.Objects;
 
 /**
- * Created by 1Kosmos Engineering
- * Copyright © 2021 1Kosmos. All rights reserved.
+ * demoApp
  */
 public class ErrorDialog extends Dialog {
     private AppCompatTextView mTxtTitle, mTxtMessage;
@@ -35,7 +29,6 @@ public class ErrorDialog extends Dialog {
 
     public ErrorDialog(@NonNull Context context) {
         super(context);
-//        setContentView(R.layout.dialog_error);
         setCancelable(false);
         Objects.requireNonNull(getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         mBtn1 = findViewById(R.id.btn_dialog_error_btn1);

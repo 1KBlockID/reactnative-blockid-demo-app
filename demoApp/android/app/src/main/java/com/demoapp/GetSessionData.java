@@ -6,7 +6,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager;
 
 /**
- * Created by DemoApp
+ * Created by kajal
  *
  */
 public class GetSessionData {

@@ -6,8 +6,7 @@ import androidx.annotation.Keep;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by 1Kosmos Engineering
- * Copyright © 2022 1Kosmos. All rights reserved.
+ * demoApp
  */
 @Keep
 public class AuthenticationPayloadV2{

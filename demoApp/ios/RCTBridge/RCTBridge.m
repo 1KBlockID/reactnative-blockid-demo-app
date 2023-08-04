@@ -115,7 +115,6 @@ RCT_EXPORT_METHOD(enrollBiometricAssets:(RCTPromiseResolveBlock)resolveFunction
     
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    RCTLogInfo(@"enrollBiometricAssets Called");
     [sdk enrollBiometricAssets];
   });
 }

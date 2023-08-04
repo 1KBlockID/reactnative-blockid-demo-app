@@ -1,4 +1,4 @@
-import {Alert, NativeModules} from 'react-native';
+import {NativeModules} from 'react-native';
 import {Fido2Error, Fido2PayloadModel} from '../constants/Fido2PayloadModel';
 
 const {DemoAppModule} = NativeModules;
@@ -12,7 +12,6 @@ export const setFidoPin = async (
     const setPinResponse = await DemoAppModule.setFidoPin(pin);
     return setPinResponse;
   } catch (error) {
-    __DEV__ && console.log('SetFido2Pin action failed:', error);
     errorHandler?.(error);
     return null;
   }
@@ -27,7 +26,6 @@ export const resetPin = async (
     const resetPinResponse = await DemoAppModule.resetPin();
     return resetPinResponse;
   } catch (error) {
-    __DEV__ && console.log('ResetPin action failed:', error);
     errorHandler?.(error);
     return null;
   }
@@ -42,18 +40,15 @@ export const ChangePin = async (
     const changePinResponse = await DemoAppModule.changePin(currentPin, pin);
     return changePinResponse;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    __DEV__ && console.log('change Pin action failed:', error);
     errorHandler?.(error);
     return null;
   }
 };
 
+//set LicenseKey
 export const setLicenseKey = async () => {
   try {
     await DemoAppModule.initRegistrations();
-    // eslint-disable-next-line no-console
-    __DEV__ && console.log('initRegistrations Success');
   } catch (e) {
     // eslint-disable-next-line no-console
     __DEV__ && console.log('ERROR IN initRegistrations', e);

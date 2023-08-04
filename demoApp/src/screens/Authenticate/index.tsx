@@ -27,6 +27,10 @@ function AuthenticateScreen({navigation}: Props): JSX.Element {
     navigation.navigate('MenuScreen');
   };
 
+  /**
+   * Authenticate user Functionality
+   */
+
   const onAuthenticate = () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {

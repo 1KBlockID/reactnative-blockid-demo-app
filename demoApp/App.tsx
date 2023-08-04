@@ -8,7 +8,7 @@ import HomeScreen from './src/screens/Home';
 import {RootParamList} from './src/RootStackParams';
 import AboutScreen from './src/screens/About';
 import MenuScreen from './src/screens/Menulist';
-import {LogBox, NativeModules, Platform, NativeModule} from 'react-native';
+import {LogBox, NativeModules, Platform} from 'react-native';
 import LoginScreen from './src/screens/login';
 import QRSessionScreen from './src/screens/QRSession';
 import {getData} from './src/databaseService/localStorage';

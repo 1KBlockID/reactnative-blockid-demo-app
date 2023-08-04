@@ -33,7 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           new SplashScreenReactPackage();
-            packages.add(new DemoAppPackage());
+            packages.add(new com.onekosmos.blockid.reactnative.poc.DemoAppPackage());
           return packages;
           
         }

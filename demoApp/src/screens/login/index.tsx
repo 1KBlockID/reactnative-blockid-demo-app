@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   Alert,
   Image,
-  NativeEventEmitter,
   NativeModules,
   SafeAreaView,
   StatusBar,
@@ -17,6 +16,7 @@ import {RootParamList} from '../../RootStackParams';
 import Toast from 'react-native-toast-message';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
+import {CommonActions} from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootParamList, 'LoginScreen'>;
 
@@ -32,7 +32,12 @@ function LoginScreen({navigation}: Props): JSX.Element {
           position: 'bottom',
           type: 'success',
         });
-        navigation.navigate('MenuScreen');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{name: 'MenuScreen'}],
+          }),
+        );
       } else {
         Alert.alert('Please enroll biometric first ');
       }
@@ -41,15 +46,6 @@ function LoginScreen({navigation}: Props): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    // const eventEmitter = new NativeEventEmitter(NativeModules.DemoAppModule);
-    // __DEV__ && console.log('eventEmitter', eventEmitter);
-    // let eventListener = eventEmitter.addListener('onLiveIdCapture', event => {
-    //   Alert.alert(JSON.stringify(event));
-    //   __DEV__ && console.log('Native event is ', event); // "someValue"
-    // });
-    // return () => eventListener.remove();
-  }, []);
   return (
     <>
       <View style={[styles.statusBar]}>

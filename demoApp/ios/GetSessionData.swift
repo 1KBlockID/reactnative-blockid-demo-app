@@ -26,10 +26,19 @@ public class GetSessionData {
                     }
                     let strResponse = String(decoding: data, as: UTF8.self)
                     completion(strResponse, "Data fetched successfully.", true)
+
                 case .failure(let error):
+                                    // For no internet connection...
+                  if -1009 == (error._code) || -1020 == error._code {
+                    completion(nil, "NetWork Error", false)
+                    return
+                    }
+                  else{
                     completion(nil, "error", false)
+                  }
+                  
                 @unknown default:
-                    completion(nil, "error", false)
+                    completion(nil, "Requested session is no longer available.", false)
                 }
         }
     }

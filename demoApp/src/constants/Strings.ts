@@ -42,7 +42,7 @@ export const Strings = {
   NO: 'No',
   Yes: 'Yes',
   Warning: 'Warning!',
-  resetAppText: 'Do you want to reset the app',
+  resetAppText: 'Do you want to reset the app ?',
   Ok: 'Ok',
   PINVerificationRequired: 'PIN Verification Required',
   Verify: 'Verify',

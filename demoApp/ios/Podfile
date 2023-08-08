@@ -13,8 +13,8 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-
-
+# To resolve headers issue Firebase dependency
+use_modular_headers! 
 target 'demoApp' do
   config = use_native_modules!
 
@@ -65,6 +65,10 @@ target 'demoApp' do
   pod 'FirebaseInstallations', :modular_headers => true
   pod 'GoogleDataTransport', :modular_headers => true
   pod 'nanopb', :modular_headers => true
+
+
+pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
+
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
@@ -85,14 +89,16 @@ target 'demoApp' do
   def blockid_pods
     pod 'Toast-Swift', '~> 5.0.1'
     pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.9.30'
-    pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2',:modular_headers => true
-    pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.2'
+    pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
+    pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.2',:modular_headers => true
     pod 'EllipticCurveKeyPair', :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'
 end
 
   target 'demoAppTests' do
     inherit! :complete
     # Pods for testing
+   # Add the RNFBCrashlytics podspec to your app target:
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
   end
 
   blockid_pods

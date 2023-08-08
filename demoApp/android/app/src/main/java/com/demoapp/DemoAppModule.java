@@ -1,24 +1,18 @@
 package com.onekosmos.blockid.reactnative.poc;
-
 import static com.onekosmos.blockid.reactnative.poc.AppConstants.defaultTenant;
 import static com.onekosmos.blockid.reactnative.poc.AppConstants.dvcId;
-
 import com.demoapp.ScanQRCodeActivity;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.BuildConfig;
-
-import com.google.protobuf.Any;
 import com.onekosmos.blockid.sdk.cameramodule.BIDScannerView;
 import com.onekosmos.blockid.sdk.cameramodule.QRCodeScanner.QRScannerHelper;
 import com.onekosmos.blockid.sdk.cameramodule.camera.liveIDModule.ILiveIDResponseListener;
@@ -37,17 +31,10 @@ import com.onekosmos.blockid.sdk.datamodel.BIDTenant;
 import com.onekosmos.blockid.sdk.BlockIDSDK;
 import com.onekosmos.blockid.sdk.authentication.BIDAuthProvider;
 import com.onekosmos.blockid.sdk.fido2.FIDO2KeyType;
-import com.onekosmos.blockid.sdk.utils.BIDUtil;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Objects;
 
 
 public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveIDResponseListener, IOnQRScanResponseListener {
-
-    private final String[] K_CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private final String errorCode = "-1";
     private final String resolveMsg = "OK";
 
@@ -78,7 +65,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param reactContext is application context,event is static which is listen in react code, params are data from onLiveIdCapture
      */
 
-    private void sendEvent(ReactContext reactContext, String eventName, @Nullable String params) {
+    private void onLiveIDEnrolled(ReactContext reactContext, String eventName, @Nullable String params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
 
@@ -334,7 +321,9 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     private void enrollBiometricData(Promise promise) {
         com.onekosmos.blockid.reactnative.poc.MainActivity activity = (com.onekosmos.blockid.reactnative.poc.MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        BIDAuthProvider.getInstance().enrollDeviceAuth(activity, "Device", "Bio", true, new IBiometricResponseListener() {
+        String title= context.getCurrentActivity().getResources().getString(R.string.label_biometric_auth);
+        String desc =  context.getCurrentActivity().getResources().getString(R.string.label_biometric_auth_enroll);
+        BIDAuthProvider.getInstance().enrollDeviceAuth(activity, title, desc, true, new IBiometricResponseListener() {
             @Override
             public void onBiometricAuthResult(boolean success, ErrorManager.ErrorResponse errorResponse) {
                 if (success) {
@@ -372,7 +361,9 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     private void verifyBiometricData(Promise promise) {
         com.onekosmos.blockid.reactnative.poc.MainActivity activity = (com.onekosmos.blockid.reactnative.poc.MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        BIDAuthProvider.getInstance().verifyDeviceAuth(activity, "Device", "Bio", true, new IBiometricResponseListener() {
+        String title= context.getCurrentActivity().getResources().getString(R.string.label_biometric_auth);
+        String desc =  context.getCurrentActivity().getResources().getString(R.string.label_biometric_auth_req);
+        BIDAuthProvider.getInstance().verifyDeviceAuth(activity, title, desc, true, new IBiometricResponseListener() {
             @Override
             public void onBiometricAuthResult(boolean success, ErrorManager.ErrorResponse errorResponse) {
                 if (success) {
@@ -577,9 +568,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                         return;
                     }
                     // LiveID registered successfully
-                    Log.e("setLiveId success","setLiveId success"+error);
-                    sendEvent(context, "onLiveIdCapture", s);
-
+                    onLiveIDEnrolled(context, "OnLiveResult", s);
                 });
     }
 

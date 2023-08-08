@@ -11,5 +11,8 @@
     <string name="label_unsupported_qr_code">Unsupported QR code detected.</string>
     <string name="label_invalid_code">Invalid Code</string>
     <string name="label_please_check_your_internet_connection">Please check your internet Connection.</string>
+    <string name="label_biometric_auth">Biometric authentication</string>
+    <string name="label_biometric_auth_enroll">Do you want to allow this app to use biometric authentication?</string>
+    <string name="label_biometric_auth_req">Biometric authentication required to proceed</string>
 </resources>
 

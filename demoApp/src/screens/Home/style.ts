@@ -45,10 +45,10 @@ export const styles = StyleSheet.create({
   indicatorContainer: {
     backgroundColor: '#FDFEFF',
     alignSelf: 'center',
-    width: 180,
-    height: 100,
     justifyContent: 'center',
     borderRadius: 10,
+    padding: 20,
+    paddingHorizontal: 35,
   },
   indicatorStyle: {},
   loaderText: {

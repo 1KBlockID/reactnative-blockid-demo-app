@@ -69,7 +69,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     if (index === 6) {
       setModalVisible(!modalVisible);
     }
-    if (index === 3) {
+    if (index === 3 && !isLiveIdRegistered) {
       if (checkAndRequestPermissions()) {
         DemoAppModule.StartLiveScan();
       }
@@ -100,16 +100,15 @@ function MenuScreen({navigation}: Props): JSX.Element {
     /**
      * Call When liveId is enrolled successfully
      */
-    if (Platform.OS === 'ios') {
-      const eventEmitter = new NativeEventEmitter(NativeModules.RNEventEmitter);
-      let eventListener = eventEmitter.addListener('OnQRScanResult', event => {
-        console.log('OnLiveIdCapture', event);
-        if (event === 'OK') {
-          setIsLiveIdRegistered(true);
-        }
-      });
-      return () => eventListener.remove();
-    }
+
+    const eventEmitter = new NativeEventEmitter(NativeModules.RNEventEmitter);
+    let eventListener = eventEmitter.addListener('OnLiveResult', event => {
+      console.log('OnLiveIdCapture', event);
+      if (event === 'OK') {
+        setIsLiveIdRegistered(true);
+      }
+    });
+    return () => eventListener.remove();
   }, []);
 
   const renderItem = ({item, index}: {item: any; index: number}) => {

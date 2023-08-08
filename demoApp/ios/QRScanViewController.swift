@@ -79,7 +79,6 @@ extension QRScanViewController: QRScanResponseDelegate {
     
     // uwl 2.0
     if data.hasPrefix("https://") && data.contains("/sessions") {
-      print("https:// and /sessions condition");
       handleUWL2(data: data)
       return
     }
@@ -116,14 +115,12 @@ extension QRScanViewController: QRScanResponseDelegate {
     let arrSplitStrings = data.components(separatedBy: "/session/")
     let url = arrSplitStrings.first ?? ""
     if BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url) {
-      
       GetSessionData.sharedInstance.getSessionData(url: data) { [self] response, message, isSuccess in
         if isSuccess {
           let authQRUWL2 = CommonFunctions.jsonStringToObject(json: response ?? "") as AuthenticationPayloadV2?
           let authQRUWL1 = authQRUWL2?.getAuthRequestModel(sessionUrl: data)
-          processScope(qrModel: authQRUWL1, response : response)
+          processScope(qrModel: authQRUWL1, response : response!)
         } else {
-          // Show toast
           self.view.makeToast(message, duration: 3.0, position: .center, title: "Error", completion: {_ in
             self.goBack()
             return
@@ -142,7 +139,10 @@ extension QRScanViewController: QRScanResponseDelegate {
   private func inValidQRCode() {
     self._viewBtn.isHidden = true
     self._qrView.isHidden = true
-    self.showAlertView(title: "Invalid Code", message: "Unsupported QR code detected.")
+    self.view.makeToast("Unsupported QR code detected.", duration: 3.0, position: .center, title: "Invalid Code", completion: {_ in
+      self.goBack()
+      return
+    })
   }
   
   func getAllData<T: Codable>(for model: T) -> [String: Any]? {

@@ -1,4 +1,4 @@
-import {StatusBar, StyleSheet} from 'react-native';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     height: 80,
   },
   statusBar: {
-    height: STATUSBAR_HEIGHT,
+    height: Platform.OS === 'ios' ? STATUSBAR_HEIGHT : 0,
     backgroundColor: Colors.black,
   },
   buttonStyle: {
@@ -32,15 +32,16 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderBottomWidth: 0.3,
     borderColor: Colors.gray,
-    flexDirection:'row',
-    justifyContent:'space-between'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   buttonText: {
     fontSize: 20,
     fontWeight: '500',
     color: Colors.black,
   },
-  tickImageStyle:{
-    height: 30, width: 30
-  }
+  tickImageStyle: {
+    height: 30,
+    width: 30,
+  },
 });

@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingHorizontal: 20,
   },
   warningText: {
     color: Colors.black,

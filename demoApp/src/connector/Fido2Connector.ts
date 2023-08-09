@@ -51,6 +51,5 @@ export const setLicenseKey = async () => {
     await DemoAppModule.initRegistrations();
   } catch (e) {
     // eslint-disable-next-line no-console
-    __DEV__ && console.log('ERROR IN initRegistrations', e);
   }
 };

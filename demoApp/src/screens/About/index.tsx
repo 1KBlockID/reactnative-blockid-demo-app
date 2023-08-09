@@ -54,7 +54,7 @@ App Version:\n${version}`;
     Toast.show({
       text2: 'Text Copied',
       position: 'bottom',
-      type: 'info',
+      type: 'info ',
     });
   };
 

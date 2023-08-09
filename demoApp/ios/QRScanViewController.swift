@@ -119,7 +119,7 @@ extension QRScanViewController: QRScanResponseDelegate {
         if isSuccess {
           let authQRUWL2 = CommonFunctions.jsonStringToObject(json: response ?? "") as AuthenticationPayloadV2?
           let authQRUWL1 = authQRUWL2?.getAuthRequestModel(sessionUrl: data)
-          processScope(qrModel: authQRUWL1, response : response!)
+          processScope(qrModel: authQRUWL1, response : response ?? "")
         } else {
           self.view.makeToast(message, duration: 3.0, position: .center, title: "Error", completion: {_ in
             self.goBack()

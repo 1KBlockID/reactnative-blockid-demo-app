@@ -6,10 +6,11 @@ import androidx.annotation.Keep;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * demoApp
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
  */
 @Keep
-public class AuthenticationPayloadV2{
+public class AuthenticationPayloadV2 {
     public String scopes;
     @SerializedName("authtype")
     public String authType;
@@ -23,7 +24,7 @@ public class AuthenticationPayloadV2{
     public String expiresDate;
     @SerializedName("__v")
     public String version;
-   AuthenticationMetaData metadata;
+    AuthenticationMetaData metadata;
 
     public AuthenticationPayloadV1 getAuthRequestModel(String sessionUrl) {
         AuthenticationPayloadV1 authenticationPayloadV1 = new AuthenticationPayloadV1();

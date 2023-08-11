@@ -1,5 +1,7 @@
 package com.demoapp;
+
 import static com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager.CustomErrors.K_CONNECTION_ERROR;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +10,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.onekosmos.blockid.reactnative.poc.DemoAppModule;
@@ -22,7 +26,10 @@ import com.onekosmos.blockid.sdk.cameramodule.BIDScannerView;
 import com.onekosmos.blockid.sdk.cameramodule.QRCodeScanner.QRScannerHelper;
 import com.onekosmos.blockid.sdk.cameramodule.camera.qrCodeModule.IOnQRScanResponseListener;
 
-
+/**
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
+ */
 public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanResponseListener {
     public static final String IS_FROM_WALLET_CONNECT = "IS_FROM_WALLET_CONNECT";
     public static final String WALLET_CONNECT_QR_DATA = "WALLET_CONNECT_QR_DATA";
@@ -48,15 +55,14 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
-            mBIDScannerView.setVisibility(View.VISIBLE);
-            mScannerOverlay.setVisibility(View.VISIBLE);
-            mQRScannerHelper = new QRScannerHelper(this, this,
-                    mBIDScannerView);
-            mQRScannerHelper.startQRScanning();
+        mBIDScannerView.setVisibility(View.VISIBLE);
+        mScannerOverlay.setVisibility(View.VISIBLE);
+        mQRScannerHelper = new QRScannerHelper(this, this,
+                mBIDScannerView);
+        mQRScannerHelper.startQRScanning();
     }
 
 
@@ -64,9 +70,9 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            mQRScannerHelper = new QRScannerHelper(this, this, mBIDScannerView);
-            mQRScannerHelper.startQRScanning();
-            mBIDScannerView.setVisibility(View.VISIBLE);
+        mQRScannerHelper = new QRScannerHelper(this, this, mBIDScannerView);
+        mQRScannerHelper.startQRScanning();
+        mBIDScannerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -125,7 +131,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
             String[] sessionDetails = qrCodeData.split("/session/");
             if (!BlockIDSDK.getInstance().isTrustedSessionSource(sessionDetails[0])) {
                 builder.setTitle(getString(R.string.label_error));
-                builder.setMessage( getString(R.string.label_suspicious_qr_code));
+                builder.setMessage(getString(R.string.label_suspicious_qr_code));
                 builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                     finish();
                 });
@@ -141,7 +147,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
 
                     if (error.getCode() == K_CONNECTION_ERROR.getCode()) {
                         builder.setTitle(getString(R.string.label_your_are_offline));
-                        builder.setMessage( getString(R.string.label_please_check_your_internet_connection));
+                        builder.setMessage(getString(R.string.label_please_check_your_internet_connection));
                         builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                             finish();
                         });
@@ -167,7 +173,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
                     String json = gson1.toJson(authenticationPayloadV2);
                     processScope(authenticationPayloadV2.getAuthRequestModel(qrCodeData));
                 } catch (Exception e) {
-                    builder.setMessage( getString(R.string.label_error));
+                    builder.setMessage(getString(R.string.label_error));
                     builder.setPositiveButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                         finish();
                     });
@@ -180,9 +186,9 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
         else {
             try {
                 String qrResponseString = new String(Base64.decode(qrCodeData, Base64.NO_WRAP));
-                processScope(new Gson().fromJson(qrResponseString,AuthenticationPayloadV1.class));
+                processScope(new Gson().fromJson(qrResponseString, AuthenticationPayloadV1.class));
             } catch (Exception e) {
-                builder.setMessage( getString(R.string.label_error));
+                builder.setMessage(getString(R.string.label_error));
                 builder.setPositiveButton("okay", (DialogInterface.OnClickListener) (dialog, which) -> {
                     finish();
                 });
@@ -197,7 +203,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements IOnQRScanRe
     private void processScope(AuthenticationPayloadV1 authenticationPayloadV1) {
         Gson gson1 = new Gson();
         String json = gson1.toJson(authenticationPayloadV1);
-        DemoAppModule.onQRScanResult("OnQRScanResult",json );
+        DemoAppModule.onQRScanResult("OnQRScanResult", json);
         finish();
     }
 }

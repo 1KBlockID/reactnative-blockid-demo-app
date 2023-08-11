@@ -9,7 +9,7 @@ import {RootParamList} from './src/RootStackParams';
 import AboutScreen from './src/screens/About';
 import MenuScreen from './src/screens/Menulist';
 import {LogBox, NativeModules, Platform} from 'react-native';
-import LoginScreen from './src/screens/login';
+import LoginScreen from './src/screens/Login';
 import QRSessionScreen from './src/screens/QRSession';
 import {getData} from './src/databaseService/localStorage';
 import Fido2Screen from './src/screens/FIDO2';

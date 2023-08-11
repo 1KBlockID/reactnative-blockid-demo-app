@@ -6,8 +6,8 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager;
 
 /**
- * Created by kajal
- *
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
  */
 public class GetSessionData {
     private static GetSessionData sharedInstance;

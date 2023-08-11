@@ -1,12 +1,17 @@
 package com.onekosmos.blockid.reactnative.poc;
+
 import com.facebook.react.modules.network.NetworkingModule;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.ConnectionPool;
 
-/*
-  NetworkController class
-  Control over various aspects of network interaction from the app
-*/
+
+/**
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
+ */
+
 public class NetworkController {
 
     /*

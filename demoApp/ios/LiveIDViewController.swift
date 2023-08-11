@@ -1,9 +1,7 @@
-//
-//  LiveIDViewController.swift
+//  Created by 1Kosmos Engineering
 //  demoApp
 //
-//  Created by Kajal Verma on 06/07/23.
-//
+//  Copyright © 2023 1Kosmos. All rights reserved.
 
 import UIKit
 import AVFoundation
@@ -63,9 +61,7 @@ enum Vibration {
     case .selection:
       UISelectionFeedbackGenerator().selectionChanged()
     case .oldSchool:
-      //FIXME: - Need to be fixed
-      print("old school----->")
-      //AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+      print("old school Case----->")
     }
   }
 }
@@ -94,18 +90,17 @@ class LiveIDViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _viewBG.isHidden = true
-   // _imgOverlay.isHidden = true
     _lblInformation.isHidden = true
     
     if isLivenessNeeded {
-        _lblPageTitle.text = "Enroll Live ID (with Liveness Check)"
+      _lblPageTitle.text = "Enroll Live ID (with Liveness Check)"
     } else {
-        _lblPageTitle.text = "Enroll Live ID"
+      _lblPageTitle.text = "Enroll Live ID"
     }
     
     if isForVerification {
-        //For LiveID Verification
-        _lblPageTitle.text = "Live ID Authentication"
+      //For LiveID Verification
+      _lblPageTitle.text = "Live ID Authentication"
     }
     startLiveIDScanning()
   }
@@ -190,8 +185,8 @@ class LiveIDViewController: UIViewController {
     var msg: String? = nil
     if error?.code == NSURLErrorNotConnectedToInternet ||
         error?.code == CustomErrors.Network.OFFLINE.code {
-                  msg = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
-                  title = ErrorConfig.noInternet.title
+      msg = "OFFLINE".localizedMessage(CustomErrors.Network.OFFLINE.code)
+      title = ErrorConfig.noInternet.title
     }
     else if (error != nil && error?.code == CustomErrors.kUnauthorizedAccess.code) {
       //            self.showAppLogin()
@@ -199,9 +194,9 @@ class LiveIDViewController: UIViewController {
     else {
       msg = error!.message
     }
-            self.view.makeToast(msg, duration: 3.0, position: .center, title: title, completion: {_ in
-                self.goBack()
-            })
+    self.view.makeToast(msg, duration: 3.0, position: .center, title: title, completion: {_ in
+      self.goBack()
+    })
   }
   
   private func stopLiveIDScanning() {
@@ -263,22 +258,22 @@ extension LiveIDViewController: LiveIDResponseDelegate {
   }
   
   func focusOnFaceChanged(isFocused: Bool?) {
-        guard let inFocus = isFocused else {
-          return
-        }
+    guard let inFocus = isFocused else {
+      return
+    }
     
-        if !inFocus {
-          DispatchQueue.main.async {
-            self.imgOverlay.tintColor = .red
-            self._lblInformation.text = "Out of focus !!!. Please try again."
-            Vibration.oldSchool.vibrate()
-          }
-        } else {
-          DispatchQueue.main.async {
-            self.imgOverlay.tintColor = .green
-    
-          }
-        }
+    if !inFocus {
+      DispatchQueue.main.async {
+        self.imgOverlay.tintColor = .red
+        self._lblInformation.text = "Out of focus !!!. Please try again."
+        Vibration.oldSchool.vibrate()
+      }
+    } else {
+      DispatchQueue.main.async {
+        self.imgOverlay.tintColor = .green
+        
+      }
+    }
   }
   
   func wrongExpressionDetected(_ livenessFactor: LivenessFactorType) {

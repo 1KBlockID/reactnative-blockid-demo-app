@@ -8,8 +8,8 @@ import com.onekosmos.blockid.sdk.datamodel.AccountAuthConstants;
 import com.onekosmos.blockid.sdk.datamodel.BIDOrigin;
 
 /**
- * demoApp
- *
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
  */
 @Keep
 public class AuthenticationPayloadV1 {

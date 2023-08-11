@@ -4,6 +4,11 @@ import androidx.annotation.Keep;
 
 import java.util.ArrayList;
 
+/**
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
+ */
+
 @Keep
 @SuppressWarnings("ALL")
 public class AuthenticationMetaData {

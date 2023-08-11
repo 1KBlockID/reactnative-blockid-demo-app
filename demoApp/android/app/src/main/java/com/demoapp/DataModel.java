@@ -2,6 +2,11 @@ package com.onekosmos.blockid.reactnative.poc;
 
 import com.onekosmos.blockid.sdk.datamodel.BIDTenant;
 
+/**
+ * Created by 1Kosmos Engineering
+ * Copyright © 2023 1Kosmos. All rights reserved.
+ */
+
 public class DataModel {
     String licenseKey;
     BIDTenant tenant;

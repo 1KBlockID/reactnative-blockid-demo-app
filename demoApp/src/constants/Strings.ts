@@ -9,7 +9,7 @@ export const Strings = {
   LoginWithQR: 'Login with QR',
   LiveID: 'LiveID',
   FIDO2: 'FIDO2',
-  PinManagement: 'Pin Management',
+  PinManagement: 'FIDO2 PIN Management',
   ResetApp: 'Reset App',
   Copy: 'Copy',
   ORSession1: 'OR Session 1 \n (Scan qr ,authenticate with scope data)',

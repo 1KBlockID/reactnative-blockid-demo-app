@@ -1,6 +1,7 @@
+//  Created by 1Kosmos Engineering
+//  demoApp
 //
-//  RCTBridge.h
-//  app
+//  Copyright © 2023 1Kosmos. All rights reserved.
 
 #import <Foundation/Foundation.h>
 #import "React/RCTBridge.h"
@@ -12,5 +13,5 @@
 @property (nonatomic, strong) UIWindow *window;
 @end
 
- 
+
 

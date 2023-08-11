@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 15,
     alignSelf: 'center',
-    fontWeight:'500'
+    fontWeight: '500',
   },
   statusBar: {
     height: STATUSBAR_HEIGHT,

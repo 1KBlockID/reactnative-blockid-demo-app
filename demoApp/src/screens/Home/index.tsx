@@ -59,7 +59,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
     if (index == 0) {
       try {
         setIsLoading(true);
-        await DemoAppModule.register_Tenant();
+        await DemoAppModule.beginRegistration();
         storeData(true, 'isRegister');
         setTimeout(() => {
           navigation.navigate('LoginScreen');

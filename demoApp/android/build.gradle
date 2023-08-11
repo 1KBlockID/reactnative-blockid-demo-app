@@ -17,10 +17,10 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
-          classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
-         classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath 'com.google.gms:google-services:4.3.15'
     }
-    
+
 }
 allprojects {
     repositories {
@@ -49,18 +49,18 @@ allprojects {
             url 'http://www.baka.sk/maven2'
             allowInsecureProtocol = true
         }
-    //     exclusiveContent {
-    //        filter {
-    //            includeGroup "com.facebook.react"
-              
-    //        }
-    //        forRepository {
-    //            maven {
-    //             //    url "$rootDir/../node_modules/react-native/android"
-    //             url "$rootDir/../node_modules/react-native/android"
-    //            }
-    //        }
-    //    }
+        //     exclusiveContent {
+        //        filter {
+        //            includeGroup "com.facebook.react"
+
+        //        }
+        //        forRepository {
+        //            maven {
+        //             //    url "$rootDir/../node_modules/react-native/android"
+        //             url "$rootDir/../node_modules/react-native/android"
+        //            }
+        //        }
+        //    }
     }
 }
-def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+def REACT_NATIVE_VERSION = new File(['node', '--print', "JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())

@@ -22,7 +22,7 @@ static void InitializeFlipper(UIApplication *application) {
   [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
   [client addPlugin:[FlipperKitReactPlugin new]];
   [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-
+  
   [client start];
 }
 #endif
@@ -32,7 +32,7 @@ static void InitializeFlipper(UIApplication *application) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   if ([FIRApp defaultApp] == nil) {
-   [FIRApp configure];
+    [FIRApp configure];
   }
   self.moduleName = @"demoApp";
   // You can add your custom initial props in the dictionary below.
@@ -40,7 +40,7 @@ static void InitializeFlipper(UIApplication *application) {
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
-
+  
   return YES;
 }
 

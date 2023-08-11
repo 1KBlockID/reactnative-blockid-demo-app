@@ -1,9 +1,7 @@
-//
-//  QRScanViewController.swift
+//  Created by 1Kosmos Engineering
 //  demoApp
 //
-//  Created by Kajal Verma on 18/07/23.
-//
+//  Copyright © 2023 1Kosmos. All rights reserved.
 
 import Foundation
 import AVFoundation
@@ -57,12 +55,9 @@ class QRScanViewController: UIViewController {
 extension QRScanViewController: QRScanResponseDelegate {
   func onQRScanResult(qrCodeData: String?) {
     if qrCodeData == nil {
-      
       AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
         if !response {
-          DispatchQueue.main.async {
-            //                        self.alertForCameraAccess()
-          }
+          print("Cemera Response", response);
         }
       }
       return
@@ -70,7 +65,6 @@ extension QRScanViewController: QRScanResponseDelegate {
     qrScannerHelper?.stopQRScanning()
     _qrView.isHidden = true
     _viewBtn.isHidden = true
-    
     self.processQRData(qrCodeData ?? "")
     
   }
@@ -146,11 +140,11 @@ extension QRScanViewController: QRScanResponseDelegate {
   }
   
   func getAllData<T: Codable>(for model: T) -> [String: Any]? {
-      let encoder = JSONEncoder()
-      guard let data = try? encoder.encode(model) else {
-          return nil
-      }
-      return try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+    let encoder = JSONEncoder()
+    guard let data = try? encoder.encode(model) else {
+      return nil
+    }
+    return try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
   }
   
   private func presentConsentViewWithData(qrdata: AuthenticationPayloadV1, response:Any) {

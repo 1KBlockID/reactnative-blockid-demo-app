@@ -1,6 +1,7 @@
+//  Created by 1Kosmos Engineering
+//  demoApp
 //
-//  AppConstants.swift
-//  Demo
+//  Copyright © 2023 1Kosmos. All rights reserved.
 
 import Foundation
 import BlockID
@@ -13,7 +14,7 @@ public struct Tenant {
   static let clientTenant = BIDTenant.makeTenant(tag: "blockiddev-1kosmos",
                                                  community:"default",
                                                  dns:"https://blockid-dev.1kosmos.net");
-                                                                                                 
+  
 }
 
 public struct AppConsants {

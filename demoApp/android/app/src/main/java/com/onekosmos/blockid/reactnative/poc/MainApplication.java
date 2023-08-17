@@ -40,7 +40,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new SplashScreenReactPackage();
                     packages.add(new DemoAppPackage());
                     return packages;
-
                 }
 
                 @Override
@@ -76,4 +75,3 @@ public class MainApplication extends Application implements ReactApplication {
         ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     }
 }
-

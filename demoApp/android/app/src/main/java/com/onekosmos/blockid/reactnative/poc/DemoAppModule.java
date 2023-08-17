@@ -35,7 +35,6 @@ import com.onekosmos.blockid.sdk.fido2.FIDO2KeyType;
 
 import java.util.Objects;
 
-
 /**
  * Created by 1Kosmos Engineering
  * Copyright © 2023 1Kosmos. All rights reserved.
@@ -43,16 +42,11 @@ import java.util.Objects;
 
 public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveIDResponseListener, IOnQRScanResponseListener {
     private final String resolveMsg = "OK";
-
-
     private final String K_FILE_NAME = "fido3.html";
-
-
-    private LiveIDScannerHelper mLiveIDScannerHelper;
-
     private final BIDTenant clientTenant = AppConstants.clientTenant;
     private final String licenseKey = AppConstants.licenseKey;
     private static ReactApplicationContext context;
+    private LiveIDScannerHelper mLiveIDScannerHelper;
 
     DemoAppModule(ReactApplicationContext context) {
         this.context = context;
@@ -107,7 +101,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      *
      * @param promise callback function to react native
      */
-
     @ReactMethod
     public void getSDKInfo(Promise promise) {
         UiThreadUtil.runOnUiThread(() -> {
@@ -120,7 +113,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      *
      * @param promise callback function to react native
      */
-
     @ReactMethod
     public void scanQRCode(Promise promise) {
         Intent intent = new Intent(context, ScanQRCodeActivity.class);
@@ -210,7 +202,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param promise callback function to react native, Name and platform are passed from react-native
      */
     @ReactMethod
-    public void registerFIDO2Key(String name, String platform,String pin, Promise promise) {
+    public void registerFIDO2Key(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
             UiThreadUtil.runOnUiThread(() -> registerKey(name, FIDO2KeyType.PLATFORM, promise));
         } else {
@@ -224,7 +216,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param promise callback function to react native, Name and platform are passed from react-native
      */
     @ReactMethod
-    public void authenticateFIDO2Key(String name, String platform,String pin, Promise promise) {
+    public void autheticateFIDO2Key(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
             UiThreadUtil.runOnUiThread(() -> authenticateKey(name, FIDO2KeyType.PLATFORM, promise));
         } else {
@@ -255,7 +247,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      *
      * @param eventName is static which is listen in react code, params are the response data from QRScan
      */
-
     public static void onQRScanResult(String eventName, @Nullable String params) {
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
@@ -347,7 +338,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
             }
         });
     }
-
 
     private void verifyBiometricData(Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());

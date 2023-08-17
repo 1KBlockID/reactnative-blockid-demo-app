@@ -13,22 +13,15 @@ public class DataModel {
     BIDTenant clientTenant;
     String DID;
     String publicKey;
-    String SdkVersion;
+    String sdkVersion;
 
-    public String getLicenseKey() {
-        return licenseKey;
+
+    public void setTenant(BIDTenant tenant) {
+        this.tenant = tenant;
     }
 
     public void setLicenseKey(String licenseKey) {
         this.licenseKey = licenseKey;
-    }
-
-    public BIDTenant getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(BIDTenant tenant) {
-        this.tenant = tenant;
     }
 
     public BIDTenant getClientTenant() {
@@ -39,27 +32,15 @@ public class DataModel {
         this.clientTenant = clientTenant;
     }
 
-    public String getDID() {
-        return DID;
-    }
-
     public void setDID(String DID) {
         this.DID = DID;
-    }
-
-    public String getPublicKey() {
-        return publicKey;
     }
 
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
     }
 
-    public String getSdkVersion() {
-        return SdkVersion;
-    }
-
     public void setSdkVersion(String sdkVersion) {
-        SdkVersion = sdkVersion;
+        this.sdkVersion = sdkVersion;
     }
 }

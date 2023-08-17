@@ -40,7 +40,7 @@ function AboutScreen({navigation}: Props): JSX.Element {
     let AboutScreenText = `Root Tenant : \nDNS: ${sdkInfo.tenant.dns} \nTag :${sdkInfo.tenant.tenantTag}\ncommunity : ${sdkInfo.tenant.community}\n(${sdkInfo.tenant.communityId}) \n
 Client Tenant: \nDNS: ${sdkInfo.clientTenant.dns} \nTag :${sdkInfo.tenant.tenantTag} \ncommunity :${sdkInfo.clientTenant.community} \n License Key:\n ${sdkInfo.licenseKey} \n\nDID:\n${sdkInfo.DID}\n
 Public Key :
-${sdkInfo.publicKey} \n\nSDK Version: \n${sdkInfo.SdkVersion}\n 
+${sdkInfo.publicKey} \n\nSDK Version: \n${sdkInfo.sdkVersion}\n 
 App Version:\n${version}`;
     setSdkResponse(AboutScreenText);
   };

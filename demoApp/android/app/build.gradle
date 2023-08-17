@@ -112,7 +112,6 @@ android {
         pickFirst '**/libc++_shared.so'
         pickFirst '**/libfbjni.so'
     }
-
 }
 
 
@@ -148,32 +147,17 @@ dependencies {
 // fingerprint and biometric
     implementation 'androidx.biometric:biometric:1.1.0'
 
-// annotations
-    implementation 'org.jetbrains:annotations:23.0.0'
-
-// base32 encode/decode
-    implementation 'commons-codec:commons-codec:1.11'
-
-// network call
+   // network call
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
-
-// filter document
-    implementation 'com.annimon:stream:1.2.2'
-
-// Walletconnect
-    implementation 'com.walletconnect:sign:2.0.0-rc.5'
-    implementation 'com.walletconnect:android-core:1.0.0'
-    implementation 'org.web3j:utils:5.0.0'
 
     //LiveID
     implementation 'com.google.guava:guava:31.0.1-android'
 
     // BlockID SDK
     implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.9.40.6495ABDF'
-    // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
 
-
+    // // RecyclerView
+    // implementation "androidx.recyclerview:recyclerview:1.2.1"
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

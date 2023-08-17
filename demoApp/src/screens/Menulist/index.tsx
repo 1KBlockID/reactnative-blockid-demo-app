@@ -71,7 +71,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     }
     if (index === 3 && !isLiveIdRegistered) {
       if (checkAndRequestPermissions()) {
-        DemoAppModule.StartLiveScan();
+        DemoAppModule.startLiveScan();
       }
     }
     if (index === 4) {
@@ -85,7 +85,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     /**
      * call SDK method to check is liveID is enrolled or not
      */
-    DemoAppModule.getIsLiveIdRegister()
+    DemoAppModule.isLiveIdRegistered()
       .then((res: any) => {
         if (res === 'Yes') {
           setIsLiveIdRegistered(true);
@@ -132,13 +132,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
     AsyncStorage.clear()
       .then(res => {
         setModalVisible(false);
-        if (Platform.OS === 'ios') {
-          try {
-            DemoAppModule.resetSDK();
-          } catch (error) {
-            __DEV__ && console.log('error ', error);
-          }
-        }
+        DemoAppModule.resetSDK();
         navigation.dispatch(
           CommonActions.reset({
             index: 1,

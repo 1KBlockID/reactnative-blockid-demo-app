@@ -42,7 +42,7 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
   const handleQRLogin = async (actionType: string) => {
     if (actionType === Strings.ORSession1) {
       if (checkAndRequestPermissions()) {
-        DemoAppModule.ScanQRCode();
+        DemoAppModule.scanQRCode();
       }
     } else {
       //QR Scan with Preset Data

@@ -53,7 +53,7 @@ RCT_EXPORT_METHOD(getSDKInfo:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
-RCT_EXPORT_METHOD(ScanQRCode:(RCTPromiseResolveBlock)resolveFunction
+RCT_EXPORT_METHOD(scanQRCode:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"main" bundle:nil];
@@ -85,7 +85,7 @@ RCT_EXPORT_METHOD(authenticateUser:(NSString *)userId session:(NSString *)sessio
   });
 }
 
-RCT_EXPORT_METHOD(StartLiveScan:(RCTPromiseResolveBlock)resolveFunction
+RCT_EXPORT_METHOD(startLiveScan:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
     
@@ -97,17 +97,17 @@ RCT_EXPORT_METHOD(StartLiveScan:(RCTPromiseResolveBlock)resolveFunction
   });
 }
 
-RCT_EXPORT_METHOD(getIsLiveIdRegister:(RCTPromiseResolveBlock)resolveFunction
+RCT_EXPORT_METHOD(isLiveIdRegistered:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    NSString* isLiveIdRegister = [sdk getIsLiveIdRegister];
+    NSString* isLiveIdRegister = [sdk isLiveIdRegistered];
     resolveFunction(isLiveIdRegister);
   });
 }
 
-RCT_EXPORT_METHOD(register:(NSString *)name
+RCT_EXPORT_METHOD(registerFIDO2KeyUsingWeb:(NSString *)name
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -117,13 +117,13 @@ RCT_EXPORT_METHOD(register:(NSString *)name
   });
 }
 
-RCT_EXPORT_METHOD(authenticate:(NSString *)name
+RCT_EXPORT_METHOD(authenticateFIDO2KeyUsingWeb:(NSString *)name
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-      [sdk authenticate:name];
+      [sdk authenticateFIDO2KeyUsingWeb:name];
   });
 }
 

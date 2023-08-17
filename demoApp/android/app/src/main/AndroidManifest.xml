@@ -20,7 +20,8 @@
         tools:replace="android:allowBackup,android:label,android:theme">
         <activity
             android:name="com.demoapp.ScanQRCodeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".MainActivity"

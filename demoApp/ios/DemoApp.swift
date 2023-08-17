@@ -58,11 +58,11 @@ import BlockID
     let sdkVersion = BlockIDSDK.sharedInstance.getVersion();
     let clientTenatDict : [String:Any] = ["community":(clientCommunity ?? ""),"dns":(clientDNS ?? ""),"tenantTag":(clientTag ?? "")]
     let tenatDict : [String:Any] = ["community":(community ?? ""),"communityId":(communityId ?? ""),"dns":(dns ?? ""),"tenantId":(tenantId ?? ""),"tenantTag":(tag ?? "")]
-    let mainDict : [String:Any] = ["DID":(DID ),"SdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenatDict ),"licenseKey":(licenseKey ),"publicKey":(publicKey ),"tenant":(tenatDict )];
+    let mainDict : [String:Any] = ["DID":(DID ),"sdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenatDict ),"licenseKey":(licenseKey ),"publicKey":(publicKey ),"tenant":(tenatDict )];
     return mainDict;
   }
   
-  @objc func getIsLiveIdRegister() -> String {
+  @objc func isLiveIdRegistered() -> String {
     return BlockIDSDK.sharedInstance.isLiveIDRegisterd() ? "Yes" : "NO"
   }
   
@@ -96,7 +96,7 @@ import BlockID
     webRegister(name, type: .CROSS_PLATFORM)
   }
   
-  @objc func authenticate(_ name: String) {
+  @objc func authenticateFIDO2KeyUsingWeb(_ name: String) {
     webAuthenticate( name, type: .CROSS_PLATFORM)
   }
   

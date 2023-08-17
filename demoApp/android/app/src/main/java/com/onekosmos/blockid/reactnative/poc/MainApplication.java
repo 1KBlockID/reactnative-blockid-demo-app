@@ -1,9 +1,7 @@
 package com.onekosmos.blockid.reactnative.poc;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.demoapp.ScanQRCodeActivity;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -40,7 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
                     // Packages that cannot be autolinked yet can be added manually here, for example:
                     // packages.add(new MyReactNativePackage());
                     new SplashScreenReactPackage();
-                    packages.add(new com.onekosmos.blockid.reactnative.poc.DemoAppPackage());
+                    packages.add(new DemoAppPackage());
                     return packages;
 
                 }

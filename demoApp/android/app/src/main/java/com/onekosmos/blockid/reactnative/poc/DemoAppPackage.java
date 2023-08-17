@@ -1,7 +1,5 @@
 package com.onekosmos.blockid.reactnative.poc;
 
-import android.util.Log;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,7 +17,7 @@ public class DemoAppPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = Arrays.asList(new com.onekosmos.blockid.reactnative.poc.DemoAppModule(reactContext));
+        List<NativeModule> modules = Arrays.asList(new DemoAppModule(reactContext));
         return modules;
     }
 }

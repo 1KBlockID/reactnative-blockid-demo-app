@@ -1,4 +1,4 @@
-package com.demoapp;
+package com.onekosmos.blockid.reactnative.poc;
 
 import androidx.annotation.Keep;
 

@@ -1,4 +1,4 @@
-package com.demoapp;
+package com.onekosmos.blockid.reactnative.poc;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;

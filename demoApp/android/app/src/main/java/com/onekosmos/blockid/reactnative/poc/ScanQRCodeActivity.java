@@ -1,4 +1,4 @@
-package com.demoapp;
+package com.onekosmos.blockid.reactnative.poc;
 
 import static com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager.CustomErrors.K_CONNECTION_ERROR;
 
@@ -19,8 +19,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.onekosmos.blockid.reactnative.poc.DemoAppModule;
-import com.onekosmos.blockid.reactnative.poc.R;
 import com.onekosmos.blockid.sdk.BlockIDSDK;
 import com.onekosmos.blockid.sdk.cameramodule.BIDScannerView;
 import com.onekosmos.blockid.sdk.cameramodule.QRCodeScanner.QRScannerHelper;

@@ -3,9 +3,7 @@ apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services"
 apply plugin: 'com.google.firebase.crashlytics'
 
-
 import com.android.build.OutputFile
-
 
 react {}
 
@@ -114,9 +112,7 @@ android {
     }
 }
 
-
 dependencies {
-
     // The version of react-native is set by the React Native Gradle Plugin
     // implementation("com.facebook.react:react-android")
     implementation "com.facebook.react:react-native:+"
@@ -139,25 +135,20 @@ dependencies {
         implementation jscFlavor
     }
 
-// BlockID SDK
+    // BlockID SDK
+    implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.9.40.6495ABDF'
 
-// secure shared preference
+    // secure shared preference
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
 
-// fingerprint and biometric
+    // fingerprint and biometric
     implementation 'androidx.biometric:biometric:1.1.0'
 
-   // network call
+    // network call
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
     //LiveID
     implementation 'com.google.guava:guava:31.0.1-android'
-
-    // BlockID SDK
-    implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.9.40.6495ABDF'
-
-    // // RecyclerView
-    // implementation "androidx.recyclerview:recyclerview:1.2.1"
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

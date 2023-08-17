@@ -7,7 +7,7 @@ import com.onekosmos.blockid.sdk.datamodel.BIDTenant;
  * Copyright © 2023 1Kosmos. All rights reserved.
  */
 
-public class DataModel {
+public class SdkInformationDataModel {
     String licenseKey;
     BIDTenant tenant;
     BIDTenant clientTenant;

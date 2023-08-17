@@ -100,20 +100,28 @@ import BlockID
     webAuthenticate( name, type: .CROSS_PLATFORM)
   }
   
-  @objc func registerUserKey(_ name: String) {
-    registerKey(name, type: .PLATFORM,pin:"")
+  @objc func registerFIDO2Key(_ name: String, plateform : String, pin :String) {
+    if(plateform == "platform"){
+      registerKey(name, type: .PLATFORM,pin:"")
+    }
+    else if(pin == ""){
+      registerKey(name, type: .CROSS_PLATFORM, pin: "")
+    }
+    else{
+      registerKey(name, type: .CROSS_PLATFORM, pin: pin)
+    }
   }
   
-  @objc func authenticateUserKey(_ name: String) {
-    authenticateKey( name, type: .PLATFORM, pin: "")
-  }
-  
-  @objc func registerCardKey(_ name: String) {
-    registerKey(name, type: .CROSS_PLATFORM, pin: "")
-  }
-  
-  @objc func authenticateCardKey(_ name: String) {
-    authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
+  @objc func authenticateFIDO2Key(_ name: String, plateform : String, pin :String) {
+    if(plateform == "platform"){
+      authenticateKey( name, type: .PLATFORM, pin: "")
+    }
+    else if(pin == "" ){
+      authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
+    }
+    else{
+      authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
+    }
   }
   
   

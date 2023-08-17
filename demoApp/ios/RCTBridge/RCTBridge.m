@@ -127,63 +127,23 @@ RCT_EXPORT_METHOD(authenticateFIDO2KeyUsingWeb:(NSString *)name
   });
 }
 
-RCT_EXPORT_METHOD(registerUserKey:(NSString *)name
+RCT_EXPORT_METHOD(registerFIDO2Key:(NSString *)name  platorm:(NSString *)platorm pin:(NSString *)pin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk registerUserKey:name];
+    [sdk registerFIDO2Key:name plateform:platorm pin:pin];
   });
 }
 
-RCT_EXPORT_METHOD(authenticateUserKey:(NSString *)name
+RCT_EXPORT_METHOD(authenticateFIDO2Key:(NSString *)name platorm:(NSString *)platorm pin:(NSString *)pin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc]initWithResolveFunction:resolveFunction
                                             rejectFunction:rejectFunction];
-    [sdk authenticateUserKey:name];
-  });
-}
-
-RCT_EXPORT_METHOD(registerCardKey:(NSString *)name
-                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
-                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                             rejectFunction:rejectFunction];
-      [sdk registerCardKey:name];
-  });
-}
-
-RCT_EXPORT_METHOD(authenticateCardKey:(NSString *)name
-                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
-                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                             rejectFunction:rejectFunction];
-    [sdk authenticateCardKey:name];
-  });
-}
-
-RCT_EXPORT_METHOD(registerCardKeyWithPin:(NSString *)name pin:(NSString *)pin
-                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
-                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                             rejectFunction:rejectFunction];
-      [sdk registerCardKeyWithPin:name pin:pin];
-  });
-}
-
-RCT_EXPORT_METHOD(authenticateCardKeyWithPin:(NSString *)name  pin:(NSString *)pin
-                  resolveFunction:(RCTPromiseResolveBlock)resolveFunction
-                  rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
-                                             rejectFunction:rejectFunction];
-    [sdk authenticateCardKeyWithPin:name pin:pin];
+    [sdk authenticateFIDO2Key:name plateform:platorm pin:pin];
   });
 }
 

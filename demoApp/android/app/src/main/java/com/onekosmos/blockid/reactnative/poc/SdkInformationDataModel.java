@@ -15,7 +15,6 @@ public class SdkInformationDataModel {
     String publicKey;
     String sdkVersion;
 
-
     public void setTenant(BIDTenant tenant) {
         this.tenant = tenant;
     }

@@ -17,5 +17,3 @@ public final class AppConstants {
             "default",
             "https://blockid-dev.1kosmos.net");
 }
-
-

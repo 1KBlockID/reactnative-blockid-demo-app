@@ -230,7 +230,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     @ReactMethod
     private void resetSDK() {
         UiThreadUtil.runOnUiThread(() -> BlockIDSDK.getInstance().resetSDK(licenseKey));
-
     }
 
     /**
@@ -322,7 +321,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         Gson gson = new Gson();
         String json = gson.toJson(sdkInformationDataModel);
         promise.resolve(json);
-
     }
 
     private void getData(String scope, String creds, Promise promise) {
@@ -354,7 +352,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
             @Override
             public void onNonBiometricAuth(boolean b) {
                 Log.e("verifyBiometricData abc", String.valueOf(b));
-
             }
         });
     }
@@ -390,7 +387,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
                 promise.reject(String.valueOf(errorResponse.getCode()), errorResponse.getMessage());
                 return;
             }
-
             promise.resolve(resolveMsg);
         });
     }
@@ -437,7 +433,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     @Override
     public void onLiveIDCaptured(Bitmap bitmap, String s, ErrorManager.ErrorResponse errorResponse) {
-
         BlockIDSDK.getInstance().setLiveID(bitmap, null, null, (status, message, error) -> {
             // Register LiveID failed
             if (!status) {

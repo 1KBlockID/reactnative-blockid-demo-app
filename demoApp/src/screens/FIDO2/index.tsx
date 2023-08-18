@@ -76,49 +76,12 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   };
 
   /**
-   * register through Platform
-   */
-  const registerUserKey = () => {
-    DemoAppModule.registerUserKey(userName)
-      .then((res: string) => {
-        __DEV__ && console.log('registerUserKey', res);
-        setLoader(false);
-        if (res === 'OK') {
-          storeData(userName, 'userName');
-          SuccessAlert('Platform key registered successfully.');
-        }
-      })
-      .catch((error: Error) => {
-        setLoader(false);
-        Alert.alert(JSON.stringify(error?.message ?? error));
-      });
-  };
-
-  /**
-   * authenticate through Platform
-   */
-
-  const authenticateUserKey = () => {
-    DemoAppModule.authenticateUserKey(userName)
-      .then((res: string) => {
-        setLoader(false);
-        if (res === 'OK') {
-          storeData(userName, 'userName');
-          SuccessAlert('Platform key authenticated successfully.');
-        }
-      })
-      .catch((error: Error) => {
-        setLoader(false);
-        Alert.alert(JSON.stringify(error?.message ?? error));
-      });
-  };
-  /**
    * register through key
    */
 
   const registerCardKey = () => {
     if (Platform.OS === 'ios' && pin !== '') {
-      DemoAppModule.registerCardKeyWithPin(userName, pin)
+      DemoAppModule.registerFIDO2(userName, 'cross-platform', pin)
         .then((res: string) => {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
@@ -134,7 +97,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
     } else {
-      DemoAppModule.registerCardKey(userName)
+      DemoAppModule.registerFIDO2(userName, 'cross-platform', '')
         .then((res: string) => {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
@@ -156,7 +119,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const authenticateCardKey = () => {
     //Check pin for IOS
     if (Platform.OS === 'ios' && pin !== '') {
-      DemoAppModule.authenticateCardKeyWithPin(userName, pin)
+      DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', pin)
         .then((res: string) => {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
@@ -171,7 +134,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
     } else {
-      DemoAppModule.authenticateCardKey(userName)
+      DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', '')
         .then((res: string) => {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
@@ -186,29 +149,103 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     }
   };
 
-  const handleButtonClick = (index: number, action: String) => {
+  /**
+   * FIDO2 registration
+   */
+  const registerFIDO2 = (keyType?: string) => {
+    if (keyType === 'platform') {
+      DemoAppModule.registerFIDO2(userName, keyType, '')
+        .then((res: string) => {
+          __DEV__ && console.log('registerUserKey', res);
+          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Platform key registered successfully.');
+          }
+        })
+        .catch((error: Error) => {
+          setLoader(false);
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    } else {
+      DemoAppModule.registerFIDO2(userName, keyType, '')
+        .then((res: string) => {
+          __DEV__ && console.log('registerUserKey', res);
+          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Platform key registered successfully.');
+          }
+        })
+        .catch((error: Error) => {
+          setLoader(false);
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    }
+  };
+
+  /**
+   * FIDO2 authentication
+   */
+  const authenticateFIDO2Key = (keyType?: string) => {
+    if (keyType == 'platform') {
+      DemoAppModule.authenticateFIDO2Key(userName, keyType, '')
+        .then((res: string) => {
+          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Platform key authenticated successfully.');
+          }
+        })
+        .catch((error: Error) => {
+          setLoader(false);
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    } else {
+      DemoAppModule.authenticateFIDO2Key(userName, keyType, '')
+        .then((res: string) => {
+          setLoader(false);
+          if (res === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Platform key authenticated successfully.');
+          }
+        })
+        .catch((error: Error) => {
+          setLoader(false);
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    }
+  };
+
+  const isUsernameExists = () => {
     if (!userName) {
       Toast.show({
         type: 'error',
         text1: 'Please Enter userName',
       });
-      return;
+      return false;
     }
-    setLoader(true);
-    if (action === Strings.Register_PlatForm) {
-      registerUserKey();
-    } else if (action === Strings.Authenticate_Platform) {
-      authenticateUserKey();
-    } else if (action === Strings.Register_Security_key) {
-      registerCardKey();
-    } else if (action === Strings.Authenticate_Security_key) {
-      authenticateCardKey();
-    } else if (action === Strings.Register_Security_With_Pin) {
-      setModalVisible(true);
-      setActiveIndex(Strings.Register_Security_With_Pin);
-    } else {
-      setModalVisible(true);
-      setActiveIndex(Strings.Authenticate_Security_With_Pin);
+    return true;
+  };
+
+  const handleButtonClick = (index: number, action: String) => {
+    if (isUsernameExists()) {
+      setLoader(true);
+      if (action === Strings.Register_PlatForm) {
+        registerFIDO2('platform');
+      } else if (action === Strings.Authenticate_Platform) {
+        authenticateFIDO2Key('platform');
+      } else if (action === Strings.Register_Security_key) {
+        registerFIDO2('cross-platform');
+      } else if (action === Strings.Authenticate_Security_key) {
+        authenticateFIDO2Key('cross-platform');
+      } else if (action === Strings.Register_Security_With_Pin) {
+        setModalVisible(true);
+        setActiveIndex(Strings.Register_Security_With_Pin);
+      } else {
+        setModalVisible(true);
+        setActiveIndex(Strings.Authenticate_Security_With_Pin);
+      }
     }
   };
 
@@ -237,59 +274,48 @@ function Fido2Screen({navigation}: Props): JSX.Element {
    * register through web
    */
   const webRegistration = () => {
-    if (!userName) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Enter userName',
-      });
-      return;
-    }
-    setLoader(true);
-    DemoAppModule.register(
-      Platform.OS === 'ios' ? removeSpaces(userName) : userName,
-    )
-      .then((response: String) => {
-        if (response === 'OK') {
-          storeData(userName, 'userName');
-          SuccessAlert('Your FIDO2 key has been successfully registered.');
+    if (isUsernameExists()) {
+      setLoader(true);
+      DemoAppModule.registerFIDO2UsingWeb(
+        Platform.OS === 'ios' ? removeSpaces(userName) : userName,
+      )
+        .then((response: String) => {
+          if (response === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert('Your FIDO2 key has been successfully registered.');
+            setLoader(false);
+          }
+        })
+        .catch((error: Error) => {
           setLoader(false);
-        }
-      })
-      .catch((error: Error) => {
-        setLoader(false);
-        Alert.alert(JSON.stringify(error?.message ?? error));
-      });
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    }
   };
 
   /**
    * authenticate through web
    */
   const webAuthentication = () => {
-    if (!userName) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Enter userName',
-      });
-      return;
-    }
-
-    setLoader(true);
-    DemoAppModule.authenticate(
-      Platform.OS === 'ios' ? removeSpaces(userName) : userName,
-    )
-      .then((response: String) => {
-        if (response === 'OK') {
-          storeData(userName, 'userName');
-          SuccessAlert(
-            'You have successfully authenticated with your FIDO2 key.',
-          );
+    if (isUsernameExists()) {
+      setLoader(true);
+      DemoAppModule.authenticateFIDO2KeyUsingWeb(
+        Platform.OS === 'ios' ? removeSpaces(userName) : userName,
+      )
+        .then((response: String) => {
+          if (response === 'OK') {
+            storeData(userName, 'userName');
+            SuccessAlert(
+              'You have successfully authenticated with your FIDO2 key.',
+            );
+            setLoader(false);
+          }
+        })
+        .catch((error: Error) => {
           setLoader(false);
-        }
-      })
-      .catch((error: Error) => {
-        setLoader(false);
-        Alert.alert(JSON.stringify(error?.message ?? error));
-      });
+          Alert.alert(JSON.stringify(error?.message ?? error));
+        });
+    }
   };
 
   const handleCancelClick = () => {

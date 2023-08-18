@@ -9,20 +9,20 @@ import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager;
  * Created by 1Kosmos Engineering
  * Copyright © 2023 1Kosmos. All rights reserved.
  */
-public class GetSessionData {
-    private static GetSessionData sharedInstance;
+public class GetSessionDataAPI {
+    private static GetSessionDataAPI sharedInstance;
 
-    private GetSessionData() {
+    private GetSessionDataAPI() {
     }
 
-    public static GetSessionData getInstance() {
+    public static GetSessionDataAPI getInstance() {
         if (sharedInstance == null)
-            sharedInstance = new GetSessionData();
+            sharedInstance = new GetSessionDataAPI();
 
         return sharedInstance;
     }
 
-    public void getSessionData(String url, ISessionResponseCallback callback) {
+    public void getSessionData(String url, GetSessionDataCallback callback) {
         AndroidNetworking.get(url)
                 .build()
                 .getAsString(new StringRequestListener() {
@@ -41,7 +41,7 @@ public class GetSessionData {
                 });
     }
 
-    interface ISessionResponseCallback {
+    interface GetSessionDataCallback {
         void onSessionResponse(boolean status, String response, ErrorManager.ErrorResponse error);
     }
 }

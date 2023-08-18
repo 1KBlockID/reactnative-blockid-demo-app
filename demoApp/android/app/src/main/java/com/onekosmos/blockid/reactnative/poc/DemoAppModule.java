@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.multidex.BuildConfig;
 
 import com.onekosmos.blockid.sdk.cameramodule.camera.liveIDModule.ILiveIDResponseListener;
-import com.onekosmos.blockid.sdk.cameramodule.camera.qrCodeModule.IOnQRScanResponseListener;
 import com.onekosmos.blockid.sdk.cameramodule.liveID.LiveIDScannerHelper;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -40,7 +39,7 @@ import java.util.Objects;
  * Copyright © 2023 1Kosmos. All rights reserved.
  */
 
-public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveIDResponseListener, IOnQRScanResponseListener {
+public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveIDResponseListener {
     private final String resolveMsg = "OK";
     private final String K_FILE_NAME = "fido3.html";
     private final BIDTenant clientTenant = AppConstants.clientTenant;
@@ -121,6 +120,15 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     }
 
     /**
+     * Send event to react-native on QRScan
+     *
+     * @param eventName is static which is listen in react code, params are the response data from QRScan
+     */
+    public static void onQRScanResult(String eventName, @Nullable String params) {
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+    }
+
+    /**
      * getScopeData
      *
      * @param promise callback function to react native,scope and creds are passed from react-native
@@ -147,7 +155,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
             bidOrigin.api = url;
             bidOrigin.authPage = authPage;
             bidOrigin.community = communityName;
-            authenticateUserWithData(session, sessionURL, scopes, creds, bidOrigin, promise);
+            authenticateUserWithScope(session, sessionURL, scopes, creds, bidOrigin, promise);
         });
     }
 
@@ -158,7 +166,17 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      */
     @ReactMethod
     public void startLiveScan(Promise promise) {
-        scanFaceId();
+        mLiveIDScannerHelper = new LiveIDScannerHelper(Objects.requireNonNull(context.getCurrentActivity()), this);
+        mLiveIDScannerHelper.startLiveIDScanning();
+    }
+
+    /**
+     * Send event to react-native on onLiveIdCapture
+     *
+     * @param reactContext is application context,eventName is static which is listen in react code, params are the response data from onLiveIdCapture
+     */
+    private void onLiveIDEnrolled(ReactContext reactContext, String eventName, @Nullable String params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
 
     /**
@@ -202,11 +220,11 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param promise callback function to react native, Name and platform are passed from react-native
      */
     @ReactMethod
-    public void registerFIDO2Key(String name, String platform, String pin, Promise promise) {
+    public void registerFIDO2(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
-            UiThreadUtil.runOnUiThread(() -> registerKey(name, FIDO2KeyType.PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> registerFIDO2Key(name, FIDO2KeyType.PLATFORM, promise));
         } else {
-            UiThreadUtil.runOnUiThread(() -> registerKey(name, FIDO2KeyType.CROSS_PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> registerFIDO2Key(name, FIDO2KeyType.CROSS_PLATFORM, promise));
         }
     }
 
@@ -216,11 +234,11 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param promise callback function to react native, Name and platform are passed from react-native
      */
     @ReactMethod
-    public void autheticateFIDO2Key(String name, String platform, String pin, Promise promise) {
+    public void autheticateFIDO2(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
-            UiThreadUtil.runOnUiThread(() -> authenticateKey(name, FIDO2KeyType.PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> autheticateFIDO2Key(name, FIDO2KeyType.PLATFORM, promise));
         } else {
-            UiThreadUtil.runOnUiThread(() -> authenticateKey(name, FIDO2KeyType.CROSS_PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> autheticateFIDO2Key(name, FIDO2KeyType.CROSS_PLATFORM, promise));
         }
     }
 
@@ -232,36 +250,10 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         UiThreadUtil.runOnUiThread(() -> BlockIDSDK.getInstance().resetSDK(licenseKey));
     }
 
-    /**
-     * Send event to react-native on onLiveIdCapture
-     *
-     * @param reactContext is application context,eventName is static which is listen in react code, params are the response data from onLiveIdCapture
-     */
-    private void onLiveIDEnrolled(ReactContext reactContext, String eventName, @Nullable String params) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-    }
-
-    /**
-     * Send event to react-native on QRScan
-     *
-     * @param eventName is static which is listen in react code, params are the response data from QRScan
-     */
-    public static void onQRScanResult(String eventName, @Nullable String params) {
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-    }
-
     private void initWallet(Promise promise) {
-        ensureSDKUnlocked();
         SharedPreferences sharedPref = Objects.requireNonNull(context.getCurrentActivity()).getPreferences(Context.MODE_PRIVATE);
-
-        if (sharedPref.getBoolean(dvcId, false)) {
-            BIDAuthProvider.getInstance().lockSDK();
-            promise.resolve(resolveMsg);
-            return;
-        }
-        BIDTenant bidTenant = defaultTenant;
         BlockIDSDK.getInstance().initiateWallet();
-        BlockIDSDK.getInstance().registerTenant(bidTenant, (status, error, tenant) -> {
+        BlockIDSDK.getInstance().registerTenant(defaultTenant, (status, error, tenant) -> {
             if (!status) {
                 BIDAuthProvider.getInstance().lockSDK();
                 promise.reject(String.valueOf(error.getCode()), error.getMessage());
@@ -324,7 +316,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     }
 
     private void getData(String scope, String creds, Promise promise) {
-        var origin = new BIDOrigin();
+        BIDOrigin origin = new BIDOrigin();
         BlockIDSDK.getInstance().getScopes(null, scope, creds, origin, String.valueOf(0.0), String.valueOf(0.0), (linkedHashMap, errorResponse) -> {
             if (linkedHashMap != null) {
                 Gson gson = new Gson();
@@ -356,11 +348,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void scanFaceId() {
-        mLiveIDScannerHelper = new LiveIDScannerHelper(Objects.requireNonNull(context.getCurrentActivity()), this);
-        mLiveIDScannerHelper.startLiveIDScanning();
-    }
-
     private void ensureSDKUnlocked() {
         if (BIDAuthProvider.getInstance().isSDKUnLocked()) {
             return;
@@ -368,7 +355,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         BIDAuthProvider.getInstance().unlockSDK();
     }
 
-    private void authenticateUserWithData(String session, String sessionURL, String scopes, String creds, BIDOrigin origin, Promise promise) {
+    private void authenticateUserWithScope(String session, String sessionURL, String scopes, String creds, BIDOrigin origin, Promise promise) {
         BlockIDSDK.getInstance().authenticateUser(context, null, session, sessionURL, scopes, null, creds, origin, String.valueOf(0.0), String.valueOf(0.0), BuildConfig.VERSION_NAME, null, (status, sessionId, error) -> {
             if (status) {
                 promise.resolve(true);
@@ -404,7 +391,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void registerKey(String name, FIDO2KeyType type, Promise promise) {
+    private void registerFIDO2Key(String name, FIDO2KeyType type, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
         ensureSDKUnlocked();
         BlockIDSDK.getInstance().registerFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), type, activity.observer, (status, errorResponse) -> {
@@ -417,7 +404,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void authenticateKey(String name, FIDO2KeyType type, Promise promise) {
+    private void autheticateFIDO2Key(String name, FIDO2KeyType type, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
         ensureSDKUnlocked();
 
@@ -437,31 +424,11 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
             // Register LiveID failed
             if (!status) {
                 // show error
-                Log.e("setLiveId error", "setLiveId error" + error);
+                onLiveIDEnrolled(context, "OnLiveResult", String.valueOf(errorResponse));
                 return;
             }
             // LiveID registered successfully
             onLiveIDEnrolled(context, "OnLiveResult", s);
         });
-    }
-
-    @Override
-    public void onFaceFocusChanged(boolean b, String s) {
-        Log.d("onFaceFocusChanged", "" + s);
-    }
-
-    @Override
-    public void expressionDidReset(String s) {
-        Log.d("expressionDidReset", "" + s);
-    }
-
-    @Override
-    public void onLivenessCheckStarted() {
-        Log.d("onLivenessCheckStarted", "onLivenessCheckStarted");
-    }
-
-    @Override
-    public void onQRScanResultResponse(String s) {
-        Log.d("onQRScanResultResponse", "onQRScanResultResponse" + s);
     }
 }

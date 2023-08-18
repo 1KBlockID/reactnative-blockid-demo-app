@@ -6,7 +6,6 @@ buildscript {
         minSdkVersion = 23
         compileSdkVersion = 33
         targetSdkVersion = 33
-
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
     }
@@ -20,7 +19,6 @@ buildscript {
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
         classpath 'com.google.gms:google-services:4.3.15'
     }
-
 }
 allprojects {
     repositories {
@@ -49,18 +47,6 @@ allprojects {
             url 'http://www.baka.sk/maven2'
             allowInsecureProtocol = true
         }
-        //     exclusiveContent {
-        //        filter {
-        //            includeGroup "com.facebook.react"
-
-        //        }
-        //        forRepository {
-        //            maven {
-        //             //    url "$rootDir/../node_modules/react-native/android"
-        //             url "$rootDir/../node_modules/react-native/android"
-        //            }
-        //        }
-        //    }
     }
 }
 def REACT_NATIVE_VERSION = new File(['node', '--print', "JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())

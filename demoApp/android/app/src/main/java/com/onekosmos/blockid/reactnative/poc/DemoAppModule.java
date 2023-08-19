@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -234,7 +233,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      * @param promise callback function to react native, Name and platform are passed from react-native
      */
     @ReactMethod
-    public void autheticateFIDO2(String name, String platform, String pin, Promise promise) {
+    public void authenticateFIDO2(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
             UiThreadUtil.runOnUiThread(() -> autheticateFIDO2Key(name, FIDO2KeyType.PLATFORM, promise));
         } else {
@@ -280,8 +279,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
             @Override
             public void onNonBiometricAuth(boolean b) {
-                Log.e("onNonBiometricAuth", String.valueOf(b));
-
             }
         });
     }
@@ -343,7 +340,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
             @Override
             public void onNonBiometricAuth(boolean b) {
-                Log.e("verifyBiometricData abc", String.valueOf(b));
             }
         });
     }

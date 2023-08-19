@@ -23,7 +23,6 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    static ReactApplicationContext applicationContext;
     private final ReactNativeHost mReactNativeHost =
             new DefaultReactNativeHost(this) {
                 @Override

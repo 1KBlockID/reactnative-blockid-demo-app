@@ -57,7 +57,7 @@ extension QRScanViewController: QRScanResponseDelegate {
     if qrCodeData == nil {
       AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
         if !response {
-          print("Cemera Response", response);
+          print("Camera Response", response);
         }
       }
       return
@@ -109,7 +109,7 @@ extension QRScanViewController: QRScanResponseDelegate {
     let arrSplitStrings = data.components(separatedBy: "/session/")
     let url = arrSplitStrings.first ?? ""
     if BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url) {
-      GetSessionData.sharedInstance.getSessionData(url: data) { [self] response, message, isSuccess in
+      GetSessionDataAPI.sharedInstance.GetSessionDataAPI(url: data) { [self] response, message, isSuccess in
         if isSuccess {
           let authQRUWL2 = CommonFunctions.jsonStringToObject(json: response ?? "") as AuthenticationPayloadV2?
           let authQRUWL1 = authQRUWL2?.getAuthRequestModel(sessionUrl: data)

@@ -21,13 +21,12 @@
 		5526D2CC2A67DD8900960A40 /* ErrorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526D2CB2A67DD8900960A40 /* ErrorConfig.swift */; };
 		5526D2CE2A67DE0600960A40 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526D2CD2A67DE0600960A40 /* StringExtension.swift */; };
 		552D96492A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D96482A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift */; };
-		552D964C2A64FD1300C6A8E9 /* GetSessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D964B2A64FD1300C6A8E9 /* GetSessionData.swift */; };
+		552D964C2A64FD1300C6A8E9 /* GetSessionDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D964B2A64FD1300C6A8E9 /* GetSessionDataAPI.swift */; };
 		552D964E2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D964D2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift */; };
 		5565927C2A55976C00F01E57 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5565927B2A55976C00F01E57 /* main.storyboard */; };
 		5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5568A5B42A440D8400CC42CC /* DemoApp.swift */; };
 		556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */; };
 		556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */; };
-		55A2DD192A30667E00632A7F /* demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2DD182A30667E00632A7F /* demo.swift */; };
 		55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B1AE482A303FAF0073FDC9 /* AppConstants.swift */; };
 		55BC123F2A56782F004E848B /* LiveIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC123E2A56782F004E848B /* LiveIDViewController.swift */; };
 		55E62B262A6663FD005E2025 /* QRScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E62B252A6663FD005E2025 /* QRScanViewController.swift */; };
@@ -65,13 +64,12 @@
 		5526D2CB2A67DD8900960A40 /* ErrorConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorConfig.swift; sourceTree = "<group>"; };
 		5526D2CD2A67DE0600960A40 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		552D96482A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationPayloadV1.swift; sourceTree = "<group>"; };
-		552D964B2A64FD1300C6A8E9 /* GetSessionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSessionData.swift; sourceTree = "<group>"; };
+		552D964B2A64FD1300C6A8E9 /* GetSessionDataAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSessionDataAPI.swift; sourceTree = "<group>"; };
 		552D964D2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationPayloadV2.swift; sourceTree = "<group>"; };
 		5565927B2A55976C00F01E57 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
-		55A2DD182A30667E00632A7F /* demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = demo.swift; sourceTree = "<group>"; };
 		55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "demoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		55B1AE482A303FAF0073FDC9 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		55BC123E2A56782F004E848B /* LiveIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveIDViewController.swift; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */,
-				55A2DD182A30667E00632A7F /* demo.swift */,
 				5565927B2A55976C00F01E57 /* main.storyboard */,
 				5526B6882A6A50D10038C82D /* RNEventEmitter.swift */,
 			);
@@ -196,7 +193,7 @@
 		552D964A2A64FD0700C6A8E9 /* APIs */ = {
 			isa = PBXGroup;
 			children = (
-				552D964B2A64FD1300C6A8E9 /* GetSessionData.swift */,
+				552D964B2A64FD1300C6A8E9 /* GetSessionDataAPI.swift */,
 			);
 			name = APIs;
 			sourceTree = "<group>";
@@ -564,11 +561,10 @@
 				5526D2CC2A67DD8900960A40 /* ErrorConfig.swift in Sources */,
 				551037642A305E77008156C8 /* RCTBridge.m in Sources */,
 				552D964E2A64FD4D00C6A8E9 /* AuthenticationPayloadV2.swift in Sources */,
-				55A2DD192A30667E00632A7F /* demo.swift in Sources */,
 				55E62B262A6663FD005E2025 /* QRScanViewController.swift in Sources */,
 				5526B6892A6A50D10038C82D /* RNEventEmitter.swift in Sources */,
 				556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */,
-				552D964C2A64FD1300C6A8E9 /* GetSessionData.swift in Sources */,
+				552D964C2A64FD1300C6A8E9 /* GetSessionDataAPI.swift in Sources */,
 				5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

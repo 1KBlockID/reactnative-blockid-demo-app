@@ -1,4 +1,4 @@
-import {StatusBar, StyleSheet} from 'react-native';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   statusBar: {
-    height: STATUSBAR_HEIGHT,
+    height: Platform.OS === 'ios' ? STATUSBAR_HEIGHT : 0,
     backgroundColor: Colors.black,
   },
   btnContainer: {
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   btnTextStyle: {
     color: 'white',
     textAlign: 'center',
-    fontSize:14,
-    fontWeight:'500',
+    fontSize: 14,
+    fontWeight: '500',
   },
 });

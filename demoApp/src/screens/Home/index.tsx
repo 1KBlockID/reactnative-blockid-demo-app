@@ -62,7 +62,12 @@ function HomeScreen({navigation}: Props): JSX.Element {
         await DemoAppModule.beginRegistration();
         storeData(true, 'isRegister');
         setTimeout(() => {
-          navigation.navigate('LoginScreen');
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'LoginScreen'}],
+            }),
+          );
         }, 1000);
         setIsLoading(false);
       } catch (e) {

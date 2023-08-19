@@ -81,7 +81,7 @@ RCT_EXPORT_METHOD(authenticateUser:(NSString *)userId session:(NSString *)sessio
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk autheticateUser:userId session:session creds:creds scope:scope sessionUrl:sessionUrl tag:tag name:name  pubicKey:publicKey];
+    [sdk authenticateUser:userId session:session creds:creds scope:scope sessionUrl:sessionUrl tag:tag name:name  pubicKey:publicKey];
   });
 }
 
@@ -127,53 +127,53 @@ RCT_EXPORT_METHOD(authenticateFIDO2KeyUsingWeb:(NSString *)name
   });
 }
 
-RCT_EXPORT_METHOD(registerFIDO2Key:(NSString *)name  platorm:(NSString *)platorm pin:(NSString *)pin
+RCT_EXPORT_METHOD(registerFIDO2:(NSString *)name  platorm:(NSString *)platform pin:(NSString *)pin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk registerFIDO2Key:name plateform:platorm pin:pin];
+    [sdk registerFIDO2Key:name platform:platform pin:pin];
   });
 }
 
-RCT_EXPORT_METHOD(authenticateFIDO2Key:(NSString *)name platorm:(NSString *)platorm pin:(NSString *)pin
+RCT_EXPORT_METHOD(authenticateFIDO2:(NSString *)name platorm:(NSString *)platform pin:(NSString *)pin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc]initWithResolveFunction:resolveFunction
                                             rejectFunction:rejectFunction];
-    [sdk authenticateFIDO2Key:name plateform:platorm pin:pin];
+    [sdk authenticateFIDO2Key:name platform:platform pin:pin];
   });
 }
 
-RCT_EXPORT_METHOD(setFidoPin:(NSString *)pin
+RCT_EXPORT_METHOD(setFIDO2PIN:(NSString *)pin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
     
-    [sdk setFidoPin:pin];
+    [sdk setFIDO2PIN:pin];
   });
 }
 
-RCT_EXPORT_METHOD(changePin:(NSString *)oldPin  pin:(NSString *)newPin
+RCT_EXPORT_METHOD(changeFIDO2PIN:(NSString *)oldPin  pin:(NSString *)newPin
                   resolveFunction:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction) {
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk changePin:oldPin newPin:newPin];
+    [sdk changeFIDO2PIN:oldPin newPin:newPin];
   });
 }
 
-RCT_EXPORT_METHOD(resetPin:(RCTPromiseResolveBlock)resolveFunction
+RCT_EXPORT_METHOD(resetFIDO2:(RCTPromiseResolveBlock)resolveFunction
                   rejectFunction:(RCTPromiseRejectBlock)rejectFunction){
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk resetPin];
+    [sdk resetFIDO2];
   });
 }
 

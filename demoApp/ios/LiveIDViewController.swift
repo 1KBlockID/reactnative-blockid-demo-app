@@ -8,77 +8,12 @@ import AVFoundation
 import BlockID
 import Toast_Swift
 
-struct DetectionMsg {
-  static let blink = "Please blink your eyes"
-  static let smile = "Please smile"
-  static let left = "Please turn left"
-  static let right = "Please turn right"
-  static let up = "Move your head up"
-  static let down = "Move your head down"
-}
 
-/*
- 
- Adding Feedback Generator
- 
- */
-enum Vibration {
-  case error
-  case success
-  case warning
-  case light
-  case medium
-  case heavy
-  @available(iOS 13.0, *)
-  case soft
-  @available(iOS 13.0, *)
-  case rigid
-  case selection
-  case oldSchool
-  
-  public func vibrate() {
-    switch self {
-    case .error:
-      UINotificationFeedbackGenerator().notificationOccurred(.error)
-    case .success:
-      UINotificationFeedbackGenerator().notificationOccurred(.success)
-    case .warning:
-      UINotificationFeedbackGenerator().notificationOccurred(.warning)
-    case .light:
-      UIImpactFeedbackGenerator(style: .light).impactOccurred()
-    case .medium:
-      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-    case .heavy:
-      UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-    case .soft:
-      if #available(iOS 13.0, *) {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-      }
-    case .rigid:
-      if #available(iOS 13.0, *) {
-        UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-      }
-    case .selection:
-      UISelectionFeedbackGenerator().selectionChanged()
-    case .oldSchool:
-      print("old school Case----->")
-    }
-  }
-}
 
 
 class LiveIDViewController: UIViewController {
-  var isForVerification: Bool = false
-  var isForConsent: Bool = false
-  
-  private var attemptCounts = 0
   
   private var liveIdScannerHelper: LiveIDScannerHelper?
-  private let isResettingExpressionsAllowed = false
-  private var isLoaderHidden: Bool = false
-  var isLivenessNeeded: Bool = false
-  private var imgOverlay: UIImageView!
-  var onFinishCallback: ((_ status: Bool) -> Void)?
   
   @IBOutlet private weak var _viewBG: UIView!
   @IBOutlet private weak var _viewLiveIDScan: BIDScannerView!
@@ -91,17 +26,7 @@ class LiveIDViewController: UIViewController {
     super.viewDidLoad()
     _viewBG.isHidden = true
     _lblInformation.isHidden = true
-    
-    if isLivenessNeeded {
-      _lblPageTitle.text = "Enroll Live ID (with Liveness Check)"
-    } else {
-      _lblPageTitle.text = "Enroll Live ID"
-    }
-    
-    if isForVerification {
-      //For LiveID Verification
-      _lblPageTitle.text = "Live ID Authentication"
-    }
+    _lblPageTitle.text = "Enroll Live ID"
     startLiveIDScanning()
   }
   
@@ -114,10 +39,10 @@ class LiveIDViewController: UIViewController {
     //1. Check for Camera Permission
     AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
       if !response {
-        //2. Show Alert
         DispatchQueue.main.async {
           self.dismiss(animated: true, completion: nil);
-        }      }
+        }
+      }
       else {
         DispatchQueue.main.async {
           //3. Initialize LiveIDScannerHelper
@@ -177,9 +102,6 @@ class LiveIDViewController: UIViewController {
     }
   }
   
-  
-  
-  
   private func showErrorDialog(_ error: ErrorResponse?) {
     var title: String? = nil
     var msg: String? = nil
@@ -208,18 +130,22 @@ class LiveIDViewController: UIViewController {
 // MARK: - LiveIDResponseDelegate -
 extension LiveIDViewController: LiveIDResponseDelegate {
   
-  func liveIdDidDetectErrorInScanning(error: ErrorResponse?) {
-    //Check If licenene key not enabled
-    if error?.code == CustomErrors.kSomeProblemWhileFaceFinding.code {
-      self._lblInformation.text = "Camera sensor is blocked. Unblock sensor and continue..."
-      Vibration.error.vibrate()
-    }
-  }
-  
   func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, error: ErrorResponse?) {
     if error?.code == CustomErrors.kScanCancelled.code {
       // Selfie scanner cancelled
       self.goBack()
+    }
+    //     check for error...
+    if error?.code == CustomErrors.License.MODULE_NOT_ENABLED.code {
+      let localizedMessage = "MODULE_NOT_ENABLED".localizedMessage(CustomErrors.License.MODULE_NOT_ENABLED.code)
+      self.view.makeToast(localizedMessage,
+                          duration: 3.0,
+                          position: .center,
+                          title: ErrorConfig.error.title, completion: {_ in
+        // go back to previous screen...
+        self.goBack()
+      })
+      return
     }
     else if(error === nil){
       DispatchQueue.main.async {
@@ -227,81 +153,4 @@ extension LiveIDViewController: LiveIDResponseDelegate {
       }
     }
   }
-  
-  func readyForExpression(_ livenessFactor: LivenessFactorType) {
-    DispatchQueue.main.async {
-      self._lblInformation.isHidden = false
-      self._lblInformation.text = ""
-      Vibration.success.vibrate()
-      switch livenessFactor {
-      case .BLINK:
-        self._lblInformation.text = DetectionMsg.blink
-      case .SMILE:
-        self._lblInformation.text = DetectionMsg.smile
-      case .TURN_LEFT:
-        self._lblInformation.text = DetectionMsg.left
-      case .TURN_RIGHT:
-        self._lblInformation.text = DetectionMsg.right
-      case .NONE:
-        return
-      @unknown default:
-        return
-      }
-      self.imgOverlay.tintColor = .green
-    }
-    
-  }
-  
-  func faceLivenessCheckStarted() {
-    isLoaderHidden = true
-    //        self.view.makeToastActivity(.center)
-  }
-  
-  func focusOnFaceChanged(isFocused: Bool?) {
-    guard let inFocus = isFocused else {
-      return
-    }
-    
-    if !inFocus {
-      DispatchQueue.main.async {
-        self.imgOverlay.tintColor = .red
-        self._lblInformation.text = "Out of focus !!!. Please try again."
-        Vibration.oldSchool.vibrate()
-      }
-    } else {
-      DispatchQueue.main.async {
-        self.imgOverlay.tintColor = .green
-        
-      }
-    }
-  }
-  
-  func wrongExpressionDetected(_ livenessFactor: LivenessFactorType) {
-    var factor = ""
-    switch livenessFactor {
-    case .BLINK:
-      factor = "Blink"
-    case .SMILE:
-      factor = "Smile"
-    case .TURN_LEFT:
-      factor = "Turned Left"
-    case .TURN_RIGHT:
-      factor = "Turned Right"
-    case .NONE:
-      factor = "Unknown"
-      /* case .MOVE_UP:
-       factor = "Moved Up"
-       case .MOVE_DOWN:
-       factor = "Moved Down"*/
-    }
-    
-    DispatchQueue.main.async {
-      self.imgOverlay.tintColor = .red
-      self._lblInformation.text = "Wrong Expression: \(factor)"
-      Vibration.oldSchool.vibrate()
-      
-    }
-  }
 }
-
-

@@ -9,11 +9,7 @@ import BlockID
 @objc class DemoApp: NSObject {
   private static let errorCode = -1
   private static let resolvedMsg = "OK"
-  private static var blockIdVersion = ""
-  private var liveIdScannerHelper: LiveIDScannerHelper?
-  private weak var responseDelegate: LiveIDResponseDelegate?
   public  var qrModel: AuthenticationPayloadV1!
-  var location: (Double, Double) = (0.0, 0.0)
   
   private let resolveFunction: RCTPromiseResolveBlock
   private let rejectFunction: RCTPromiseRejectBlock
@@ -56,9 +52,9 @@ import BlockID
     let DID = BlockIDSDK.sharedInstance.getDID();
     let publicKey = BlockIDSDK.sharedInstance.getWalletPublicKey();
     let sdkVersion = BlockIDSDK.sharedInstance.getVersion();
-    let clientTenatDict : [String:Any] = ["community":(clientCommunity ?? ""),"dns":(clientDNS ?? ""),"tenantTag":(clientTag ?? "")]
-    let tenatDict : [String:Any] = ["community":(community ?? ""),"communityId":(communityId ?? ""),"dns":(dns ?? ""),"tenantId":(tenantId ?? ""),"tenantTag":(tag ?? "")]
-    let mainDict : [String:Any] = ["DID":(DID ),"sdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenatDict ),"licenseKey":(licenseKey ),"publicKey":(publicKey ),"tenant":(tenatDict )];
+    let clientTenantDict : [String:Any] = ["community":(clientCommunity ?? ""),"dns":(clientDNS ?? ""),"tenantTag":(clientTag ?? "")]
+    let tenantDict : [String:Any] = ["community":(community ?? ""),"communityId":(communityId ?? ""),"dns":(dns ?? ""),"tenantId":(tenantId ?? ""),"tenantTag":(tag ?? "")]
+    let mainDict : [String:Any] = ["DID":(DID ),"sdkVersion":(sdkVersion ?? "" ),"clientTenant":(clientTenantDict ),"licenseKey":(licenseKey ),"publicKey":(publicKey ),"tenant":(tenantDict )];
     return mainDict;
   }
   
@@ -67,28 +63,22 @@ import BlockID
   }
   
   @objc func getScopeData(_ scope: String, creds: String,userId:String ){
-    getScopeDataWithCreds(scope: scope, creds: creds, userId: userId, completion: { [self] dict in
-      resolveFunction(dict)
-    })
-  }
-  
-  func getScopeDataWithCreds(scope: String, creds: String,userId:String, completion: @escaping ([String: Any]?) -> Void)  {
     qrModel = AuthenticationPayloadV1.init()
     getScopesAttributesDict(scopes: scope ,
                             creds: creds ,
                             origin: qrModel.getBidOrigin()!,
-                            userId:userId != "" ? userId : nil) { scopeDict in
-      completion(scopeDict)
+                            userId:userId != "" ? userId : nil) { [self] scopeDict in
+      resolveFunction(scopeDict)
     }
   }
   
-  @objc func  autheticateUser(_ userId: String, session :String, creds:String, scope:String, sessionUrl:String,tag:String,name:String,pubicKey:String){
+  @objc func  authenticateUser(_ userId: String, session :String, creds:String, scope:String, sessionUrl:String,tag:String,name:String,pubicKey:String){
     let bidOrigin = BIDOrigin()
     bidOrigin.tag=tag
     bidOrigin.name=name
     bidOrigin.publicKey=pubicKey
     var dataModel: AuthRequestModel
-    dataModel = AuthRequestModel(lat: self.location.0, lon: self.location.1, session: session, creds: creds , scopes: scope , origin:bidOrigin, isConsentGiven: true, userId: nil , sessionUrl: sessionUrl)
+    dataModel = AuthRequestModel(lat: 0.0, lon: 0.1, session: session, creds: creds , scopes: scope , origin:bidOrigin, isConsentGiven: true, userId: nil , sessionUrl: sessionUrl)
     authenticateUserWithScopes(dataModel: dataModel)
   }
   
@@ -100,8 +90,8 @@ import BlockID
     webAuthenticate( name, type: .CROSS_PLATFORM)
   }
   
-  @objc func registerFIDO2Key(_ name: String, plateform : String, pin :String) {
-    if(plateform == "platform"){
+  @objc func registerFIDO2Key(_ name: String, platform : String, pin :String) {
+    if(platform == "platform"){
       registerKey(name, type: .PLATFORM,pin:"")
     }
     else if(pin == ""){
@@ -112,8 +102,8 @@ import BlockID
     }
   }
   
-  @objc func authenticateFIDO2Key(_ name: String, plateform : String, pin :String) {
-    if(plateform == "platform"){
+  @objc func authenticateFIDO2Key(_ name: String, platform : String, pin :String) {
+    if(platform == "platform"){
       authenticateKey( name, type: .PLATFORM, pin: "")
     }
     else if(pin == "" ){
@@ -133,15 +123,15 @@ import BlockID
     authenticateKey( name, type: .CROSS_PLATFORM, pin: "")
   }
   
-  @objc func setFidoPin(_ pin: String){
+  @objc func setFIDO2PIN(_ pin: String){
     setPin(pin: pin)
   }
   
-  @objc func changePin(_ oldPin: String,newPin:String){
+  @objc func changeFIDO2PIN(_ oldPin: String,newPin:String){
     changeFidoPin(oldPin, newPin: newPin)
   }
   
-  @objc func resetPin() {
+  @objc func resetFIDO2() {
     resetFidoPin()
   }
   
@@ -180,7 +170,6 @@ extension DemoApp {
       }
       else{
         self.handleRejection(error: error);
-        
       }
     }
   }

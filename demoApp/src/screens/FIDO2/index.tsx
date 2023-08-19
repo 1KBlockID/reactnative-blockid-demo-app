@@ -96,21 +96,22 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           setPin('');
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
-    } else {
-      DemoAppModule.registerFIDO2(userName, 'cross-platform', '')
-        .then((res: string) => {
-          __DEV__ && console.log('res', res);
-          if (res === 'OK') {
-            storeData(userName, 'userName');
-            SuccessAlert('Security key registered successfully.');
-            setLoader(false);
-          }
-        })
-        .catch((error: Error) => {
-          setLoader(false);
-          Alert.alert(JSON.stringify(error?.message ?? error));
-        });
     }
+
+    // else {
+    //   DemoAppModule.registerFIDO2(userName, 'cross-platform', '')
+    //     .then((res: string) => {
+    //       if (res === 'OK') {
+    //         storeData(userName, 'userName');
+    //         SuccessAlert('Security key registered successfully.');
+    //         setLoader(false);
+    //       }
+    //     })
+    //     .catch((error: Error) => {
+    //       setLoader(false);
+    //       Alert.alert(JSON.stringify(error?.message ?? error));
+    //     });
+    // }
   };
 
   /**
@@ -119,7 +120,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const authenticateCardKey = () => {
     //Check pin for IOS
     if (Platform.OS === 'ios' && pin !== '') {
-      DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', pin)
+      DemoAppModule.authenticateFIDO2(userName, 'cross-platform', pin)
         .then((res: string) => {
           __DEV__ && console.log('res', res);
           if (res === 'OK') {
@@ -133,20 +134,20 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           setPin('');
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
-    } else {
-      DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', '')
-        .then((res: string) => {
-          __DEV__ && console.log('res', res);
-          if (res === 'OK') {
-            SuccessAlert('Security key is authenticated successfully.');
-            setLoader(false);
-          }
-        })
-        .catch((error: Error) => {
-          setLoader(false);
-          Alert.alert(JSON.stringify(error?.message ?? error));
-        });
     }
+    // else {
+    //   DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', '')
+    //     .then((res: string) => {
+    //       if (res === 'OK') {
+    //         SuccessAlert('Security key is authenticated successfully.');
+    //         setLoader(false);
+    //       }
+    //     })
+    //     .catch((error: Error) => {
+    //       setLoader(false);
+    //       Alert.alert(JSON.stringify(error?.message ?? error));
+    //     });
+    // }
   };
 
   /**
@@ -189,7 +190,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
    */
   const authenticateFIDO2Key = (keyType?: string) => {
     if (keyType == 'platform') {
-      DemoAppModule.authenticateFIDO2Key(userName, keyType, '')
+      DemoAppModule.authenticateFIDO2(userName, keyType, '')
         .then((res: string) => {
           setLoader(false);
           if (res === 'OK') {
@@ -202,7 +203,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
     } else {
-      DemoAppModule.authenticateFIDO2Key(userName, keyType, '')
+      DemoAppModule.authenticateFIDO2(userName, keyType, '')
         .then((res: string) => {
           setLoader(false);
           if (res === 'OK') {
@@ -276,7 +277,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
   const webRegistration = () => {
     if (isUsernameExists()) {
       setLoader(true);
-      DemoAppModule.registerFIDO2UsingWeb(
+      DemoAppModule.registerFIDO2KeyUsingWeb(
         Platform.OS === 'ios' ? removeSpaces(userName) : userName,
       )
         .then((response: String) => {
@@ -384,6 +385,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
               <TextInput
                 style={styles.textInputStyle}
                 placeholder={Strings.Username}
+                placeholderTextColor={Colors.gray}
                 value={userName}
                 onChangeText={value => {
                   setUserName(value);

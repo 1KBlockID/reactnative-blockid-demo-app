@@ -17,7 +17,11 @@ import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import {Fido2Error, Fido2PayloadModel} from '../../constants/Fido2PayloadModel';
 import {errorCodes} from '../../constants/errorCodes';
-import {ChangePin, resetPin, setFidoPin} from '../../connector/Fido2Connector';
+import {
+  changeFIDO2PIN,
+  resetFIDO2,
+  setFIDO2PIN,
+} from '../../connector/Fido2Connector';
 
 type Props = NativeStackScreenProps<RootParamList, 'PinScreen'>;
 
@@ -124,7 +128,7 @@ function PinScreen({navigation}: Props): JSX.Element {
 
   //setFIDO2 Pin
   async function setFidoKey() {
-    const pinResponse = await setFidoPin(payload);
+    const pinResponse = await setFIDO2PIN(payload);
     if (pinResponse) {
       Alert.alert('Pin set Successfully');
       handleResetStates();
@@ -132,7 +136,7 @@ function PinScreen({navigation}: Props): JSX.Element {
   }
   //changeFIDO2 Pin
   async function changeFidoKey() {
-    const pinResponse = await ChangePin(payload);
+    const pinResponse = await changeFIDO2PIN(payload);
     if (pinResponse === 'OK') {
       Alert.alert('Pin Changed Successfully');
       handleResetStates();
@@ -141,7 +145,7 @@ function PinScreen({navigation}: Props): JSX.Element {
 
   //Reset Pin functionality
   const handleResetPin = async () => {
-    const resetResponse = await resetPin(payload);
+    const resetResponse = await resetFIDO2(payload);
     if (resetResponse === 'OK') {
       Alert.alert('Pin Reset Successfully');
       handleResetStates();

@@ -16,7 +16,6 @@ export const getData = async (key: string): Promise<any> => {
       return value;
     }
   } catch (e) {
-    __DEV__ && console.log('getData Error', e);
     return false;
   }
   return false;

@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
   },
   optionTextStyle: {
     fontSize: 16,
+    color: Colors.gray,
   },
   blurBackground: {
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -59,5 +60,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 9,
     borderRadius: 10,
+    color: Colors.gray,
   },
 });

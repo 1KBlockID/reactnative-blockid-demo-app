@@ -4,12 +4,12 @@ import {Fido2Error, Fido2PayloadModel} from '../constants/Fido2PayloadModel';
 const {DemoAppModule} = NativeModules;
 
 //BlockId set pin functionality
-export const setFidoPin = async (
+export const setFIDO2PIN = async (
   payload: Fido2PayloadModel,
 ): Promise<string | null> => {
   const {errorHandler, pin} = payload;
   try {
-    const setPinResponse = await DemoAppModule.setFidoPin(pin);
+    const setPinResponse = await DemoAppModule.setFIDO2PIN(pin);
     return setPinResponse;
   } catch (error) {
     errorHandler?.(error);
@@ -18,13 +18,13 @@ export const setFidoPin = async (
 };
 
 //BlockId reset pin functionality
-export const resetPin = async (
+export const resetFIDO2 = async (
   payload: Fido2PayloadModel,
 ): Promise<string | null> => {
   const {errorHandler} = payload;
   try {
-    const resetPinResponse = await DemoAppModule.resetPin();
-    return resetPinResponse;
+    const resetFIDO2Response = await DemoAppModule.resetFIDO2();
+    return resetFIDO2Response;
   } catch (error) {
     errorHandler?.(error);
     return null;
@@ -32,13 +32,16 @@ export const resetPin = async (
 };
 
 //BlockId change pin functionality
-export const ChangePin = async (
+export const changeFIDO2PIN = async (
   payload: Fido2PayloadModel,
 ): Promise<string | null> => {
   const {errorHandler, pin, currentPin} = payload;
   try {
-    const changePinResponse = await DemoAppModule.changePin(currentPin, pin);
-    return changePinResponse;
+    const changeFIDO2PINResponse = await DemoAppModule.changeFIDO2PIN(
+      currentPin,
+      pin,
+    );
+    return changeFIDO2PINResponse;
   } catch (error) {
     errorHandler?.(error);
     return null;

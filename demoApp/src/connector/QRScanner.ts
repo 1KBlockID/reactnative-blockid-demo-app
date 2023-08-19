@@ -17,7 +17,6 @@ export const onUserAuthenticate = async (
     sessionData?.publicKey ?? '',
   )
     .then((response: any) => {
-      __DEV__ && console.log('onUserAuthenticate IOS call', response);
       if (response === true) {
         return true;
       } else {

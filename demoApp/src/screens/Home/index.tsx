@@ -3,8 +3,6 @@ import {
   ActivityIndicator,
   Image,
   NativeModules,
-  SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -18,6 +16,7 @@ import {getData, storeData} from '../../databaseService/localStorage';
 import {CommonActions} from '@react-navigation/native';
 import {Images} from '../../constants/Images';
 import {Strings} from '../../constants/Strings';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 type Props = NativeStackScreenProps<RootParamList, 'HomeScreen'>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
@@ -77,8 +76,11 @@ function HomeScreen({navigation}: Props): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={Colors.white} />
+    <View style={styles.safeAreaContainer}>
+      <CustomStatusBar
+        backgroundColor={Colors.black}
+        barTextColor="light-content"
+      />
       {isLoading && (
         <View style={styles.indicatorOuterContainer}>
           <View style={[styles.indicatorContainer]}>
@@ -106,7 +108,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
           );
         })}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -3,8 +3,6 @@ import {
   Alert,
   Image,
   NativeModules,
-  SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -17,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import {CommonActions} from '@react-navigation/native';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 
 type Props = NativeStackScreenProps<RootParamList, 'LoginScreen'>;
 
@@ -47,26 +46,20 @@ function LoginScreen({navigation}: Props): JSX.Element {
   };
 
   return (
-    <>
-      <View style={[styles.statusBar]}>
-        <SafeAreaView style={styles.safeAreaContainer}>
-          <StatusBar
-            barStyle={'light-content'}
-            backgroundColor={Colors.black}
-          />
-        </SafeAreaView>
+    <View style={styles.container}>
+      <CustomStatusBar
+        backgroundColor={Colors.black}
+        barTextColor="light-content"
+      />
+      <View style={styles.logoContainer}>
+        <Image source={Images.logo} style={styles.logo} />
       </View>
-      <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image source={Images.logo} style={styles.logo} />
-        </View>
-        <Text style={styles.loginText}>{Strings.EnableFutureLogin}</Text>
-        <TouchableOpacity style={styles.buttonStyle} onPress={handleClick}>
-          <Text style={styles.buttonTextStyle}>{Strings.TouchAndFaceId}</Text>
-        </TouchableOpacity>
-        <Toast />
-      </View>
-    </>
+      <Text style={styles.loginText}>{Strings.EnableFutureLogin}</Text>
+      <TouchableOpacity style={styles.buttonStyle} onPress={handleClick}>
+        <Text style={styles.buttonTextStyle}>{Strings.TouchAndFaceId}</Text>
+      </TouchableOpacity>
+      <Toast />
+    </View>
   );
 }
 

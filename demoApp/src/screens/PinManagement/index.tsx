@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {
   Alert,
   Image,
-  SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -22,6 +20,7 @@ import {
   resetFIDO2,
   setFIDO2PIN,
 } from '../../connector/Fido2Connector';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 
 type Props = NativeStackScreenProps<RootParamList, 'PinScreen'>;
 
@@ -182,12 +181,16 @@ function PinScreen({navigation}: Props): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={Colors.white} />
+    <View style={styles.container}>
+      <CustomStatusBar
+        backgroundColor={Colors.white}
+        barTextColor={"dark-content"}
+      />
       <View style={styles.headerContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.backArrowContainer}>
+          style={styles.backArrowContainer}
+        >
           <Image
             source={Images.backArrow}
             style={styles.backArrow}
@@ -206,8 +209,8 @@ function PinScreen({navigation}: Props): JSX.Element {
               }}
               style={[
                 styles.buttonTouchable,
-                {backgroundColor: index === 2 ? Colors.peach : Colors.black},
-                {marginTop: index === 2 ? 25 : 5},
+                { backgroundColor: index === 2 ? Colors.peach : Colors.black },
+                { marginTop: index === 2 ? 25 : 5 },
               ]}>
               <Text style={styles.buttonText}>{item.name}</Text>
             </TouchableOpacity>
@@ -228,7 +231,7 @@ function PinScreen({navigation}: Props): JSX.Element {
         isResetFido={isResetFido}
         errorMsg={errorMessage}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -7,8 +7,6 @@ import {
   KeyboardAvoidingView,
   NativeModules,
   Platform,
-  SafeAreaView,
-  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -24,6 +22,7 @@ import {Images} from '../../constants/Images';
 import {DialogBox} from '../../components/DialogBox';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {getData, storeData} from '../../databaseService/localStorage';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 
 type Props = NativeStackScreenProps<RootParamList, 'Fido2Screen'>;
 
@@ -97,21 +96,6 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
     }
-
-    // else {
-    //   DemoAppModule.registerFIDO2(userName, 'cross-platform', '')
-    //     .then((res: string) => {
-    //       if (res === 'OK') {
-    //         storeData(userName, 'userName');
-    //         SuccessAlert('Security key registered successfully.');
-    //         setLoader(false);
-    //       }
-    //     })
-    //     .catch((error: Error) => {
-    //       setLoader(false);
-    //       Alert.alert(JSON.stringify(error?.message ?? error));
-    //     });
-    // }
   };
 
   /**
@@ -135,19 +119,6 @@ function Fido2Screen({navigation}: Props): JSX.Element {
           Alert.alert(JSON.stringify(error?.message ?? error));
         });
     }
-    // else {
-    //   DemoAppModule.authenticateFIDO2Key(userName, 'cross-platform', '')
-    //     .then((res: string) => {
-    //       if (res === 'OK') {
-    //         SuccessAlert('Security key is authenticated successfully.');
-    //         setLoader(false);
-    //       }
-    //     })
-    //     .catch((error: Error) => {
-    //       setLoader(false);
-    //       Alert.alert(JSON.stringify(error?.message ?? error));
-    //     });
-    // }
   };
 
   /**
@@ -348,78 +319,80 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       style={styles.keyBoardContainer}
       contentInsetAdjustmentBehavior="always"
       keyboardShouldPersistTaps={'always'}>
-      <SafeAreaView style={styles.safeAreaContainer}>
-        {loader && (
-          <View style={styles.loaderContainer}>
-            <View style={styles.indicatorContainer}>
-              <ActivityIndicator color={Colors.red} size={'large'} />
-            </View>
+      {loader && (
+        <View style={styles.loaderContainer}>
+          <View style={styles.indicatorContainer}>
+            <ActivityIndicator color={Colors.red} size={"large"} />
           </View>
-        )}
-        <StatusBar barStyle={'dark-content'} backgroundColor={Colors.white} />
+        </View>
+      )}
+      <CustomStatusBar
+        backgroundColor={Colors.white}
+        barTextColor="dark-content"/>
 
-        <View style={styles.headerView}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.arrowContainer}>
-            <Image
-              source={Images.backArrow}
-              style={styles.backArrow}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
+      <View style={styles.headerView}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.arrowContainer}>
           <Image
-            source={Images.logoWithoutPadding}
-            style={styles.logoContainer}
+            source={Images.backArrow}
+            style={styles.backArrow}
             resizeMode="contain"
           />
-          <View style={styles.backArrow} />
-        </View>
-
-        <View style={styles.mainContainer}>
-          <KeyboardAvoidingView
-            behavior="height"
-            keyboardVerticalOffset={keyboardVerticalOffset}
-            style={{flex: 1}}>
-            <View style={styles.bottomView}>
-              <TextInput
-                style={styles.textInputStyle}
-                placeholder={Strings.Username}
-                placeholderTextColor={Colors.gray}
-                value={userName}
-                onChangeText={value => {
-                  setUserName(value);
-                }}
-              />
-
-              <View style={styles.buttonContainer1}>
-                <TouchableOpacity
-                  style={styles.touchableContainer}
-                  onPress={webRegistration}>
-                  <Text style={styles.btnText}>{Strings.Register_web}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={webAuthentication}
-                  style={styles.touchableContainer}>
-                  <Text style={styles.btnText}>{Strings.Authenticate_Web}</Text>
-                </TouchableOpacity>
-              </View>
-
-              <FlatList data={ButtonText} renderItem={renderItem} />
-            </View>
-          </KeyboardAvoidingView>
-        </View>
-
-        <Toast />
-        <DialogBox
-          isModalVisible={modalVisible}
-          handleOkClick={() => handleOKClick()}
-          handleCancelClick={handleCancelClick}
-          isPinRequired={isPinRequired}
-          pin={pin}
-          setPin={setPin}
+        </TouchableOpacity>
+        <Image
+          source={Images.logoWithoutPadding}
+          style={styles.logoContainer}
+          resizeMode="contain"
         />
-      </SafeAreaView>
+        <View style={styles.backArrow} />
+      </View>
+
+      <View style={styles.mainContainer}>
+        <KeyboardAvoidingView
+          behavior="height"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          style={{ flex: 1 }}>
+          <View style={styles.bottomView}>
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder={Strings.Username}
+              placeholderTextColor={Colors.gray}
+              value={userName}
+              onChangeText={(value) => {
+                setUserName(value);
+              }}
+            />
+
+            <View style={styles.buttonContainer1}>
+              <TouchableOpacity
+                style={styles.touchableContainer}
+                onPress={webRegistration}
+              >
+                <Text style={styles.btnText}>{Strings.Register_web}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={webAuthentication}
+                style={styles.touchableContainer}
+              >
+                <Text style={styles.btnText}>{Strings.Authenticate_Web}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <FlatList data={ButtonText} renderItem={renderItem} />
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+
+      <Toast />
+      <DialogBox
+        isModalVisible={modalVisible}
+        handleOkClick={() => handleOKClick()}
+        handleCancelClick={handleCancelClick}
+        isPinRequired={isPinRequired}
+        pin={pin}
+        setPin={setPin}
+      />
     </KeyboardAwareScrollView>
   );
 }

@@ -17,6 +17,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import {Images} from '../../constants/Images';
 import {Strings} from '../../constants/Strings';
+import { Colors } from '../../constants/Colors';
 
 type Props = NativeStackScreenProps<RootParamList, 'AboutScreen'>;
 
@@ -39,7 +40,7 @@ function AboutScreen({navigation}: Props): JSX.Element {
     let AboutScreenText = `Root Tenant : \nDNS: ${sdkInfo.tenant.dns} \nTag :${sdkInfo.tenant.tenantTag}\ncommunity : ${sdkInfo.tenant.community}\n(${sdkInfo.tenant.communityId}) \n
 Client Tenant: \nDNS: ${sdkInfo.clientTenant.dns} \nTag :${sdkInfo.tenant.tenantTag} \ncommunity :${sdkInfo.clientTenant.community} \n License Key:\n ${sdkInfo.licenseKey} \n\nDID:\n${sdkInfo.DID}\n
 Public Key :
-${sdkInfo.publicKey} \n\nSDK Version: \n${sdkInfo.sdkVersion}\n 
+${sdkInfo.publicKey} \n\nSDK Version: \n${sdkInfo.sdkVersion}\n
 App Version:\n${version}`;
     setSdkResponse(AboutScreenText);
   };
@@ -58,32 +59,33 @@ App Version:\n${version}`;
   };
 
   return (
-    <>
-      <CustomStatusBar />
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={Images.backArrow}
-              style={styles.backArrow}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>{Strings.About}</Text>
-        </View>
-        {sdkResponse && (
-          <ScrollView>
-            <Text style={styles.textStyle}>{sdkResponse}</Text>
-          </ScrollView>
-        )}
-        <TouchableOpacity
-          style={styles.copyContainer}
-          onPress={() => copyToClipboard()}>
-          <Text style={styles.copyText}>{Strings.Copy}</Text>
+    <View style={styles.container}>
+      <CustomStatusBar
+        backgroundColor={Colors.black}
+        barTextColor="light-content"
+      />
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={Images.backArrow}
+            style={styles.backArrow}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
-        <Toast />
+        <Text style={styles.headerText}>{Strings.About}</Text>
       </View>
-    </>
+      {sdkResponse && (
+        <ScrollView>
+          <Text style={styles.textStyle}>{sdkResponse}</Text>
+        </ScrollView>
+      )}
+      <TouchableOpacity
+        style={styles.copyContainer}
+        onPress={() => copyToClipboard()}>
+        <Text style={styles.copyText}>{Strings.Copy}</Text>
+      </TouchableOpacity>
+      <Toast />
+    </View>
   );
 }
 

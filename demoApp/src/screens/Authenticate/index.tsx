@@ -11,6 +11,8 @@ import {
   onUserAuthenticate,
 } from '../../connector/QRScanner';
 import {Strings} from '../../constants/Strings';
+import { Colors } from '../../constants/Colors';
+
 
 type Props = NativeStackScreenProps<RootParamList, 'AuthenticateScreen'>;
 function AuthenticateScreen({navigation}: Props): JSX.Element {
@@ -62,7 +64,7 @@ function AuthenticateScreen({navigation}: Props): JSX.Element {
         <Loader />
       ) : (
         <>
-          <CustomStatusBar />
+          <CustomStatusBar backgroundColor={Colors.black} barTextColor={'light-content'} />
           {scopeData && (
             <Text style={styles.listText}>
               {Strings.Did} :{' '}

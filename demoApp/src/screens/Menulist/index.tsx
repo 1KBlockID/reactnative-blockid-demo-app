@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
-  SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -21,6 +19,7 @@ import {checkAndRequestPermissions} from '../../utils/Permissions';
 import {DialogBox} from '../../components/DialogBox';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
@@ -145,28 +144,22 @@ function MenuScreen({navigation}: Props): JSX.Element {
       });
   };
   return (
-    <>
-      <View style={[styles.statusBar]}>
-        <SafeAreaView style={styles.safeAreaContainer}>
-          <StatusBar
-            barStyle={'light-content'}
-            backgroundColor={Colors.black}
-          />
-        </SafeAreaView>
+    <View style={styles.container}>
+      <CustomStatusBar
+        backgroundColor={Colors.black}
+        barTextColor="light-content"
+      />
+      <View style={styles.logoContainer}>
+        <Image source={Images.logo} style={styles.logo} />
       </View>
-      <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image source={Images.logo} style={styles.logo} />
-        </View>
-        <FlatList data={DATA} renderItem={renderItem} />
+      <FlatList data={DATA} renderItem={renderItem} />
 
-        <DialogBox
-          isModalVisible={modalVisible}
-          handleOkClick={handleOkPress}
-          handleCancelClick={() => setModalVisible(false)}
-        />
-      </View>
-    </>
+      <DialogBox
+        isModalVisible={modalVisible}
+        handleOkClick={handleOkPress}
+        handleCancelClick={() => setModalVisible(false)}
+      />
+    </View>
   );
 }
 

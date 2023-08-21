@@ -18,6 +18,7 @@ import {Strings} from '../../constants/Strings';
 import ScopeData from '../../helper/ScopeData';
 import {Loader} from '../../components/loader';
 import {checkAndRequestPermissions} from '../../utils/Permissions';
+import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 
 type Props = NativeStackScreenProps<RootParamList, 'QRSessionScreen'>;
 
@@ -84,7 +85,7 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
         ScopeData.addSessionData(event);
         if (Platform.OS === 'ios') {
           DemoAppModule.getScopeData(
-            event?.scope ?? '',
+            event?.scope ?? "",
             event?.creds ?? '',
             event?.userId ?? '',
           )
@@ -112,19 +113,13 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
       {isLoading ? (
         <Loader />
       ) : (
-        <>
-          <View style={[styles.statusBar]}>
-            <SafeAreaView style={styles.safeAreaContainer}>
-              <StatusBar
-                barStyle={'light-content'}
-                backgroundColor={Colors.black}
-              />
-            </SafeAreaView>
-          </View>
-          <View style={styles.container}>
-            <FlatList data={ButtonText} renderItem={renderItem} />
-          </View>
-        </>
+        <View style={styles.container}>
+          <CustomStatusBar
+            backgroundColor={Colors.black}
+            barTextColor="light-content"
+          />
+          <FlatList data={ButtonText} renderItem={renderItem} />
+        </View>
       )}
     </>
   );

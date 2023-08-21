@@ -1,13 +1,18 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, View} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {SafeAreaView, StatusBar,StatusBarStyle, View} from 'react-native';
 import {styles} from './style';
 
-export function CustomStatusBar(): JSX.Element {
+type props = {
+  backgroundColor: string;
+  barTextColor: StatusBarStyle | null | undefined;
+};
+
+export function CustomStatusBar(Props: props): JSX.Element {
+  const { backgroundColor, barTextColor } = Props;
   return (
-    <View style={[styles.statusBar]}>
+    <View style={[styles.statusBar, { backgroundColor: backgroundColor }]}>
       <SafeAreaView style={styles.safeAreaContainer}>
-        <StatusBar barStyle={'light-content'} backgroundColor={Colors.black} />
+        <StatusBar barStyle={barTextColor} backgroundColor={backgroundColor} />
       </SafeAreaView>
     </View>
   );

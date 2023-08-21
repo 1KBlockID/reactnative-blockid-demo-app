@@ -68,6 +68,7 @@ export function PinModal(props: Props): JSX.Element {
                   onChangeText={value => {
                     props.setCurrentPin?.(value);
                   }}
+                  placeholderTextColor={Colors.gray}
                   value={props.currentPin}
                   keyboardType="number-pad"
                 />
@@ -81,6 +82,7 @@ export function PinModal(props: Props): JSX.Element {
                     borderTopRightRadius: props.isChangePin ? 0 : 18,
                   },
                 ]}
+                placeholderTextColor={Colors.gray}
                 placeholder={Strings.NewPIN}
                 onChangeText={value => {
                   props.setPin?.(value);
@@ -94,6 +96,7 @@ export function PinModal(props: Props): JSX.Element {
                 onChangeText={value => {
                   props.setConfirmPin?.(value);
                 }}
+                placeholderTextColor={Colors.gray}
                 value={props.confirmPin}
                 keyboardType="number-pad"
               />

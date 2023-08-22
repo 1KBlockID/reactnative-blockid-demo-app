@@ -197,7 +197,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      */
     @ReactMethod
     public void registerFIDO2KeyUsingWeb(String name, Promise promise) {
-        UiThreadUtil.runOnUiThread(() -> webRegister(name, K_FILE_NAME, promise));
+        UiThreadUtil.runOnUiThread(() -> _registerFIDO2KeyUsingWeb(name, K_FILE_NAME, promise));
     }
 
     /**
@@ -207,7 +207,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
      */
     @ReactMethod
     public void authenticateFIDO2KeyUsingWeb(String name, Promise promise) {
-        UiThreadUtil.runOnUiThread(() -> webAuthenticate(name, K_FILE_NAME, promise));
+        UiThreadUtil.runOnUiThread(() -> _authenticateFIDO2KeyUsingWeb(name, K_FILE_NAME, promise));
     }
 
     /**
@@ -347,7 +347,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void webRegister(String name, String fileName, Promise promise) {
+    private void _registerFIDO2KeyUsingWeb(String name, String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
 
         BlockIDSDK.getInstance().registerFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), fileName, (status, errorResponse) -> {
@@ -359,7 +359,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void webAuthenticate(String name, String fileName, Promise promise) {
+    private void _authenticateFIDO2KeyUsingWeb(String name, String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
 
         BlockIDSDK.getInstance().authenticateFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), fileName, (status, errorResponse) -> {

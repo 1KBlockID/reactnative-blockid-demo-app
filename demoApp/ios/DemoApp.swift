@@ -37,7 +37,6 @@ import BlockID
   }
   
   @objc func getSDKInfo()->[String:Any] {
-    ensureSDKUnlocked();
     let tenant = BlockIDSDK.sharedInstance.getTenant();
     let dns = tenant?.dns
     let tag = tenant?.tenantTag
@@ -82,12 +81,12 @@ import BlockID
     authenticateUserWithScopes(dataModel: dataModel)
   }
   
-  @objc func registerWeb(_ name: String) {
-    webRegister(name, type: .CROSS_PLATFORM)
+  @objc func registerFIDO2KeyUsingWeb(_ name: String) {
+    _registerFIDO2KeyUsingWeb(name, type: .CROSS_PLATFORM);
   }
   
   @objc func authenticateFIDO2KeyUsingWeb(_ name: String) {
-    webAuthenticate( name, type: .CROSS_PLATFORM)
+    _authenticateFIDO2KeyUsingWeb( name, type: .CROSS_PLATFORM)
   }
   
   @objc func registerFIDO2Key(_ name: String, platform : String, pin :String) {
@@ -136,21 +135,13 @@ import BlockID
   }
   
   @objc func  resetSDK() {
-    UserDefaults.removeAllValues();
     BlockIDSDK.sharedInstance.resetSDK(licenseKey: Tenant.licenseKey)
   }
-  
 }
 
 // MARK: - Private methods
 extension DemoApp {
   private func initWallet() {
-    guard UserDefaults.standard.data(forKey: AppConsants.dvcID) == nil else {
-      BIDAuthProvider.shared.lockSDK()
-      resolveFunction(DemoApp.resolvedMsg)
-      return
-    }
-    
     BlockIDSDK.sharedInstance.initiateTempWallet() { status, error in
       guard error == nil else {
         self.handleRejection(error: error)
@@ -227,7 +218,7 @@ extension DemoApp {
     }
   }
   
-  private func webRegister(_ name: String, type: FIDO2KeyType) {
+  private func _registerFIDO2KeyUsingWeb(_ name: String, type: FIDO2KeyType) {
     guard
       let root = RCTPresentedViewController(),
       let dns = Tenant.clientTenant.dns,
@@ -235,15 +226,14 @@ extension DemoApp {
     else { return }
     
     let callback = self.createResultCallback(name)
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.registerFIDO2Key(userName: name,
+       BlockIDSDK.sharedInstance.registerFIDO2Key(userName: name,
                                                tenantDNS: dns,
                                                communityName: community,
                                                fileName: "fido3.html",
                                                completion: callback)
   }
   
-  private func webAuthenticate(_ name: String, type: FIDO2KeyType) {
+  private func _authenticateFIDO2KeyUsingWeb(_ name: String, type: FIDO2KeyType) {
     guard
       let root = RCTPresentedViewController(),
       let dns = Tenant.clientTenant.dns,
@@ -252,8 +242,7 @@ extension DemoApp {
     
     let callback = self.createResultCallback(name)
     
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.authenticateFIDO2Key(userName: name,
+      BlockIDSDK.sharedInstance.authenticateFIDO2Key(userName: name,
                                                    tenantDNS: dns,
                                                    communityName: community,
                                                    fileName: "fido3.html",
@@ -269,8 +258,7 @@ extension DemoApp {
     
     let callback = self.createResultCallback(name)
     
-    ensureSDKUnlocked()
-    if(pin == ""){
+       if(pin == ""){
       BlockIDSDK.sharedInstance.registerFIDO2Key(controller: root,
                                                  userName: name,
                                                  tenantDNS: dns,
@@ -300,8 +288,7 @@ extension DemoApp {
     
     let callback = self.createResultCallback(name)
     
-    ensureSDKUnlocked()
-    if(pin == ""){
+       if(pin == ""){
       BlockIDSDK.sharedInstance.authenticateFIDO2Key(controller: root,
                                                      userName: name,
                                                      tenantDNS: dns,
@@ -323,14 +310,12 @@ extension DemoApp {
   
   private func setPin(pin : String) {
     let callback = self.createResultCallback(pin)
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.setFido2PIN(newPin: pin, completion: callback)
+       BlockIDSDK.sharedInstance.setFido2PIN(newPin: pin, completion: callback)
   }
   
   private func changeFidoPin(_ oldPin: String,newPin :String) {
     let callback = self.createResultCallback("changePin")
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.changeFido2PIN(oldPin:oldPin, newPin:newPin, completion:callback)
+       BlockIDSDK.sharedInstance.changeFido2PIN(oldPin:oldPin, newPin:newPin, completion:callback)
   }
   
   private func ensureSDKUnlocked() {
@@ -340,8 +325,7 @@ extension DemoApp {
   
   private func resetFidoPin() {
     let callback = self.createResultCallback("resetPin")
-    ensureSDKUnlocked()
-    BlockIDSDK.sharedInstance.resetFido2(completion: callback)
+       BlockIDSDK.sharedInstance.resetFido2(completion: callback)
   }
   
   private func handleRejection(error: BlockID.ErrorResponse?) {
@@ -361,8 +345,6 @@ extension DemoApp {
       }
       
       BIDAuthProvider.shared.lockSDK()
-      UserDefaults.standard.set(name, forKey: AppConsants.fidoUserName)
-      
       self.resolveFunction(DemoApp.resolvedMsg)
     }
   }

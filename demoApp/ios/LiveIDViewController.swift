@@ -8,9 +8,6 @@ import AVFoundation
 import BlockID
 import Toast_Swift
 
-
-
-
 class LiveIDViewController: UIViewController {
   
   private var liveIdScannerHelper: LiveIDScannerHelper?
@@ -84,7 +81,6 @@ class LiveIDViewController: UIViewController {
             self.dismiss(animated: true , completion: nil);
           }))
           self.present(alert, animated: true)
-          
         }
         return
       }
@@ -98,7 +94,6 @@ class LiveIDViewController: UIViewController {
         }))
         self.present(alert, animated: true)
       }
-      
     }
   }
   
@@ -124,7 +119,6 @@ class LiveIDViewController: UIViewController {
   private func stopLiveIDScanning() {
     self.liveIdScannerHelper?.stopLiveIDScanning()
   }
-  
 }
 
 // MARK: - LiveIDResponseDelegate -

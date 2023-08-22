@@ -26,7 +26,6 @@
 		5565927C2A55976C00F01E57 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5565927B2A55976C00F01E57 /* main.storyboard */; };
 		5568A5B52A440D8400CC42CC /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5568A5B42A440D8400CC42CC /* DemoApp.swift */; };
 		556BE3CB2A3C5CAF00AD6E74 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */; };
-		556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */; };
 		55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B1AE482A303FAF0073FDC9 /* AppConstants.swift */; };
 		55BC123F2A56782F004E848B /* LiveIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC123E2A56782F004E848B /* LiveIDViewController.swift */; };
 		55E62B262A6663FD005E2025 /* QRScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E62B252A6663FD005E2025 /* QRScanViewController.swift */; };
@@ -69,7 +68,6 @@
 		5565927B2A55976C00F01E57 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		5568A5B42A440D8400CC42CC /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		556BE3CA2A3C5CAF00AD6E74 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
-		556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefualt+Ext.swift"; sourceTree = "<group>"; };
 		55B1AE472A303FAE0073FDC9 /* demoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "demoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		55B1AE482A303FAF0073FDC9 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		55BC123E2A56782F004E848B /* LiveIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveIDViewController.swift; sourceTree = "<group>"; };
@@ -198,13 +196,6 @@
 			name = APIs;
 			sourceTree = "<group>";
 		};
-		552D964F2A64FFCC00C6A8E9 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
 		556BE3C92A3C5C8B00AD6E74 /* utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,8 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				5526D2C62A67C48D00960A40 /* Extension */,
-				552D964F2A64FFCC00C6A8E9 /* Utils */,
-				556BE3CD2A3C5EF700AD6E74 /* UserDefualt+Ext.swift */,
 			);
 			name = SupportingFiles;
 			sourceTree = "<group>";
@@ -555,7 +544,6 @@
 				55B1AE492A303FAF0073FDC9 /* AppConstants.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5526B6872A6A509A0038C82D /* RNEventEmitter.m in Sources */,
-				556BE3CE2A3C5EF700AD6E74 /* UserDefualt+Ext.swift in Sources */,
 				552D96492A64FC2200C6A8E9 /* AuthenticationPayloadV1.swift in Sources */,
 				5526D2CE2A67DE0600960A40 /* StringExtension.swift in Sources */,
 				5526D2CC2A67DD8900960A40 /* ErrorConfig.swift in Sources */,

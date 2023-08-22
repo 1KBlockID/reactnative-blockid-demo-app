@@ -14,8 +14,8 @@ import QRSessionScreen from './src/screens/QRSession';
 import {getData} from './src/databaseService/localStorage';
 import Fido2Screen from './src/screens/FIDO2';
 import PinScreen from './src/screens/PinManagement';
-import {setLicenseKey} from './src/connector/Fido2Connector';
 import AuthenticateScreen from './src/screens/Authenticate';
+import { setLicenseKey } from './src/connector/SdkConnector';
 
 LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createNativeStackNavigator<RootParamList>();

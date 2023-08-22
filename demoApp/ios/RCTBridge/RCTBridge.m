@@ -48,8 +48,8 @@ RCT_EXPORT_METHOD(getSDKInfo:(RCTPromiseResolveBlock)resolveFunction
     
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    NSString* sdkTanentInfo = [sdk getSDKInfo];
-    resolveFunction(sdkTanentInfo);
+    NSString* sdkInfo = [sdk getSDKInfo];
+    resolveFunction(sdkInfo);
   });
 }
 
@@ -113,7 +113,7 @@ RCT_EXPORT_METHOD(registerFIDO2KeyUsingWeb:(NSString *)name
   dispatch_async(dispatch_get_main_queue(), ^{
     DemoApp *sdk = [[DemoApp alloc] initWithResolveFunction:resolveFunction
                                              rejectFunction:rejectFunction];
-    [sdk registerWeb:name];
+    [sdk registerFIDO2KeyUsingWeb:name];
   });
 }
 

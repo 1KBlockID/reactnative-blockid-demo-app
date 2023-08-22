@@ -17,7 +17,7 @@ public struct Tenant {
   
 }
 
-public struct AppConsants {
+public struct AppConstants {
   static let buildVersion = "buildVersion"
   static let appVersionKey = "appVersionKey"
   static let dvcID = "default_config"

@@ -1,14 +1,11 @@
 package com.onekosmos.blockid.reactnative.poc;
 
 import static com.onekosmos.blockid.reactnative.poc.AppConstants.defaultTenant;
-import static com.onekosmos.blockid.reactnative.poc.AppConstants.dvcId;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
@@ -235,9 +232,9 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     @ReactMethod
     public void authenticateFIDO2(String name, String platform, String pin, Promise promise) {
         if (platform.equals("platform")) {
-            UiThreadUtil.runOnUiThread(() -> autheticateFIDO2Key(name, FIDO2KeyType.PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> authenticateFIDO2Key(name, FIDO2KeyType.PLATFORM, promise));
         } else {
-            UiThreadUtil.runOnUiThread(() -> autheticateFIDO2Key(name, FIDO2KeyType.CROSS_PLATFORM, promise));
+            UiThreadUtil.runOnUiThread(() -> authenticateFIDO2Key(name, FIDO2KeyType.CROSS_PLATFORM, promise));
         }
     }
 
@@ -250,17 +247,13 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
     }
 
     private void initWallet(Promise promise) {
-        SharedPreferences sharedPref = Objects.requireNonNull(context.getCurrentActivity()).getPreferences(Context.MODE_PRIVATE);
         BlockIDSDK.getInstance().initiateWallet();
         BlockIDSDK.getInstance().registerTenant(defaultTenant, (status, error, tenant) -> {
             if (!status) {
-                BIDAuthProvider.getInstance().lockSDK();
                 promise.reject(String.valueOf(error.getCode()), error.getMessage());
                 return;
             }
             BlockIDSDK.getInstance().commitApplicationWallet();
-            BIDAuthProvider.getInstance().lockSDK();
-            sharedPref.edit().putBoolean(dvcId, true).apply();
             promise.resolve(resolveMsg);
         });
     }
@@ -344,13 +337,6 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void ensureSDKUnlocked() {
-        if (BIDAuthProvider.getInstance().isSDKUnLocked()) {
-            return;
-        }
-        BIDAuthProvider.getInstance().unlockSDK();
-    }
-
     private void authenticateUserWithScope(String session, String sessionURL, String scopes, String creds, BIDOrigin origin, Promise promise) {
         BlockIDSDK.getInstance().authenticateUser(context, null, session, sessionURL, scopes, null, creds, origin, String.valueOf(0.0), String.valueOf(0.0), BuildConfig.VERSION_NAME, null, (status, sessionId, error) -> {
             if (status) {
@@ -363,9 +349,8 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     private void webRegister(String name, String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        ensureSDKUnlocked();
+
         BlockIDSDK.getInstance().registerFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), fileName, (status, errorResponse) -> {
-            BIDAuthProvider.getInstance().lockSDK();
             if (errorResponse != null) {
                 promise.reject(String.valueOf(errorResponse.getCode()), errorResponse.getMessage());
                 return;
@@ -376,9 +361,8 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     private void webAuthenticate(String name, String fileName, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        ensureSDKUnlocked();
+
         BlockIDSDK.getInstance().authenticateFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), fileName, (status, errorResponse) -> {
-            BIDAuthProvider.getInstance().lockSDK();
             if (errorResponse != null) {
                 promise.reject(String.valueOf(errorResponse.getCode()), errorResponse.getMessage());
                 return;
@@ -389,9 +373,7 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
 
     private void registerFIDO2Key(String name, FIDO2KeyType type, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        ensureSDKUnlocked();
         BlockIDSDK.getInstance().registerFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), type, activity.observer, (status, errorResponse) -> {
-            BIDAuthProvider.getInstance().lockSDK();
             if (errorResponse != null) {
                 promise.reject(String.valueOf(errorResponse.getCode()), errorResponse.getMessage());
                 return;
@@ -400,12 +382,11 @@ public class DemoAppModule extends ReactContextBaseJavaModule implements ILiveID
         });
     }
 
-    private void autheticateFIDO2Key(String name, FIDO2KeyType type, Promise promise) {
+    private void authenticateFIDO2Key(String name, FIDO2KeyType type, Promise promise) {
         MainActivity activity = (MainActivity) Objects.requireNonNull(context.getCurrentActivity());
-        ensureSDKUnlocked();
+
 
         BlockIDSDK.getInstance().authenticateFIDO2Key(activity, name, clientTenant.getDns(), clientTenant.getCommunity(), type, activity.observer, (status, errorResponse) -> {
-            BIDAuthProvider.getInstance().lockSDK();
             if (errorResponse != null) {
                 promise.reject(String.valueOf(errorResponse.getCode()), errorResponse.getMessage());
                 return;

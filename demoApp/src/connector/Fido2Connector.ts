@@ -1,5 +1,5 @@
 import {NativeModules} from 'react-native';
-import {Fido2Error, Fido2PayloadModel} from '../constants/Fido2PayloadModel';
+import { Fido2PayloadModel} from '../constants/Fido2PayloadModel';
 
 const {DemoAppModule} = NativeModules;
 
@@ -45,14 +45,5 @@ export const changeFIDO2PIN = async (
   } catch (error) {
     errorHandler?.(error);
     return null;
-  }
-};
-
-//set LicenseKey
-export const setLicenseKey = async () => {
-  try {
-    await DemoAppModule.initRegistrations();
-  } catch (e) {
-    // eslint-disable-next-line no-console
   }
 };

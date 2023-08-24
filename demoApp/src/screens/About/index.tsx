@@ -4,9 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  NativeModules,
   ScrollView,
-  Platform,
 } from 'react-native';
 import {styles} from './style';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -18,25 +16,19 @@ import Toast from 'react-native-toast-message';
 import {Images} from '../../constants/Images';
 import {Strings} from '../../constants/Strings';
 import { Colors } from '../../constants/Colors';
+import { getAboutScreenInformation } from '../../connector/SdkConnector';
 
 type Props = NativeStackScreenProps<RootParamList, 'AboutScreen'>;
 
 function AboutScreen({navigation}: Props): JSX.Element {
   const version = DeviceInfo.getVersion();
-  const {DemoAppModule} = NativeModules;
-  const [sdkResponse, setSdkResponse] = useState<any>('');
+  const [sdkResponse, setSdkResponse] = useState<string>('');
 
   /**
    * get info from SDK
    */
-
   const getInfo = async () => {
-    const response = await DemoAppModule.getSDKInfo();
-    let sdkInfo = response;
-    if (Platform.OS === 'android') {
-      sdkInfo = JSON.parse(response);
-    }
-
+    const sdkInfo = await getAboutScreenInformation();
     let AboutScreenText = `Root Tenant : \nDNS: ${sdkInfo.tenant.dns} \nTag :${sdkInfo.tenant.tenantTag}\ncommunity : ${sdkInfo.tenant.community}\n(${sdkInfo.tenant.communityId}) \n
 Client Tenant: \nDNS: ${sdkInfo.clientTenant.dns} \nTag :${sdkInfo.tenant.tenantTag} \ncommunity :${sdkInfo.clientTenant.community} \n License Key:\n ${sdkInfo.licenseKey} \n\nDID:\n${sdkInfo.DID}\n
 Public Key :

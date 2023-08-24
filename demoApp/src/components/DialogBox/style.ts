@@ -1,7 +1,5 @@
-import {StatusBar, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
-
-const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
 export const styles = StyleSheet.create({
   mainContainer: {

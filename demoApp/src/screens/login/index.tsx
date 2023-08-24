@@ -16,6 +16,7 @@ import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import {CommonActions} from '@react-navigation/native';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
+import { handleEnrollBiometric } from '../../connector/BiometricConector';
 
 type Props = NativeStackScreenProps<RootParamList, 'LoginScreen'>;
 
@@ -23,10 +24,9 @@ function LoginScreen({navigation}: Props): JSX.Element {
   const {DemoAppModule} = NativeModules;
 
   const handleClick = async () => {
-    try {
-      const response = await DemoAppModule.enrollBiometricAssets();
-      if (response === 'OK') {
-        Toast.show({
+    const response = await handleEnrollBiometric();
+    if(response){
+      Toast.show({
           text2: 'login Successfully !',
           position: 'bottom',
           type: 'success',
@@ -37,11 +37,9 @@ function LoginScreen({navigation}: Props): JSX.Element {
             routes: [{name: 'MenuScreen'}],
           }),
         );
-      } else {
-        Alert.alert('Please enroll biometric first ');
-      }
-    } catch (e) {
-      __DEV__ && console.log('enrollBiometric Assets', e);
+    }
+    else{
+      Alert.alert('Please enroll biometric first ');
     }
   };
 

@@ -54,14 +54,6 @@ class QRScanViewController: UIViewController {
 }
 extension QRScanViewController: QRScanResponseDelegate {
   func onQRScanResult(qrCodeData: String?) {
-    if qrCodeData == nil {
-      AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
-        if !response {
-          print("Camera Response", response);
-        }
-      }
-      return
-    }
     qrScannerHelper?.stopQRScanning()
     _qrView.isHidden = true
     _viewBtn.isHidden = true

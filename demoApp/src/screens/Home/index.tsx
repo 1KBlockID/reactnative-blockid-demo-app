@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Image,
-  NativeModules,
   Text,
   TouchableOpacity,
   View,
@@ -17,12 +17,13 @@ import {CommonActions} from '@react-navigation/native';
 import {Images} from '../../constants/Images';
 import {Strings} from '../../constants/Strings';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
+import { Fido2Error, Fido2PayloadModel } from '../../constants/Fido2PayloadModel';
+import { handleRegisterTenant } from '../../connector/SdkConnector';
+
 type Props = NativeStackScreenProps<RootParamList, 'HomeScreen'>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
-  const {DemoAppModule} = NativeModules;
-
   const setInitialScreen = () => {
     getData('isRegister').then(res => {
       if (res) {
@@ -54,22 +55,33 @@ function HomeScreen({navigation}: Props): JSX.Element {
     },
   ];
 
+  const errorHandler = (error: Fido2Error): void => {
+    Alert.alert(`${error?.message}`, 'Please try again.', [
+      {
+        text: 'OK',
+        onPress: async () => {
+          setIsLoading(false)
+        },
+      },
+    ]);
+  };
+  const payload = {
+    errorHandler: errorHandler
+
+  } as Fido2PayloadModel;
+
   const handleDefaultActions = async (index: number) => {
     if (index == 0) {
-      try {
-        setIsLoading(true);
-        await DemoAppModule.beginRegistration();
+      setIsLoading(true);
+      const response = await handleRegisterTenant(payload);
+      if(response === 'OK'){
         storeData(true, 'isRegister');
-        setTimeout(() => {
           navigation.dispatch(
             CommonActions.reset({
               index: 1,
               routes: [{name: 'LoginScreen'}],
             }),
           );
-        }, 1000);
-        setIsLoading(false);
-      } catch (e) {
         setIsLoading(false);
       }
     }

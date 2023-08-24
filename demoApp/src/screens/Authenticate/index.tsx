@@ -9,7 +9,7 @@ import ScopeData from '../../helper/ScopeData';
 import {
   authenticateUserAndroid,
   onUserAuthenticate,
-} from '../../connector/QRScanner';
+} from '../../connector/QRScannerConnector';
 import {Strings} from '../../constants/Strings';
 import { Colors } from '../../constants/Colors';
 

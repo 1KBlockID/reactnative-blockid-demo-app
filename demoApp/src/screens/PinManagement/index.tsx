@@ -14,13 +14,13 @@ import {PinModal} from '../../components/PinModal';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import {Fido2Error, Fido2PayloadModel} from '../../constants/Fido2PayloadModel';
-import {errorCodes} from '../../constants/errorCodes';
 import {
   changeFIDO2PIN,
   resetFIDO2,
   setFIDO2PIN,
 } from '../../connector/Fido2Connector';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
+import { ErrorCodes } from '../../constants/ErrorCodes';
 
 type Props = NativeStackScreenProps<RootParamList, 'PinScreen'>;
 
@@ -68,7 +68,7 @@ function PinScreen({navigation}: Props): JSX.Element {
   };
   // Change FIDO2 Pin Error handler
   const changePinErrorHandler = (error: Fido2Error): void => {
-    if (Number(error?.code) === Number(errorCodes.PINInvalid)) {
+    if (Number(error?.code) === Number(ErrorCodes.PINInvalid)) {
       Alert.alert(`${error?.message} ${error?.code}`, 'Enter Pin Again.', [
         {
           text: 'OK',
@@ -90,7 +90,7 @@ function PinScreen({navigation}: Props): JSX.Element {
   };
 
   const resetPinErrorHandler = (error: Fido2Error): void => {
-    if (Number(error?.code) === Number(errorCodes.PINInvalid)) {
+    if (Number(error?.code) === Number(ErrorCodes.PINInvalid)) {
       Alert.alert(`${error?.message} ${error?.code}`, 'Enter Pin Again.', [
         {
           text: 'OK',

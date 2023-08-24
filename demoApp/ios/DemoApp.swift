@@ -318,11 +318,6 @@ extension DemoApp {
        BlockIDSDK.sharedInstance.changeFido2PIN(oldPin:oldPin, newPin:newPin, completion:callback)
   }
   
-  private func ensureSDKUnlocked() {
-    guard !BIDAuthProvider.shared.isSDKUnLocked() else {return }
-    BIDAuthProvider.shared.unLockSDK()
-  }
-  
   private func resetFidoPin() {
     let callback = self.createResultCallback("resetPin")
        BlockIDSDK.sharedInstance.resetFido2(completion: callback)

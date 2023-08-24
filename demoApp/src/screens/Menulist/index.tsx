@@ -20,13 +20,14 @@ import {DialogBox} from '../../components/DialogBox';
 import {Strings} from '../../constants/Strings';
 import {Images} from '../../constants/Images';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
+import { isLiveIdRegistered, startLiveIDScanner } from '../../connector/LiveIdConnector';
+import { resetSdk } from '../../connector/SdkConnector';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
 function MenuScreen({navigation}: Props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
-  const [isLiveIdRegistered, setIsLiveIdRegistered] = useState(false);
-  const {DemoAppModule} = NativeModules;
+  const [isLiveIdRegister, setIsLiveIdRegister] = useState(false);
   const DATA = [
     {
       id: 1,
@@ -68,9 +69,9 @@ function MenuScreen({navigation}: Props): JSX.Element {
     if (index === 6) {
       setModalVisible(!modalVisible);
     }
-    if (index === 3 && !isLiveIdRegistered) {
+    if (index === 3 && !isLiveIdRegister) {
       if (checkAndRequestPermissions()) {
-        DemoAppModule.startLiveScan();
+        startLiveIDScanner()
       }
     }
     if (index === 4) {
@@ -80,19 +81,18 @@ function MenuScreen({navigation}: Props): JSX.Element {
       navigation.navigate('PinScreen');
     }
   };
+
   useEffect(() => {
     /**
      * call SDK method to check is liveID is enrolled or not
      */
-    DemoAppModule.isLiveIdRegistered()
-      .then((res: any) => {
-        if (res === 'Yes') {
-          setIsLiveIdRegistered(true);
-        }
-      })
-      .catch((error: any) => {
-        __DEV__ && console.log('error', error);
-      });
+    isLiveIdRegistered().then((response) => {
+      if (response === true) {
+        setIsLiveIdRegister(true);
+      }
+    }).then((error) => {
+      __DEV__ && console.log('error', error);
+    })
   }, []);
 
   useEffect(() => {
@@ -102,9 +102,8 @@ function MenuScreen({navigation}: Props): JSX.Element {
 
     const eventEmitter = new NativeEventEmitter(NativeModules.RNEventEmitter);
     let eventListener = eventEmitter.addListener('OnLiveResult', event => {
-      console.log('OnLiveIdCapture', event);
       if (event === 'OK') {
-        setIsLiveIdRegistered(true);
+        setIsLiveIdRegister(true);
       }
     });
     return () => eventListener.remove();
@@ -117,7 +116,7 @@ function MenuScreen({navigation}: Props): JSX.Element {
         style={styles.buttonStyle}
         onPress={() => handleClick(index)}>
         <Text style={styles.buttonText}>{item.title}</Text>
-        {(index === 1 || (index === 3 && isLiveIdRegistered)) && (
+        {(index === 1 || (index === 3 && isLiveIdRegister)) && (
           <Image source={Images.greenTick} style={styles.tickImageStyle} />
         )}
       </TouchableOpacity>
@@ -131,11 +130,11 @@ function MenuScreen({navigation}: Props): JSX.Element {
     AsyncStorage.clear()
       .then(res => {
         setModalVisible(false);
-        DemoAppModule.resetSDK();
+        resetSdk();
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{name: 'HomeScreen'}],
+            routes: [{ name: 'HomeScreen' }],
           }),
         );
       })

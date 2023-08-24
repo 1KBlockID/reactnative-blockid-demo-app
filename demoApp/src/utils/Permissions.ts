@@ -34,7 +34,7 @@ export const checkAndRequestPermissions = () => {
       }
     })
     .catch(error => {
-      console.log(error);
+      __DEV__ && console.log(error);
       return false;
     });
   return false;

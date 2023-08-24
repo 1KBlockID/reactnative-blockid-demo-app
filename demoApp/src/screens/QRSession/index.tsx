@@ -4,8 +4,6 @@ import {
   NativeEventEmitter,
   NativeModules,
   Platform,
-  SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -19,11 +17,11 @@ import ScopeData from '../../helper/ScopeData';
 import {Loader} from '../../components/loader';
 import {checkAndRequestPermissions} from '../../utils/Permissions';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
+import { getScopeData, handleQRScan } from '../../connector/QRScannerConnector';
 
 type Props = NativeStackScreenProps<RootParamList, 'QRSessionScreen'>;
 
 function QRSessionScreen({navigation}: Props): JSX.Element {
-  const {DemoAppModule} = NativeModules;
   const [isLoading, setIsLoading] = useState(false);
   const ButtonText = [
     {
@@ -43,7 +41,7 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
   const handleQRLogin = async (actionType: string) => {
     if (actionType === Strings.ORSession1) {
       if (checkAndRequestPermissions()) {
-        DemoAppModule.scanQRCode();
+        handleQRScan();
       }
     } else {
       //QR Scan with Preset Data
@@ -75,34 +73,20 @@ function QRSessionScreen({navigation}: Props): JSX.Element {
     /**
      * handle QR Scan response
      */
-    let eventListener = eventEmitter.addListener('OnQRScanResult', event => {
+    let eventListener = eventEmitter.addListener('OnQRScanResult', async event => {
       if (event) {
         setIsLoading(true);
-
         /**
          * get Scope Data api
          */
         ScopeData.addSessionData(event);
-        if (Platform.OS === 'ios') {
-          DemoAppModule.getScopeData(
-            event?.scope ?? "",
-            event?.creds ?? '',
-            event?.userId ?? '',
-          )
-            .then((response: any) => {
-              handleSuccess(response);
-            })
-            .catch((error: any) => {
-              setIsLoading(false);
-            });
-        } else {
-          DemoAppModule.getScopeData(event?.scopes ?? '', event?.creds ?? '')
-            .then((response: any) => {
-              handleSuccess(response);
-            })
-            .catch((error: any) => {
-              setIsLoading(false);
-            });
+        const response = await getScopeData(event);
+
+        if (response) {
+          handleSuccess(response);
+        }
+        else {
+          setIsLoading(false);
         }
       }
     });

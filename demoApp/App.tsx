@@ -10,7 +10,6 @@ import AboutScreen from './src/screens/About';
 import MenuScreen from './src/screens/Menulist';
 import {LogBox, NativeModules, Platform} from 'react-native';
 import LoginScreen from './src/screens/Login';
-import QRSessionScreen from './src/screens/QRSession';
 import {getData} from './src/databaseService/localStorage';
 import Fido2Screen from './src/screens/FIDO2';
 import PinScreen from './src/screens/PinManagement';
@@ -47,7 +46,6 @@ export default function App() {
         <Stack.Screen name="AboutScreen" component={AboutScreen} />
         <Stack.Screen name="MenuScreen" component={MenuScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="QRSessionScreen" component={QRSessionScreen} />
         <Stack.Screen name="Fido2Screen" component={Fido2Screen} />
         <Stack.Screen name="PinScreen" component={PinScreen} />
         <Stack.Screen

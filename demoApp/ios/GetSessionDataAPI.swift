@@ -35,11 +35,10 @@ public class GetSessionDataAPI {
             return
           }
           else{
-            completion(nil, "error", false)
+            completion(nil, "Requested session is no longer available.", false)
           }
-          
         @unknown default:
-          completion(nil, "Requested session is no longer available.", false)
+          completion(nil, "error", false)
         }
       }
   }

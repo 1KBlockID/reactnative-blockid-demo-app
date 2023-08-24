@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -22,12 +22,16 @@ import {Images} from '../../constants/Images';
 import { CustomStatusBar } from '../../components/StatusBar/CustomStatusBar';
 import { isLiveIdRegistered, startLiveIDScanner } from '../../connector/LiveIdConnector';
 import { resetSdk } from '../../connector/SdkConnector';
+import ScopeData from '../../helper/ScopeData';
+import { Loader } from '../../components/loader';
+import { getScopeData, handleQRScan } from '../../connector/QRScannerConnector';
 
 type Props = NativeStackScreenProps<RootParamList, 'MenuScreen'>;
 
 function MenuScreen({navigation}: Props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLiveIdRegister, setIsLiveIdRegister] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const DATA = [
     {
       id: 1,
@@ -64,7 +68,9 @@ function MenuScreen({navigation}: Props): JSX.Element {
       navigation.navigate('AboutScreen');
     }
     if (index === 2) {
-      navigation.navigate('QRSessionScreen');
+      if (checkAndRequestPermissions()) {
+        handleQRScan();
+      }
     }
     if (index === 6) {
       setModalVisible(!modalVisible);
@@ -109,7 +115,44 @@ function MenuScreen({navigation}: Props): JSX.Element {
     return () => eventListener.remove();
   }, []);
 
-  const renderItem = ({item, index}: {item: any; index: number}) => {
+  const handleSuccess = (res: any) => {
+    ScopeData.addScopeData(res);
+    navigation.navigate('AuthenticateScreen');
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    checkAndRequestPermissions();
+    const eventEmitter = new NativeEventEmitter(
+      Platform.OS === 'ios'
+        ? NativeModules.RNEventEmitter
+        : NativeModules.DemoAppModule,
+    );
+
+    /**
+     * handle QR Scan response
+     */
+    let eventListener = eventEmitter.addListener('OnQRScanResult', async event => {
+      if (event) {
+        setIsLoading(true);
+        /**
+         * get Scope Data api
+         */
+        ScopeData.addSessionData(event);
+        const response = await getScopeData(event);
+
+        if (response) {
+          handleSuccess(response);
+        }
+        else {
+          setIsLoading(false);
+        }
+      }
+    });
+    return () => eventListener.remove();
+  }, []);
+
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
     return index !== 5 || Platform.OS === 'ios' ? (
       <TouchableOpacity
         key={index}
@@ -144,20 +187,26 @@ function MenuScreen({navigation}: Props): JSX.Element {
   };
   return (
     <View style={styles.container}>
-      <CustomStatusBar
-        backgroundColor={Colors.black}
-        barTextColor="light-content"
-      />
-      <View style={styles.logoContainer}>
-        <Image source={Images.logo} style={styles.logo} />
-      </View>
-      <FlatList data={DATA} renderItem={renderItem} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CustomStatusBar
+            backgroundColor={Colors.black}
+            barTextColor="light-content"
+          />
+          <View style={styles.logoContainer}>
+            <Image source={Images.logo} style={styles.logo} />
+          </View>
+          <FlatList data={DATA} renderItem={renderItem} />
 
-      <DialogBox
-        isModalVisible={modalVisible}
-        handleOkClick={handleOkPress}
-        handleCancelClick={() => setModalVisible(false)}
-      />
+          <DialogBox
+            isModalVisible={modalVisible}
+            handleOkClick={handleOkPress}
+            handleCancelClick={() => setModalVisible(false)}
+          />
+        </>
+      )}
     </View>
   );
 }

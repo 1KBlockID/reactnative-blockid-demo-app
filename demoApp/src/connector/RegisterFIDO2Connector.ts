@@ -31,8 +31,8 @@ export const handleAuthenticationFIDO2KeyUsingWeb = async (userName: string): Pr
         });
 }
 
-export const registerFIDO2Key = (userName: string, pin: string, keyType?: string,) => {
-    return DemoAppModule.registerFIDO2(userName, keyType, '')
+export const registerFIDO2Key = (userName: string, pin: string, keyType?: string) => {
+    return DemoAppModule.registerFIDO2(userName, keyType, pin ? pin : '')
         .then((res: string) => {
             if (res === 'OK') {
                 storeData(userName, 'userName');
@@ -48,7 +48,7 @@ export const registerFIDO2Key = (userName: string, pin: string, keyType?: string
 
 
 export const authenticateFIDO2 = async (userName: string, pin: string, keyType?: string,): Promise<boolean> => {
-   return await DemoAppModule.authenticateFIDO2(userName, keyType, pin)
+    return await DemoAppModule.authenticateFIDO2(userName, keyType, pin ? pin : '')
         .then((res: string) => {
             if (res === 'OK') {
                 storeData(userName, 'userName');

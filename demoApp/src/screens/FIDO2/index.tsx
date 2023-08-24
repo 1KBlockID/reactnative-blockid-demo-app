@@ -31,7 +31,7 @@ type Item = {
   title: String;
 };
 
-function Fido2Screen({navigation}: Props): JSX.Element {
+function Fido2Screen({ navigation }: Props): JSX.Element {
   const [userName, setUserName] = useState('');
   const [loader, setLoader] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -77,9 +77,11 @@ function Fido2Screen({navigation}: Props): JSX.Element {
     const response = registerFIDO2Key(userName, pin, 'cross-platform');
     if (response === true) {
       SuccessAlert('Platform key registered successfully.');
+      setPin('')
       setLoader(false);
     }
-    else{
+    else {
+      setPin('')
       setLoader(false);
     }
   };
@@ -94,6 +96,7 @@ function Fido2Screen({navigation}: Props): JSX.Element {
       SuccessAlert('Security key is authenticated successfully.');
       setLoader(false);
     } else {
+      setPin('')
       setLoader(false);
     }
   };

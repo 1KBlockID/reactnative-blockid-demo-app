@@ -3,23 +3,23 @@ Reactnative BlockID demo app
 
 # SetUp
 
-Android SetUp : https://reactnative.dev/docs/environment-setup?guide=native&platform=android&os=windows
+Android SetUp: https://reactnative.dev/docs/environment-setup?guide=native&platform=android&os=windows
 
-IOS SetUp : https://reactnative.dev/docs/environment-setup?guide=native&platform=ios&os=macos
+IOS SetUp: https://reactnative.dev/docs/environment-setup?guide=native&platform=ios&os=macos
 
 
 # Install
 ```bash
 go to Project directory cd demoApp and run
 npm install
-cd ios && pod install
 ```
 
 # Start iOS Target (needs Xcode)
 ```bash
+cd ios && pod install
 react-native run-ios
 # or
-npm run ios OR
+npm run ios
 # or
 npx react-native run-ios
 # or

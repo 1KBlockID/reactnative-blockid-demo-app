@@ -10,7 +10,7 @@ IOS SetUp : https://reactnative.dev/docs/environment-setup?guide=native&platform
 
 # Install
 ```bash
-go to Project diretory cd demoApp and run
+go to Project directory cd demoApp and run
 npm install
 cd ios && pod install
 ```

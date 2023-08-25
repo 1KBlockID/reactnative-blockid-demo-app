@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "104415257204",
+    "project_id": "blockid-react-native-demo",
+    "storage_bucket": "blockid-react-native-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104415257204:android:4943b0db0ec558ff2d6721",
+        "android_client_info": {
+          "package_name": "com.onekosmos.blockid.reactnative.poc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104415257204-dip3gsplg7ov0qu6sn4krgrkqonvic16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl82if7l-6MXYCI6L6VUayHFeJQqu57h8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104415257204-dip3gsplg7ov0qu6sn4krgrkqonvic16.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "104415257204-52k9dcbnnkj14ura8q69ithpvaok9fvn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onekosmos.blockid.reactnative.poc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

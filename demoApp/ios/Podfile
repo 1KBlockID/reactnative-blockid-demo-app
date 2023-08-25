@@ -1,0 +1,105 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '13.0'
+prepare_react_native_project!
+
+# flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+flipper_config = FlipperConfiguration.disabled 
+config = use_native_modules!
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+# To resolve headers issue Firebase dependency
+use_modular_headers! 
+target 'demoApp' do
+  config = use_native_modules!
+
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    # Upcoming versions of React Native may rely on get_default_flags(), but
+    # we make it explicit here to aid in the React Native upgrade process.
+    :hermes_enabled => false,
+    :fabric_enabled => flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => flipper_config,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+     # This is needed to build BlockID dependencies as dynamic framework.
+  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'SwiftyTesseract', 'TrustWalletCore', 'Web3', 'secp256k1.swift',
+  'OpenSSL-Universal', 'WebAuthnKit', 'EllipticCurveKeyPair', 'YubiKit' , 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
+  pre_install do |installer|
+    installer.pod_targets.each do |pod|
+      if dynamic_frameworks.include?(pod.name)
+        puts "Overriding the dynamic_framework? method for #{pod.name}"
+        def pod.dynamic_framework?;
+          true
+        end
+        def pod.build_type;
+          Pod::BuildType.dynamic_framework
+        end
+      end
+    end
+  end
+  
+ # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable the next line.
+  # use_flipper!()
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
+
+
+pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
+
+  post_install do |installer|
+    react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    # Needed for BlockIDSDK
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # build active architecture only
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+        # set iOS Deployment Target to 11.0 or as per project requirement
+        config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
+      end
+    end
+  end
+
+
+  def blockid_pods
+    pod 'Toast-Swift', '~> 5.0.1'
+    pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.9.30'
+    pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
+    pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.2',:modular_headers => true
+    pod 'EllipticCurveKeyPair', :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'
+end
+
+  target 'demoAppTests' do
+    inherit! :complete
+    # Pods for testing
+   # Add the RNFBCrashlytics podspec to your app target:
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
+  end
+
+  blockid_pods
+end

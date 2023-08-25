@@ -1,0 +1,18 @@
+
+<resources>
+    <string name="app_name">DemoApp</string>
+      <string name="label_scan_qr_code">Scan QR Code</string>
+       <string name="label_please_wait">Please wait...</string>
+
+    <string name="label_your_are_offline">You are offline!</string>
+    <string name="label_login_with">Login with</string>
+    <string name="label_error">Error</string>
+    <string name="label_suspicious_qr_code">Suspicious QR Code</string>
+    <string name="label_unsupported_qr_code">Unsupported QR code detected.</string>
+    <string name="label_invalid_code">Invalid Code</string>
+    <string name="label_please_check_your_internet_connection">Please check your internet Connection.</string>
+    <string name="label_biometric_auth">Biometric authentication</string>
+    <string name="label_biometric_auth_enroll">Do you want to allow this app to use biometric authentication?</string>
+    <string name="label_biometric_auth_req">Biometric authentication required to proceed</string>
+</resources>
+

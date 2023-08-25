@@ -17,16 +17,21 @@ cd ios && pod install
 
 # Start iOS Target (needs Xcode)
 ```bash
-react-native run-ios OR
+react-native run-ios
+# or
 npm run ios OR
-npx react-native run-ios OR
+# or
+npx react-native run-ios
+# or
 directly run from xcode
 ```
 
 # Start Android Target (needs Android Studio)
 ```bash
-react-native run-android OR
-npm run android OR
+react-native run-android
+# or
+npm run android
+# or
 npx react-native run-android
 ```
 

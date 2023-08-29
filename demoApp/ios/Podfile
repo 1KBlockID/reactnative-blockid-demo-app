@@ -5,7 +5,7 @@ platform :ios, '13.0'
 prepare_react_native_project!
 
 # flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
-flipper_config = FlipperConfiguration.disabled 
+flipper_config = FlipperConfiguration.disabled
 config = use_native_modules!
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -14,7 +14,7 @@ if linkage != nil
 end
 
 # To resolve headers issue Firebase dependency
-use_modular_headers! 
+use_modular_headers!
 target 'demoApp' do
   config = use_native_modules!
 
@@ -53,7 +53,7 @@ target 'demoApp' do
       end
     end
   end
-  
+
  # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -65,6 +65,7 @@ target 'demoApp' do
   pod 'FirebaseInstallations', :modular_headers => true
   pod 'GoogleDataTransport', :modular_headers => true
   pod 'nanopb', :modular_headers => true
+  permissions_path = '../node_modules/react-native-permissions/ios'
 
 
 pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false

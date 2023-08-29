@@ -11,7 +11,7 @@ IOS SetUp: https://reactnative.dev/docs/environment-setup?guide=native&platform=
 # Install
 ```bash
 go to Project directory cd demoApp and run
-npm install
+npm install && npm run postinstall
 ```
 
 # Start iOS Target (needs Xcode)

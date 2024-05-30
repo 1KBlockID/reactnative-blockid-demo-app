@@ -1,12 +1,34 @@
 PODS:
+  - Alamofire (4.9.1)
+  - BigInt (4.0.0)
+  - BlockID (1.10.21):
+    - Alamofire (~> 4.9.1)
+    - BigInt (~> 4.0)
+    - CryptoSwift (~> 1.6.0)
+    - OpenSSL-Universal (~> 1.1.180)
+    - TrustWalletCore (~> 2.5.6)
+    - YubiKit (~> 4.2.0)
   - boost (1.83.0)
+  - CryptoSwift (1.6.0)
   - DoubleConversion (1.1.6)
+  - EllipticCurveKeyPair (2.0.2)
   - FBLazyVector (0.74.1)
   - fmt (9.1.0)
   - glog (0.3.5)
   - hermes-engine (0.74.1):
     - hermes-engine/Pre-built (= 0.74.1)
   - hermes-engine/Pre-built (0.74.1)
+  - KeychainAccess (4.2.2)
+  - OpenSSL-Universal (1.1.2200)
+  - PromiseKit (6.13.1):
+    - PromiseKit/CorePromise (= 6.13.1)
+    - PromiseKit/Foundation (= 6.13.1)
+    - PromiseKit/UIKit (= 6.13.1)
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.13.1):
+    - PromiseKit/CorePromise
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -936,7 +958,9 @@ PODS:
     - glog
     - React-debug
   - react-native-blockidplugin (0.1.0):
+    - BlockID
     - DoubleConversion
+    - EllipticCurveKeyPair (= 2.0.2)
     - glog
     - hermes-engine
     - RCT-Folly (= 2024.01.01.00)
@@ -955,6 +979,8 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
+    - Web3 (= 0.4.2)
+    - WebAuthnKit (= 2.0.4)
     - Yoga
   - React-nativeconfig (0.74.1)
   - React-NativeModulesApple (0.74.1):
@@ -1185,12 +1211,37 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
+  - secp256k1.swift (0.1.4)
   - SocketRocket (0.7.0)
+  - SwiftProtobuf (1.26.0)
+  - TrustWalletCore (2.5.10):
+    - TrustWalletCore/Core (= 2.5.10)
+  - TrustWalletCore/Core (2.5.10):
+    - TrustWalletCore/Types
+  - TrustWalletCore/Types (2.5.10):
+    - SwiftProtobuf
+  - Web3 (0.4.2):
+    - Web3/Core (= 0.4.2)
+    - Web3/HTTPExtension (= 0.4.2)
+  - Web3/Core (0.4.2):
+    - BigInt (~> 4.0)
+    - CryptoSwift (~> 1.0)
+    - secp256k1.swift (~> 0.1)
+  - Web3/HTTPExtension (0.4.2):
+    - Web3/Core
+  - WebAuthnKit (2.0.4):
+    - CryptoSwift (~> 1.6.0)
+    - EllipticCurveKeyPair (~> 2.0.2)
+    - KeychainAccess (~> 4.2.1)
+    - PromiseKit (~> 6.13.1)
   - Yoga (0.0.0)
+  - YubiKit (4.2.0)
 
 DEPENDENCIES:
+  - "BlockID (from `git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git`, tag `fltr_02`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EllipticCurveKeyPair (from `https://github.com/1KBlockID/EllipticCurveKeyPair.git`, tag `2.0.2`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -1245,17 +1296,35 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - Web3 (from `https://github.com/Boilertalk/Web3.swift.git`, tag `0.4.2`)
+  - WebAuthnKit (from `https://github.com/1KBlockID/WebAuthnKit-iOS.git`, tag `2.0.4`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
+    - BigInt
+    - CryptoSwift
+    - KeychainAccess
+    - OpenSSL-Universal
+    - PromiseKit
+    - secp256k1.swift
     - SocketRocket
+    - SwiftProtobuf
+    - TrustWalletCore
+    - YubiKit
 
 EXTERNAL SOURCES:
+  BlockID:
+    :git: "git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git"
+    :tag: fltr_02
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EllipticCurveKeyPair:
+    :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
+    :tag: 2.0.2
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   fmt:
@@ -1361,16 +1430,44 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  Web3:
+    :git: https://github.com/Boilertalk/Web3.swift.git
+    :tag: 0.4.2
+  WebAuthnKit:
+    :git: https://github.com/1KBlockID/WebAuthnKit-iOS.git
+    :tag: 2.0.4
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  BlockID:
+    :git: "git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git"
+    :tag: fltr_02
+  EllipticCurveKeyPair:
+    :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
+    :tag: 2.0.2
+  Web3:
+    :git: https://github.com/Boilertalk/Web3.swift.git
+    :tag: 0.4.2
+  WebAuthnKit:
+    :git: https://github.com/1KBlockID/WebAuthnKit-iOS.git
+    :tag: 2.0.4
+
 SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
+  BlockID: c2137e95f35aef69de4942b03fb3a9d63a77eeb8
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
+  CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
+  EllipticCurveKeyPair: 0b618482247e48744b9a0709ef4bb0713c39f957
   FBLazyVector: 898d14d17bf19e2435cafd9ea2a1033efe445709
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 16b8530de1b383cdada1476cf52d1b52f0692cbc
+  KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  OpenSSL-Universal: 6e1ae0555546e604dbc632a2b9a24a9c46c41ef6
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4dc9c8fbcb15bc9e8f3cfa601ddc190e120f099b
   RCTRequired: f49ea29cece52aee20db633ae7edc4b271435562
@@ -1395,7 +1492,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-blockidplugin: 814c5044d1bea488979a748e771428e59ecf76b8
+  react-native-blockidplugin: 30cd0ec695ddc0f454634c126897c37c6123f46e
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
   React-NativeModulesApple: df46ff3e3de5b842b30b4ca8a6caae6d7c8ab09f
   React-perflogger: 3d31e0d1e8ad891e43a09ac70b7b17a79773003a
@@ -1419,9 +1516,15 @@ SPEC CHECKSUMS:
   React-runtimescheduler: e2152ed146b6a35c07386fc2ac4827b27e6aad12
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
+  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
+  SwiftProtobuf: 5e8349171e7c2f88f5b9e683cb3cb79d1dc780b3
+  TrustWalletCore: 221e7c95e4e3263c807cbbfda9a5613b6a975214
+  Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
+  WebAuthnKit: d84fc07aa8f07707085ffee8baa41b11d69403ca
   Yoga: b9a182ab00cf25926e7f79657d08c5d23c2d03b0
+  YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
 
-PODFILE CHECKSUM: 72a91279bd71adf6fa1a32ba55d8da9c93909f55
+PODFILE CHECKSUM: defb811e9ad282b7be7fd5ca78041e39022de7be
 
 COCOAPODS: 1.12.1

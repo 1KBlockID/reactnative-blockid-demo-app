@@ -16,6 +16,18 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm}"
 
+  s.dependency 'BlockID'
+  s.source = { :git => 'git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git', :tag=> 'fltr_02' }
+
+  s.dependency 'WebAuthnKit', '2.0.4'
+  s.source = { :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.4' }
+
+  s.dependency 'EllipticCurveKeyPair', '2.0.2'
+  s.source = { :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'}
+
+  s.dependency 'Web3', '0.4.2'
+  s.source = { :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'}
+
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
   if respond_to?(:install_modules_dependencies, true)

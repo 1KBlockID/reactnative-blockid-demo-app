@@ -1,7 +1,11 @@
 #import "Blockidplugin.h"
 
+#import "react_native_blockidplugin-Swift.h"
+
 @implementation Blockidplugin
 RCT_EXPORT_MODULE()
+
+BlockIdWrapper *wrapper = [[BlockIdWrapper alloc] init];
 
 // Example method
 // See // https://reactnative.dev/docs/native-modules-ios
@@ -11,8 +15,8 @@ RCT_EXPORT_METHOD(multiply:(double)a
                   reject:(RCTPromiseRejectBlock)reject)
 {
     NSNumber *result = @(a * b);
-
-    resolve(result);
+    
+    resolve([wrapper version]);
 }
 
 // Don't compile this code when we build for the old architecture.

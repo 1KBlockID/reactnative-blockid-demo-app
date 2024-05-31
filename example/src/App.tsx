@@ -1,18 +1,41 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-blockidplugin';
+import { StyleSheet, View, Alert } from 'react-native';
+import SpinnerOverlay from './SpinnerOverlay';
+
+import HomeViewModel from './HomeViewModel';
+import Tenant from './Tenant';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [loading, setLoading] = useState(false);
+  const [isBlockIDSdkReady, setisBlockIDSdkReady] = useState(false);
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  React.useLayoutEffect(() => {
+    const viewModel = HomeViewModel.getInstance();
+    setLoading(true);
+    viewModel.setLicenseKey().then((result) => {
+      if (!result) {
+        Alert.alert(
+          'Error',
+          'Failed to set LicenseKey. Please try again later.'
+        );
+      } else {
+        viewModel.isSDKReady().then((res) => {
+          setisBlockIDSdkReady(res);
+          console.log('setisBlockIDSdkReady', res);
+        });
+      }
+      setLoading(false);
+    });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      {loading ? (
+        <SpinnerOverlay visible={loading} />
+      ) : (
+        <Tenant isRegistered={isBlockIDSdkReady} />
+      )}
     </View>
   );
 }
@@ -20,12 +43,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
 });

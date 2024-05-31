@@ -27,3 +27,23 @@ const Blockidplugin = BlockidpluginModule
 export function multiply(a: number, b: number): Promise<number> {
   return Blockidplugin.multiply(a, b);
 }
+
+export function setLicenseKey(licenseKey: string): Promise<boolean> {
+  return Blockidplugin.setLicenseKey(licenseKey);
+}
+
+export function initiateTempWallet(): Promise<boolean> {
+  return Blockidplugin.initiateTempWallet();
+}
+
+export function registerTenantWith(
+  tag: string,
+  community: string,
+  dns: string
+): Promise<boolean> {
+  return Blockidplugin.registerTenantWith(tag, community, dns);
+}
+
+export function isReady(): Promise<boolean> {
+  return Blockidplugin.isReady();
+}

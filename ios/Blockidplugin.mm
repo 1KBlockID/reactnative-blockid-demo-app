@@ -12,20 +12,52 @@ BlockIdWrapper *wrapper = [[BlockIdWrapper alloc] init];
 RCT_EXPORT_METHOD(multiply:(double)a
                   b:(double)b
                   resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-    NSNumber *result = @(a * b);
-    
-    resolve([wrapper version]);
+                  reject:(RCTPromiseRejectBlock)reject) {
+     resolve(@"sdfdf");
+ }
+
+RCT_EXPORT_METHOD(isReady: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    bool result = [wrapper isReady];
+    resolve(@(result));
+}
+
+RCT_EXPORT_METHOD(setLicenseKey:(NSString *)licenseKey resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    bool result = [wrapper setLicenseKeyWithLicenseKey:licenseKey];
+    resolve(@(result));
+}
+
+- (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
+     
+}
+
+RCT_EXPORT_METHOD(initiateTempWallet: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper initiateTempWalletWithResponse:^(BOOL status, ErrorResponse * _Nullable error) {
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(registerTenantWith:(NSString *)tag community:(NSString *)community dns: (NSString *)dns  resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerTenantWithTag:tag community:community dns:dns response:^(BOOL status, ErrorResponse * _Nullable error) {
+            if (status) {
+                resolve(@(status));
+            } else {
+                reject(@"", @"", error);
+            }
+    }];
 }
 
 // Don't compile this code when we build for the old architecture.
-#ifdef RCT_NEW_ARCH_ENABLED
+//#ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {
     return std::make_shared<facebook::react::NativeBlockidpluginSpecJSI>(params);
 }
-#endif
+//#endif
 
 @end

@@ -47,7 +47,28 @@ import BlockID
             response(true, nil)
          }
     }
- 
+    
+    func enrollDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
+        DispatchQueue.main.async {
+            BIDAuthProvider.shared.enrollDeviceAuth { status, _, message in
+                response(status, ErrorResponse(code: -1, description: message ?? ""))
+            }
+        }
+    }
+    
+    func isDeviceAuthRegisterd() -> Bool {
+        let isDeviceAuthRegisterd = BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()
+        return isDeviceAuthRegisterd
+    }
+    
+    func verifyDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
+        DispatchQueue.main.async {
+            BIDAuthProvider.shared.verifyDeviceAuth { (status, _, message) in
+                response(status, ErrorResponse(code: -1, description: message ?? ""))
+            }
+        }
+    }
+    
 }
 
 

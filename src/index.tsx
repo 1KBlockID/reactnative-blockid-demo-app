@@ -47,3 +47,14 @@ export function registerTenantWith(
 export function isReady(): Promise<boolean> {
   return Blockidplugin.isReady();
 }
+
+export function enrollDeviceAuth(): Promise<boolean> {
+  return Blockidplugin.enrollDeviceAuth();
+}
+export function isDeviceAuthRegisterd(): Promise<boolean> {
+  return Blockidplugin.isDeviceAuthRegisterd();
+}
+
+export function verifyDeviceAuth(): Promise<boolean> {
+  return Blockidplugin.verifyDeviceAuth();
+}

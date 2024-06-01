@@ -3,6 +3,9 @@ import {
   isReady,
   initiateTempWallet,
   registerTenantWith,
+  enrollDeviceAuth,
+  isDeviceAuthRegisterd,
+  verifyDeviceAuth,
 } from 'react-native-blockidplugin';
 import * as AppConstants from './AppConstants';
 
@@ -61,6 +64,48 @@ class HomeViewModel {
         AppConstants.community,
         AppConstants.dns
       );
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+  }
+
+  async enrollDeviceAuth(): Promise<boolean> {
+    try {
+      let result = await enrollDeviceAuth();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+  }
+
+  async isDeviceAuthRegisterd(): Promise<boolean> {
+    try {
+      let result = await isDeviceAuthRegisterd();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+  }
+
+  async verifyDeviceAuth(): Promise<boolean> {
+    try {
+      let result = await verifyDeviceAuth();
       return result;
     } catch (error) {
       if (error instanceof Error) {

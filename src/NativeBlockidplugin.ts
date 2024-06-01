@@ -12,6 +12,9 @@ export interface Spec extends TurboModule {
     community: string,
     dns: string
   ): Promise<boolean>;
+  enrollDeviceAuth(): Promise<boolean>;
+  isDeviceAuthRegisterd(): Promise<boolean>;
+  verifyDeviceAuth(): Promise<boolean>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

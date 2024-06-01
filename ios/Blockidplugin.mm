@@ -27,10 +27,6 @@ RCT_EXPORT_METHOD(setLicenseKey:(NSString *)licenseKey resolve:(RCTPromiseResolv
     resolve(@(result));
 }
 
-- (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
-     
-}
-
 RCT_EXPORT_METHOD(initiateTempWallet: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     [wrapper initiateTempWalletWithResponse:^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
@@ -50,6 +46,38 @@ RCT_EXPORT_METHOD(registerTenantWith:(NSString *)tag community:(NSString *)commu
             }
     }];
 }
+
+RCT_EXPORT_METHOD(enrollDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper enrollDeviceAuthWithResponse:^(BOOL status, ErrorResponse * _Nullable error) {
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    bool result = [wrapper isDeviceAuthRegisterd];
+    resolve(@(result));
+}
+
+RCT_EXPORT_METHOD(verifyDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper verifyDeviceAuthWithResponse:^(BOOL status, ErrorResponse * _Nullable error) {
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+
+- (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+     
+}
+
 
 // Don't compile this code when we build for the old architecture.
 //#ifdef RCT_NEW_ARCH_ENABLED

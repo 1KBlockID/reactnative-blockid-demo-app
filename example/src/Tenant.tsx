@@ -24,13 +24,16 @@ const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
     });
   };
 
-  const handleFeatureEnrollment = () => {
-    // Logic for navigating to feature enrollment
-    setLoading(!loading);
-    // Simulate a network request or some async operation
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+  const handleFeatureEnrollment = async () => {
+    const viewModel = HomeViewModel.getInstance();
+    let isDeviceAuthRegisterd = await viewModel.isDeviceAuthRegisterd();
+    if (!isDeviceAuthRegisterd) {
+      let isEnrolled = await viewModel.enrollDeviceAuth();
+      console.log('Enroll status', isEnrolled);
+    } else {
+      let isAuthVerified = await viewModel.verifyDeviceAuth();
+      console.log('Verify status', isAuthVerified);
+    }
   };
 
   return (

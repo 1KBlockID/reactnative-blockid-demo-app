@@ -1,5 +1,6 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
+import type { TotpResponse } from './WrapperModel';
 
 export interface Spec extends TurboModule {
   multiply(a: number, b: number): Promise<number>;
@@ -15,6 +16,7 @@ export interface Spec extends TurboModule {
   enrollDeviceAuth(): Promise<boolean>;
   isDeviceAuthRegisterd(): Promise<boolean>;
   verifyDeviceAuth(): Promise<boolean>;
+  totp(): Promise<TotpResponse | null>;
+  startLiveIDScanning(dvcID: string): Promise<void>;
 }
-
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

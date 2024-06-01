@@ -17,10 +17,11 @@ const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
       if (result) {
         viewModel.registerTenant().then((success) => {
           isRegistered = success;
+          setLoading(false);
         });
       } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
   };
 
@@ -33,7 +34,14 @@ const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
       console.log('Verify status', isAuthVerified);
+      let totp = await viewModel.totp();
+      console.log('TOTP', totp?.totp, totp?.getRemainingSecs);
     }
+  };
+
+  const startLiveIDScanning = async () => {
+    const viewModel = HomeViewModel.getInstance();
+    viewModel.startLiveIDScanning();
   };
 
   return (
@@ -59,6 +67,12 @@ const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
           <Text style={styles.appButtonText}>Go to Feature Enrollment</Text>
         </TouchableOpacity>
       ) : null}
+      <TouchableOpacity
+        onPress={startLiveIDScanning}
+        style={styles.appButtonContainer}
+      >
+        <Text style={styles.appButtonText}>LiveID Scanning</Text>
+      </TouchableOpacity>
       <SpinnerOverlay visible={loading} />
     </View>
   );

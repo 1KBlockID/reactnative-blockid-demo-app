@@ -8,11 +8,18 @@
 import Foundation
 import BlockID
 
-
 @objcMembers class BlockIdWrapper: NSObject {
     
     public typealias BlockIdWrapperResponse = (_ success: Bool, _ error: ErrorResponse?) -> Void
 
+    public typealias BlockIdTOTPResponse = (_ response: [String: Any]?, _ error: ErrorResponse?) -> Void
+    
+    public typealias BlockIdLiveIDResponse = (_ response: [String: Any]) -> Void
+
+    private var liveIdScannerHelper: LiveIDScannerHelper?
+    
+    private var blockIdLiveIDResponse: BlockIdLiveIDResponse!
+    
     func version() -> NSString {
         return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
     }
@@ -68,6 +75,35 @@ import BlockID
             }
         }
     }
+
+    func totp(totpResponse: @escaping BlockIdTOTPResponse)  {
+        let result = BlockIDSDK.sharedInstance.getTOTP()
+        if (result.error == nil && result.totp != nil) {
+            totpResponse(["totp": result.totp?.getTOTP() ?? "", "getRemainingSecs": result.totp?.getRemainingSecs() ?? 0], nil)
+        } else {
+            totpResponse(nil, ErrorResponse(code: result.error?.code ?? -1, description: result.error?.message ?? ""))
+        }
+    }
+    
+    func isLiveIDRegisterd() -> Bool {
+        let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
+        return isLiveIDRegisterd
+    }
+    
+    func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
+        blockIdLiveIDResponse = response
+        DispatchQueue.main.async { [unowned self]  in
+                 if (liveIdScannerHelper == nil) {
+                     liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewManagerHelper.sharedManager().scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
+                 }
+                 liveIdScannerHelper?.startLiveIDScanning(dvcID: dvcID)
+             }
+    }
+    
+    func bidScannerView() -> BlockID.BIDScannerView {
+        let scannerView = BlockID.BIDScannerView();
+        return scannerView
+    }
     
 }
 
@@ -76,5 +112,40 @@ import BlockID
     convenience init(code: Int, description: String) {
            self.init(domain: "", code: code, userInfo: [NSLocalizedDescriptionKey: description])
     }
+}
+
+extension BlockIdWrapper: LiveIDResponseDelegate {
+    public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, error: BlockID.ErrorResponse?) {
+        guard let face = liveIdImage, let signToken = signatureToken else {
+ 
+            return
+        }
+        BlockIDSDK.sharedInstance.setLiveID(liveIdImage: face,
+                                            liveIdProofedBy: "",
+                                            sigToken: signToken,
+                                            livenessResult: livenessResult) { [unowned self] (status, error) in
+            if (status == true) {
+                blockIdLiveIDResponse(["status": "completed"])
+            } else {
+                blockIdLiveIDResponse(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+            }
+        }
+        liveIdScannerHelper?.stopLiveIDScanning()
+    }
     
+ 
+    public func focusOnFaceChanged(isFocused: Bool?, message: String?) {
+        blockIdLiveIDResponse(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
+     }
+
+    public func faceLivenessCheckStarted() {
+        liveIdScannerHelper?.stopLiveIDScanning()
+        blockIdLiveIDResponse(["status": "faceLivenessCheckStarted"])
+    }
+    
+    public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
+        blockIdLiveIDResponse(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+        liveIdScannerHelper?.stopLiveIDScanning()
+    }
+
 }

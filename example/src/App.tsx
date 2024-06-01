@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 
-import { StyleSheet, View, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Alert,
+  type ViewStyle,
+  type StyleProp,
+} from 'react-native';
 import SpinnerOverlay from './SpinnerOverlay';
 
 import HomeViewModel from './HomeViewModel';
 import Tenant from './Tenant';
+
+import { requireNativeComponent } from 'react-native';
+
+interface MyCustomViewProps {
+  style?: StyleProp<ViewStyle>; // Make sure to import StyleProp and ViewStyle from 'react-native'
+}
+
+const ScannerView1 =
+  requireNativeComponent<MyCustomViewProps>('RNTScannerView11');
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -31,6 +46,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      {!loading && <ScannerView1 style={styles.scannerView} />}
       {loading ? (
         <SpinnerOverlay visible={loading} />
       ) : (
@@ -46,5 +62,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+  },
+  scannerView: {
+    width: 200,
+    height: 200,
+    // backgroundColor: 'green',
   },
 });

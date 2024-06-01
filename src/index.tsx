@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+import type { TotpResponse } from './WrapperModel';
 
 const LINKING_ERROR =
   `The package 'react-native-blockidplugin' doesn't seem to be linked. Make sure: \n\n` +
@@ -57,4 +58,12 @@ export function isDeviceAuthRegisterd(): Promise<boolean> {
 
 export function verifyDeviceAuth(): Promise<boolean> {
   return Blockidplugin.verifyDeviceAuth();
+}
+
+export async function totp(): Promise<TotpResponse | null> {
+  return await Blockidplugin.totp();
+}
+
+export async function startLiveIDScanning(dvcID: string): Promise<void> {
+  return await Blockidplugin.startLiveIDScanning(dvcID);
 }

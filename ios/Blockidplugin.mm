@@ -1,7 +1,7 @@
 #import "Blockidplugin.h"
 
 #import "react_native_blockidplugin-Swift.h"
-
+#import "ScannerViewManagerHelper.h"
 @implementation Blockidplugin
 RCT_EXPORT_MODULE()
 
@@ -60,8 +60,17 @@ RCT_EXPORT_METHOD(enrollDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
 RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     bool result = [wrapper isDeviceAuthRegisterd];
+
+     dispatch_async(dispatch_get_main_queue(), ^{
+         NSLog(@"asdf %@", NSStringFromCGRect([ScannerViewManagerHelper sharedManager].scannerView.frame));
+         NSLog(@"asdf %@", NSStringFromCGRect([ScannerViewManagerHelper sharedManager].scannerView.superview.frame));
+         NSLog(@"%@", NSStringFromClass([[ScannerViewManagerHelper sharedManager].scannerView class]));
+         [ScannerViewManagerHelper sharedManager].scannerView.backgroundColor = [UIColor brownColor];
+    });
+
     resolve(@(result));
 }
+
 
 RCT_EXPORT_METHOD(verifyDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     [wrapper verifyDeviceAuthWithResponse:^(BOOL status, ErrorResponse * _Nullable error) {
@@ -73,6 +82,34 @@ RCT_EXPORT_METHOD(verifyDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
     }];
 }
 
+RCT_EXPORT_METHOD(totp: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+ 
+    [wrapper totpWithTotpResponse:^(NSDictionary<NSString *,id> * _Nullable response, ErrorResponse * _Nullable error) {
+        if (response != nil) {
+            resolve(response);
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+    
+}
+
+RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    bool result = [wrapper isLiveIDRegisterd];
+    resolve(@(result));
+}
+
+RCT_EXPORT_METHOD(startLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper startLiveIDScanningWithDvcID: dvcID response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+        [self sendEventWithName:@"onStatusChanged" body: response];
+    }];
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+  return @[@"onStatusChanged"];
+}
 
 - (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
      

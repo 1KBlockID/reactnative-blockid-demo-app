@@ -6,9 +6,15 @@ import {
   enrollDeviceAuth,
   isDeviceAuthRegisterd,
   verifyDeviceAuth,
+  totp,
+  startLiveIDScanning,
 } from 'react-native-blockidplugin';
-import * as AppConstants from './AppConstants';
 
+import * as AppConstants from './AppConstants';
+import type { TotpResponse } from '../../src/WrapperModel';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+// Define the interface for TotpRes module
 class HomeViewModel {
   private static instance: HomeViewModel;
 
@@ -117,13 +123,51 @@ class HomeViewModel {
     }
   }
 
+  async totp(): Promise<TotpResponse | null> {
+    try {
+      let result = await totp();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return null;
+    }
+  }
+
+  async startLiveIDScanning(): Promise<void> {
+    try {
+      await startLiveIDScanning(AppConstants.dvcID);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+    }
+  }
+
   // Public method to get the instance of the class
   public static getInstance(): HomeViewModel {
     if (!HomeViewModel.instance) {
       HomeViewModel.instance = new HomeViewModel();
+      const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
+      eventEmitter.addListener(
+        'onStatusChanged',
+        (event: StatusChangeEvent) => {
+          console.log('onStatusChanged', event);
+        }
+      );
     }
     return HomeViewModel.instance;
   }
+}
+
+interface StatusChangeEvent {
+  status: string | null;
+  error: Error | null;
 }
 
 export default HomeViewModel;

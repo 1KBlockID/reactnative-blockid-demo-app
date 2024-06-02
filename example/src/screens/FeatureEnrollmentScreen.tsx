@@ -5,10 +5,12 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import type { RootStackParamList } from '../RootStackParam';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RouteProp } from '@react-navigation/native';
+import HomeViewModel from '../HomeViewModel';
 
 type FeatureEnrollmentScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -92,7 +94,7 @@ const Separator: React.FC = () => {
 };
 
 const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation }) => {
-  const handleFeatureTap = (id: FeatureIdentifier) => {
+  const handleFeatureTap = async (id: FeatureIdentifier) => {
     switch (id) {
       case FeatureIdentifier.TOTP:
         navigation.navigate('TOTP');
@@ -107,7 +109,13 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation }) => {
         // Handle Passport enrollment
         break;
       case FeatureIdentifier.LiveID:
-        // Handle Live ID Face verification
+        let isLiveIDRegisterd =
+          await HomeViewModel.getInstance().isLiveIDRegisterd();
+        if (isLiveIDRegisterd) {
+          Alert.alert('Info', 'LiveID is already registered.');
+        } else {
+          navigation.navigate('LiveID');
+        }
         break;
       case FeatureIdentifier.QRScan:
         // Handle QR Scan Auth

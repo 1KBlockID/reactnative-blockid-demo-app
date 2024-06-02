@@ -17,6 +17,8 @@ export interface Spec extends TurboModule {
   isDeviceAuthRegisterd(): Promise<boolean>;
   verifyDeviceAuth(): Promise<boolean>;
   totp(): Promise<TotpResponse | null>;
+  isLiveIDRegisterd(): Promise<boolean>;
   startLiveIDScanning(dvcID: string): Promise<void>;
+  stopLiveIDScanning(): Promise<void>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

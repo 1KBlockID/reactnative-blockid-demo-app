@@ -2,13 +2,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import type { RootStackParamList } from '../RootStackParam';
 
-import {
-  StyleSheet,
-  View,
-  Alert,
-  type ViewStyle,
-  type StyleProp,
-} from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -16,17 +10,9 @@ type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
-import { requireNativeComponent } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import SpinnerOverlay from '../SpinnerOverlay';
 import Tenant from '../Tenant';
-
-interface MyCustomViewProps {
-  style?: StyleProp<ViewStyle>; // Make sure to import StyleProp and ViewStyle from 'react-native'
-}
-
-const ScannerView1 =
-  requireNativeComponent<MyCustomViewProps>('RNTScannerView11');
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -53,7 +39,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {!loading && <ScannerView1 style={styles.scannerView} />}
       {loading ? (
         <SpinnerOverlay visible={loading} />
       ) : (
@@ -69,11 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
-  },
-  scannerView: {
-    width: 200,
-    height: 200,
-    // backgroundColor: 'green',
   },
 });
 

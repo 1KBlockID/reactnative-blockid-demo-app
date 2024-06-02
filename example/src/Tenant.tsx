@@ -45,11 +45,6 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
     }
   };
 
-  const startLiveIDScanning = async () => {
-    const viewModel = HomeViewModel.getInstance();
-    viewModel.startLiveIDScanning();
-  };
-
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
@@ -73,12 +68,6 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
           <Text style={styles.appButtonText}>Go to Feature Enrollment</Text>
         </TouchableOpacity>
       ) : null}
-      <TouchableOpacity
-        onPress={startLiveIDScanning}
-        style={styles.appButtonContainer}
-      >
-        <Text style={styles.appButtonText}>LiveID Scanning</Text>
-      </TouchableOpacity>
       <SpinnerOverlay visible={loading} />
     </View>
   );

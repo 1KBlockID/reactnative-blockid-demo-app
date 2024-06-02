@@ -67,3 +67,11 @@ export async function totp(): Promise<TotpResponse | null> {
 export async function startLiveIDScanning(dvcID: string): Promise<void> {
   return await Blockidplugin.startLiveIDScanning(dvcID);
 }
+
+export function isLiveIDRegisterd(): Promise<boolean> {
+  return Blockidplugin.isLiveIDRegisterd();
+}
+
+export function stopLiveIDScanning(): Promise<void> {
+  return Blockidplugin.stopLiveIDScanning();
+}

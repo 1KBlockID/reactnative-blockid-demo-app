@@ -6,6 +6,7 @@ import type { RootStackParamList } from './RootStackParam';
 import HomeScreen from './screens/HomeScreen';
 import FeatureEnrollmentScreen from './screens/FeatureEnrollmentScreen';
 import TOTPScreen from './screens/TOTPScreen';
+import LiveIDScreen from './screens/LiveIDScreen';
 
 const Theme = {
   ...DefaultTheme,
@@ -30,6 +31,7 @@ export default function App() {
         />
         <Stack.Screen name="Featurelist" component={FeatureEnrollmentScreen} />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
+        <Stack.Screen name="LiveID" component={LiveIDScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

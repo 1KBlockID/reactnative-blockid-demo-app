@@ -9,11 +9,11 @@ type TenantNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 type Props = {
   navigation: TenantNavigationProp;
-  isRegistered: boolean;
 };
 
-const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
+const Tenant: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleRegisterTenant = () => {
     const viewModel = HomeViewModel.getInstance();
@@ -21,7 +21,7 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
     viewModel.initiateTempWallet().then((result) => {
       if (result) {
         viewModel.registerTenant().then((success) => {
-          isRegistered = success;
+          setIsRegistered(success);
           setLoading(false);
         });
       } else {
@@ -37,17 +37,26 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
       let isEnrolled = await viewModel.enrollDeviceAuth();
       console.log('Enroll status', isEnrolled);
       if (isEnrolled) {
-        navigation.navigate('Featurelist');
+        navigation.navigate('Featurelist', { handler: setIsRegistered });
       }
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
       console.log('Verify status', isAuthVerified);
       if (isAuthVerified) {
-        navigation.navigate('Featurelist');
+        navigation.navigate('Featurelist', { handler: setIsRegistered });
       }
     }
   };
 
+  React.useLayoutEffect(() => {
+    const viewModel = HomeViewModel.getInstance();
+    setLoading(true);
+    viewModel.isSDKReady().then((res) => {
+      setLoading(false);
+      setIsRegistered(res);
+      console.log('setisBlockIDSdkReady', res);
+    });
+  }, []);
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity

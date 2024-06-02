@@ -91,11 +91,11 @@ const Separator: React.FC = () => {
   return <View style={styles.separator} />;
 };
 
-const FeatureEnrollmentScreen: React.FC<Props> = () => {
+const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation }) => {
   const handleFeatureTap = (id: FeatureIdentifier) => {
     switch (id) {
       case FeatureIdentifier.TOTP:
-        // Handle TOTP enrollment
+        navigation.navigate('TOTP');
         break;
       case FeatureIdentifier.NationalID:
         // Handle National ID enrollment

@@ -39,8 +39,6 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
       console.log('Verify status', isAuthVerified);
-      // let totp = await viewModel.totp();
-      // console.log('TOTP', totp?.totp, totp?.getRemainingSecs);
       if (isAuthVerified) {
         navigation.navigate('Featurelist');
       }

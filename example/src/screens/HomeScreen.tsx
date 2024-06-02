@@ -16,7 +16,6 @@ import Tenant from '../Tenant';
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [isBlockIDSdkReady, setisBlockIDSdkReady] = useState(false);
 
   React.useLayoutEffect(() => {
     const viewModel = HomeViewModel.getInstance();
@@ -27,11 +26,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           'Error',
           'Failed to set LicenseKey. Please try again later.'
         );
-      } else {
-        viewModel.isSDKReady().then((res) => {
-          setisBlockIDSdkReady(res);
-          console.log('setisBlockIDSdkReady', res);
-        });
       }
       setLoading(false);
     });
@@ -42,7 +36,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       {loading ? (
         <SpinnerOverlay visible={loading} />
       ) : (
-        <Tenant isRegistered={isBlockIDSdkReady} navigation={navigation} />
+        <Tenant navigation={navigation} />
       )}
     </View>
   );

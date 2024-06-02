@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Home: undefined;
-  Featurelist: undefined;
+  Featurelist: { handler: (val: boolean) => void };
   TOTP: undefined;
   LiveID: undefined;
 };

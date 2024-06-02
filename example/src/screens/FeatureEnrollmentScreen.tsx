@@ -93,7 +93,8 @@ const Separator: React.FC = () => {
   return <View style={styles.separator} />;
 };
 
-const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation }) => {
+const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
+  const { handler } = route.params;
   const handleFeatureTap = async (id: FeatureIdentifier) => {
     switch (id) {
       case FeatureIdentifier.TOTP:
@@ -122,6 +123,7 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation }) => {
         break;
       case FeatureIdentifier.Reset:
         await HomeViewModel.getInstance().resetSDK();
+        handler(false);
         navigation.goBack();
         break;
       default:

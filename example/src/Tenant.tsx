@@ -36,6 +36,9 @@ const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
     if (!isDeviceAuthRegisterd) {
       let isEnrolled = await viewModel.enrollDeviceAuth();
       console.log('Enroll status', isEnrolled);
+      if (isEnrolled) {
+        navigation.navigate('Featurelist');
+      }
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
       console.log('Verify status', isAuthVerified);

@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import HomeViewModel from './HomeViewModel';
 import SpinnerOverlay from './SpinnerOverlay';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from './RootStackParam';
 
-interface TenantProps {
+type TenantNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+type Props = {
+  navigation: TenantNavigationProp;
   isRegistered: boolean;
-}
+};
 
-const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
+const Tenant: React.FC<Props> = ({ navigation, isRegistered }) => {
   const [loading, setLoading] = useState(false);
 
   const handleRegisterTenant = () => {
@@ -34,8 +39,11 @@ const Tenant: React.FC<TenantProps> = ({ isRegistered }) => {
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
       console.log('Verify status', isAuthVerified);
-      let totp = await viewModel.totp();
-      console.log('TOTP', totp?.totp, totp?.getRemainingSecs);
+      // let totp = await viewModel.totp();
+      // console.log('TOTP', totp?.totp, totp?.getRemainingSecs);
+      if (isAuthVerified) {
+        navigation.navigate('Featurelist');
+      }
     }
   };
 

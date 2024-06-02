@@ -10,6 +10,7 @@ import {
   startLiveIDScanning,
   isLiveIDRegisterd,
   stopLiveIDScanning,
+  resetSDK,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -165,7 +166,18 @@ class HomeViewModel {
   }
 
   async stopLiveIDScanning(): Promise<void> {
-    return await stopLiveIDScanning();
+    await stopLiveIDScanning();
+  }
+
+  async resetSDK(): Promise<boolean> {
+    let status = await resetSDK(
+      AppConstants.tag,
+      AppConstants.community,
+      AppConstants.dns,
+      AppConstants.licenseKey,
+      'Reseting'
+    );
+    return status;
   }
 
   // Public method to get the instance of the class
@@ -176,10 +188,5 @@ class HomeViewModel {
     return HomeViewModel.instance;
   }
 }
-
-// interface StatusChangeEvent {
-//   status: string | null;
-//   error: Error | null;
-// }
 
 export default HomeViewModel;

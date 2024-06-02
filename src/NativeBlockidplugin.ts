@@ -20,5 +20,12 @@ export interface Spec extends TurboModule {
   isLiveIDRegisterd(): Promise<boolean>;
   startLiveIDScanning(dvcID: string): Promise<void>;
   stopLiveIDScanning(): Promise<void>;
+  resetSDK(
+    tag: string,
+    community: string,
+    dns: string,
+    licenseKey: string,
+    reason: string
+  ): Promise<boolean>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

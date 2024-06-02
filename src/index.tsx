@@ -75,3 +75,13 @@ export function isLiveIDRegisterd(): Promise<boolean> {
 export function stopLiveIDScanning(): Promise<void> {
   return Blockidplugin.stopLiveIDScanning();
 }
+
+export function resetSDK(
+  tag: string,
+  community: string,
+  dns: string,
+  licenseKey: string,
+  reason: string
+): Promise<boolean> {
+  return Blockidplugin.resetSDK(tag, community, dns, licenseKey, reason);
+}

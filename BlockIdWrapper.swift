@@ -105,6 +105,14 @@ import BlockID
         return scannerView
     }
     
+    func resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String,  response: @escaping BlockIdWrapperResponse)  {
+        let bidTenant = BIDTenant.makeTenant(tag: tag,
+                                                        community: community,
+                                                        dns: dns)
+        BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
+        response(true, nil)
+     }
+
 }
 
 

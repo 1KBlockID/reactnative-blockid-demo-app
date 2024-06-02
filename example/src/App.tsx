@@ -29,7 +29,11 @@ export default function App() {
           component={HomeScreen}
           options={{ title: 'Tenant' }}
         />
-        <Stack.Screen name="Featurelist" component={FeatureEnrollmentScreen} />
+        <Stack.Screen
+          name="Featurelist"
+          component={FeatureEnrollmentScreen}
+          options={{ title: 'Feature Enrollment' }}
+        />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
         <Stack.Screen name="LiveID" component={LiveIDScreen} />
       </Stack.Navigator>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import HomeViewModel from './HomeViewModel';
-import SpinnerOverlay from './SpinnerOverlay';
+// import SpinnerOverlay from './SpinnerOverlay';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from './RootStackParam';
+import SpinnerOverlay from './SpinnerOverlay';
 
 type TenantNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -12,7 +13,7 @@ type Props = {
 };
 
 const Tenant: React.FC<Props> = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
 
   const handleRegisterTenant = () => {
@@ -48,14 +49,16 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const viewModel = HomeViewModel.getInstance();
     setLoading(true);
-    viewModel.isSDKReady().then((res) => {
-      setLoading(false);
-      setIsRegistered(res);
-      console.log('setisBlockIDSdkReady', res);
-    });
+    viewModel
+      .isSDKReady()
+      .then((res) => {
+        setIsRegistered(res);
+        console.log('setisBlockIDSdkReady', res);
+      })
+      .finally(() => setLoading(false)); // Finally block ensures setLoading(false) is called regardless of success or failure
   }, []);
 
   return (
@@ -81,7 +84,7 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.appButtonText}>Go to Feature Enrollment</Text>
         </TouchableOpacity>
       ) : null}
-      {loading ? <SpinnerOverlay visible={loading} /> : <></>}
+      {loading && <SpinnerOverlay visible={loading} />}
     </View>
   );
 };

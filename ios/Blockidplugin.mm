@@ -62,9 +62,6 @@ RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
     bool result = [wrapper isDeviceAuthRegisterd];
 
      dispatch_async(dispatch_get_main_queue(), ^{
-         NSLog(@"asdf %@", NSStringFromCGRect([ScannerViewManagerHelper sharedManager].scannerView.frame));
-         NSLog(@"asdf %@", NSStringFromCGRect([ScannerViewManagerHelper sharedManager].scannerView.superview.frame));
-         NSLog(@"%@", NSStringFromClass([[ScannerViewManagerHelper sharedManager].scannerView class]));
          [ScannerViewManagerHelper sharedManager].scannerView.backgroundColor = [UIColor brownColor];
     });
 
@@ -114,6 +111,31 @@ RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: 
     }];
 }
 
+RCT_EXPORT_METHOD(getUserDocument:(NSInteger)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([wrapper getUserDocumentWithType:type]);
+}
+
+RCT_EXPORT_METHOD(scanDocument:(NSInteger)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+[wrapper scanDocumentWithType:type response:^(NSString * _Nullable response, ErrorResponse * _Nullable error) {
+        if (response != nil) {
+            resolve(response);
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerNationalIDWithLiveIDWithData:data response:^(BOOL status, ErrorResponse * _Nullable error) {
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+
 - (NSArray<NSString *> *)supportedEvents {
   return @[@"onStatusChanged"];
 }
@@ -121,6 +143,10 @@ RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: 
 - (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
      
 }
+
+- (void)stopLiveIDScanning:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
+ }
+
 
 
 // Don't compile this code when we build for the old architecture.

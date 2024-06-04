@@ -11,10 +11,14 @@ import {
   isLiveIDRegisterd,
   stopLiveIDScanning,
   resetSDK,
+  getUserDocument,
+  scanDocument,
+  registerNationalIDWithLiveID,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
-import type { TotpResponse } from '../../src/WrapperModel';
+import type { TotpResponse, DocType } from '../../src/WrapperModel';
+import { Alert } from 'react-native';
 
 // Define the interface for TotpRes module
 class HomeViewModel {
@@ -178,6 +182,39 @@ class HomeViewModel {
       'Reseting'
     );
     return status;
+  }
+
+  async scanDocument(type: DocType): Promise<Map<string, any> | null> {
+    let response = await getUserDocument(type);
+    console.log('hell response', response);
+    if (response == null || response === undefined) {
+      console.log('Start can', response);
+      let documentStr = await scanDocument(type);
+      if (documentStr != null && documentStr.length > 0) {
+        let obj = this.jsonStringToDic(documentStr);
+        return obj;
+      } else {
+        console.warn('Scan document failed');
+      }
+    } else {
+      Alert.alert('Success', 'National ID is already registered');
+    }
+    return null;
+  }
+
+  jsonStringToDic(json: string): Map<string, any> | null {
+    try {
+      const data = JSON.parse(json) as Map<string, any>;
+      return data;
+    } catch (e) {
+      console.error('jsonStringToDic', e);
+      return null;
+    }
+  }
+
+  async registerNationalIDWithLiveID(obj: Map<string, any>) {
+    let response = await registerNationalIDWithLiveID(obj);
+    return response;
   }
 
   // Public method to get the instance of the class

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import type { RootStackParamList } from '../RootStackParam';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RouteProp } from '@react-navigation/native';
 import HomeViewModel from '../HomeViewModel';
+import { DocType } from '../../../src/WrapperModel';
+import SpinnerOverlay from '../SpinnerOverlay';
 
 type FeatureEnrollmentScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -94,6 +96,8 @@ const Separator: React.FC = () => {
 };
 
 const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
+  const [loading, setLoading] = useState(false);
+
   const { handler } = route.params;
   const handleFeatureTap = async (id: FeatureIdentifier) => {
     switch (id) {
@@ -101,7 +105,20 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         navigation.navigate('TOTP');
         break;
       case FeatureIdentifier.NationalID:
-        // Handle National ID enrollment
+        let response = await HomeViewModel.getInstance().scanDocument(
+          DocType.nationalId
+        );
+        if (response != null) {
+          setLoading(true);
+          let status =
+            await HomeViewModel.getInstance().registerNationalIDWithLiveID(
+              response
+            );
+          setLoading(false);
+          if (status) {
+            Alert.alert('Success', 'registerNationalIDWithLiveID Success');
+          }
+        }
         break;
       case FeatureIdentifier.DrivingLicence:
         // Handle Driving Licence enrollment
@@ -165,6 +182,7 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         ItemSeparatorComponent={Separator}
         renderItem={renderItem}
       />
+      {loading ? <SpinnerOverlay visible={loading} /> : <></>}
     </View>
   );
 };

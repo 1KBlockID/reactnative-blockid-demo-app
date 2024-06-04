@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { TotpResponse } from './WrapperModel';
+import type { TotpResponse, DocType } from './WrapperModel';
 
 const LINKING_ERROR =
   `The package 'react-native-blockidplugin' doesn't seem to be linked. Make sure: \n\n` +
@@ -84,4 +84,18 @@ export function resetSDK(
   reason: string
 ): Promise<boolean> {
   return Blockidplugin.resetSDK(tag, community, dns, licenseKey, reason);
+}
+
+export function getUserDocument(type: DocType): Promise<string | null> {
+  return Blockidplugin.getUserDocument(type);
+}
+
+export function scanDocument(type: DocType): Promise<string | null> {
+  return Blockidplugin.scanDocument(type);
+}
+
+export function registerNationalIDWithLiveID(
+  data: Map<string, any>
+): Promise<boolean> {
+  return Blockidplugin.registerNationalIDWithLiveID(data);
 }

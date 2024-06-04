@@ -15,10 +15,18 @@ import BlockID
     public typealias BlockIdTOTPResponse = (_ response: [String: Any]?, _ error: ErrorResponse?) -> Void
     
     public typealias BlockIdLiveIDResponse = (_ response: [String: Any]) -> Void
+    
+    public typealias BlockIdDocumentScanResponse = (_ response: String?, _ error: ErrorResponse?) -> Void
 
     private var liveIdScannerHelper: LiveIDScannerHelper?
     
     private var blockIdLiveIDResponse: BlockIdLiveIDResponse!
+    
+    private var documentScannerViewController: DocumentScannerViewController?
+    
+    private var blockIdDocumentScanResponse: BlockIdDocumentScanResponse?
+    
+    private var blockIdWrapperResponse: BlockIdWrapperResponse?
     
     func version() -> NSString {
         return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
@@ -112,7 +120,78 @@ import BlockID
         BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
         response(true, nil)
      }
+    
+    func getUserDocument(type: Int) -> String? {
+        let docType = DocType(rawValue: type)
+        guard let docType = docType else {
+            return nil
+        }
+        let strDocuments = BIDDocumentProvider.shared.getUserDocument(id: nil,
+                                                                      type: docType.type,
+                                                                      category: docType.category)
+        print(strDocuments)
+        return strDocuments
+    }
+    
+    func scanDocument(type: Int, response: @escaping BlockIdDocumentScanResponse) {
+        blockIdDocumentScanResponse = response
 
+        let docType = DocType(rawValue: type)
+        guard let docType = docType else {
+            response(nil, ErrorResponse(code: -1, description: "Document type should not be nil"))
+            return
+        }
+        
+        DispatchQueue.main.async {[unowned self] in
+
+        guard let rootViewController = getRootViewController() else {
+            response(nil, ErrorResponse(code: -1, description: "RootViewController is nil"))
+            return
+        }
+            if  documentScannerViewController == nil {
+                documentScannerViewController = DocumentScannerViewController(docType: docType.docScannerType,
+                                                                              delegate: self)
+            }
+            if let navigationController = rootViewController as? UINavigationController {
+                navigationController.pushViewController(documentScannerViewController!, animated: true)
+            } else if let navigationController = rootViewController.navigationController {
+                navigationController.pushViewController(documentScannerViewController!, animated: true)
+            } else if let navigationController = rootViewController.presentedViewController as? UINavigationController {
+                navigationController.pushViewController(documentScannerViewController!, animated: true)
+            } else {
+                rootViewController.present(documentScannerViewController!, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func registerNationalIDWithLiveID(data: [String: Any]?, response: @escaping BlockIdWrapperResponse) {
+        blockIdWrapperResponse = response
+         if var obj = validateScanedData(data: data) {
+            mutateDocument(obj: &obj, key: "idcard_object", type: RegisterDocType.NATIONAL_ID.rawValue)
+            if let img = validateFaceData(data: data), let proofedBy = validateProofedByData(data: data)  {
+                registerDocument(obj: obj, proofedBy: proofedBy, img: img)
+            }
+        }
+    }
+ 
+    private func getRootViewController() -> UIViewController? {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+              let rootViewController = window.rootViewController else { return nil }
+       return rootViewController
+    }
+    
+    private func mutateDocument(obj: inout [String: Any], key: String, type: String) {
+        let token = obj["token"] as? String
+        var dictIdcardObject = obj[key] as? [String: Any]
+        let proof_jwt = dictIdcardObject?["proof_jwt"] as? String
+        dictIdcardObject?["proof"] = proof_jwt ?? ""
+        dictIdcardObject?["certificate_token"] = token ?? ""
+        dictIdcardObject?["category"] = RegisterDocCategory.Identity_Document.rawValue
+        dictIdcardObject?["type"] = type
+        obj = dictIdcardObject ?? [:]
+
+    }
 }
 
 
@@ -154,6 +233,92 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
         blockIdLiveIDResponse(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
         liveIdScannerHelper?.stopLiveIDScanning()
+    }
+
+}
+
+extension BlockIdWrapper: DocumentScanDelegate {
+    public func onDocumentScanResponse(status: Bool, document: String?, error: BlockID.ErrorResponse?) {
+        documentScannerViewController?.dismiss(animated: false)
+        documentScannerViewController = nil
+        blockIdDocumentScanResponse?(document, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
+    }
+}
+
+private enum DocType: Int {
+    case nationalId = 1
+    case drivingLicence = 2
+    case passport = 3
+    
+    var type: String {
+         switch self {
+         case .nationalId:
+             return RegisterDocType.NATIONAL_ID.rawValue
+         case .drivingLicence:
+             return RegisterDocType.DL.rawValue
+         case .passport:
+             return RegisterDocType.PPT.rawValue
+         }
+     }
+    
+    var docScannerType: DocumentScannerType {
+        switch self {
+        case .nationalId:
+            return DocumentScannerType.IDCARD
+        case .drivingLicence:
+            return DocumentScannerType.DL
+        case .passport:
+            return DocumentScannerType.PPT
+        }
+    }
+    
+    var category: String {
+         switch self {
+         default: return RegisterDocCategory.Identity_Document.rawValue
+         }
+     }
+    
+}
+
+// Document Scan utils
+extension BlockIdWrapper {
+    
+    private func registerDocument(obj: [String: Any], proofedBy: String, img: UIImage) {
+        BlockIDSDK.sharedInstance.registerDocument(obj: obj,
+                                                   liveIdProofedBy: proofedBy,
+                                                   faceImage: img, completion: {[unowned self] status, error in
+            blockIdWrapperResponse?(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
+        })
+    }
+    
+    private func validateFaceData(data: Any?) -> UIImage? {
+        guard let obj = data as? [String: Any], let liveIdFace = (obj["liveid_object"] as? [String: Any])?["face"] as? String else {
+            blockIdWrapperResponse?(false, ErrorResponse(code: 0, description: "LiveIdFace cannot be nil."))
+             return nil
+        }
+        guard let imgdata = Data(base64Encoded: liveIdFace,
+                                 options: .ignoreUnknownCharacters),
+              let img = UIImage(data: imgdata) else {
+            blockIdWrapperResponse?(false, ErrorResponse(code: 0, description: "Not able to extract LiveIdFace."))
+             return nil
+        }
+        return img
+    }
+    
+    private func validateProofedByData(data: Any?) -> String? {
+        guard  let obj = data as? [String: Any], let proofedBy = (obj["liveid_object"] as? [String: Any])?["proofedBy"] as? String else {
+             blockIdWrapperResponse?(false, ErrorResponse(code: 0, description: "ProofedBy cannot be nil"))
+             return nil
+        }
+        return proofedBy
+    }
+    
+    private func validateScanedData(data: Any?) -> [String: Any]? {
+        guard let obj = data as? [String: Any] else {
+            blockIdWrapperResponse?(false, ErrorResponse(code: 0, description: "Data cannot be nil."))
+            return nil
+        }
+        return obj
     }
 
 }

@@ -1,6 +1,6 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import type { TotpResponse } from './WrapperModel';
+import type { DocType, TotpResponse } from './WrapperModel';
 
 export interface Spec extends TurboModule {
   multiply(a: number, b: number): Promise<number>;
@@ -27,5 +27,8 @@ export interface Spec extends TurboModule {
     licenseKey: string,
     reason: string
   ): Promise<boolean>;
+  getUserDocument(type: DocType): Promise<string | null>;
+  scanDocument(type: DocType): Promise<string | null>;
+  registerNationalIDWithLiveID(data: Map<string, any>): Promise<boolean>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

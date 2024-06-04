@@ -15,7 +15,7 @@ import SpinnerOverlay from '../SpinnerOverlay';
 import Tenant from '../Tenant';
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   React.useLayoutEffect(() => {
     const viewModel = HomeViewModel.getInstance();

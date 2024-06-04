@@ -21,8 +21,8 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
     viewModel.initiateTempWallet().then((result) => {
       if (result) {
         viewModel.registerTenant().then((success) => {
-          setIsRegistered(success);
           setLoading(false);
+          setIsRegistered(success);
         });
       } else {
         setLoading(false);
@@ -57,6 +57,7 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
       console.log('setisBlockIDSdkReady', res);
     });
   }, []);
+
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
@@ -80,7 +81,7 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.appButtonText}>Go to Feature Enrollment</Text>
         </TouchableOpacity>
       ) : null}
-      <SpinnerOverlay visible={loading} />
+      {loading ? <SpinnerOverlay visible={loading} /> : <></>}
     </View>
   );
 };

@@ -51,7 +51,6 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
 
   React.useEffect(() => {
     const viewModel = HomeViewModel.getInstance();
-    setLoading(true);
     viewModel
       .isSDKReady()
       .then((res) => {

@@ -129,7 +129,6 @@ import BlockID
         let strDocuments = BIDDocumentProvider.shared.getUserDocument(id: nil,
                                                                       type: docType.type,
                                                                       category: docType.category)
-        print(strDocuments)
         return strDocuments
     }
     

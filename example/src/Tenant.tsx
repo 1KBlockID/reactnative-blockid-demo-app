@@ -55,13 +55,14 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
       .isSDKReady()
       .then((res) => {
         setIsRegistered(res);
-        console.log('setisBlockIDSdkReady', res);
+        console.log('setisBlockIDSdkReady1', res);
       })
       .finally(() => setLoading(false)); // Finally block ensures setLoading(false) is called regardless of success or failure
   }, []);
-
+  console.log('loading', loading);
   return (
     <View style={styles.buttonContainer}>
+      {loading && <SpinnerOverlay visible={loading} />}
       <TouchableOpacity
         onPress={isRegistered ? undefined : handleRegisterTenant}
         disabled={isRegistered}
@@ -83,7 +84,6 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.appButtonText}>Go to Feature Enrollment</Text>
         </TouchableOpacity>
       ) : null}
-      {loading && <SpinnerOverlay visible={loading} />}
     </View>
   );
 };

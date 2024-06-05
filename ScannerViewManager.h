@@ -13,6 +13,6 @@
 
 #import <React/RCTViewManager.h>
 
-@interface MyCustomViewManager : RCTViewManager
+@interface ScannerViewManager : RCTViewManager
 
 @end

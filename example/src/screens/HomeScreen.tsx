@@ -11,7 +11,6 @@ type Props = {
 };
 
 import HomeViewModel from '../HomeViewModel';
-import SpinnerOverlay from '../SpinnerOverlay';
 import Tenant from '../Tenant';
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
@@ -33,11 +32,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <SpinnerOverlay visible={loading} />
-      ) : (
-        <Tenant navigation={navigation} />
-      )}
+      {loading ? <></> : <Tenant navigation={navigation} />}
     </View>
   );
 };

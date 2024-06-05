@@ -28,8 +28,7 @@ interface ScannerViewProps {
   style?: StyleProp<ViewStyle>; // Make sure to import StyleProp and ViewStyle from 'react-native'
 }
 
-const ScannerView =
-  requireNativeComponent<ScannerViewProps>('RNTScannerView11');
+const ScannerView = requireNativeComponent<ScannerViewProps>('RNTScannerView');
 
 export default function LiveIDScreen() {
   const navigation = useNavigation();

@@ -16,7 +16,7 @@
 
 @implementation ScannerViewManager
 
-RCT_EXPORT_MODULE(RNTScannerView11)
+RCT_EXPORT_MODULE(RNTScannerView)
 
 
 - (UIView *)view

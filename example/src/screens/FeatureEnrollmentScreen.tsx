@@ -121,10 +121,34 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         }
         break;
       case FeatureIdentifier.DrivingLicence:
-        // Handle Driving Licence enrollment
+        let res = await HomeViewModel.getInstance().scanDocument(
+          DocType.drivingLicence
+        );
+        if (res != null) {
+          setLoading(true);
+          let result =
+            await HomeViewModel.getInstance().registerDrivingLicenceWithLiveID(
+              res
+            );
+          setLoading(false);
+          if (result) {
+            Alert.alert('Success', 'registerDrivingLicenceWithLiveID Success');
+          }
+        }
         break;
       case FeatureIdentifier.Passport:
-        // Handle Passport enrollment
+        let resp = await HomeViewModel.getInstance().scanDocument(
+          DocType.passport
+        );
+        if (resp != null) {
+          setLoading(true);
+          let result =
+            await HomeViewModel.getInstance().registerPassportWithLiveID(resp);
+          setLoading(false);
+          if (result) {
+            Alert.alert('Success', 'registerPassportWithLiveID Success');
+          }
+        }
         break;
       case FeatureIdentifier.LiveID:
         let isLiveIDRegisterd =

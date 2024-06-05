@@ -33,5 +33,7 @@ export interface Spec extends TurboModule {
   isUrlTrustedSessionSources(url: string): Promise<boolean>;
   getScopesAttributesDic(data: Object): Promise<Map<string, any> | null>;
   authenticateUserWithScopes(data: Object): Promise<boolean>;
+  registerDrivingLicenceWithLiveID(data: Object): Promise<boolean>;
+  registerPassportWithLiveID(data: Object): Promise<boolean>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

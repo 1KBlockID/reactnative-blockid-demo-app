@@ -19,6 +19,8 @@ import {
   isUrlTrustedSessionSources,
   getScopesAttributesDic,
   authenticateUserWithScopes,
+  registerDrivingLicenceWithLiveID,
+  registerPassportWithLiveID,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -277,6 +279,20 @@ class HomeViewModel {
 
   async authenticateUserWithScopes(data: Map<string, any>) {
     let response = await authenticateUserWithScopes(Object.fromEntries(data));
+    return response;
+  }
+
+  async registerDrivingLicenceWithLiveID(
+    obj: Map<string, any>
+  ): Promise<boolean> {
+    let response = await registerDrivingLicenceWithLiveID(
+      Object.fromEntries(obj)
+    );
+    return response;
+  }
+
+  async registerPassportWithLiveID(obj: Map<string, any>): Promise<boolean> {
+    let response = await registerPassportWithLiveID(Object.fromEntries(obj));
     return response;
   }
 

@@ -187,6 +187,24 @@ import BlockID
         }
     }
     
+    func registerDrivingLicenceWithLiveID(data: [String: Any]?, response: @escaping BlockIdWrapperResponse) {
+        if var obj = validateScanedData(data: data) {
+            mutateDocument(obj: &obj, key: "dl_object", type: RegisterDocType.DL.rawValue)
+            if let img = validateFaceData(data: data), let proofedBy = validateProofedByData(data: data)  {
+                registerDocument(obj: obj, proofedBy: proofedBy, img: img)
+            }
+        }
+    }
+    
+    func registerPassportWithLiveID(data: [String: Any]?, response: @escaping BlockIdWrapperResponse) {
+        if var obj = validateScanedData(data: data) {
+            mutateDocument(obj: &obj, key: "ppt_object", type: RegisterDocType.PPT.rawValue)
+            if let img = validateFaceData(data: data), let proofedBy = validateProofedByData(data: data)  {
+                registerDocument(obj: obj, proofedBy: proofedBy, img: img)
+            }
+        }
+    }
+
     /// Scan QR
 
     func startQRScanning(response: @escaping BlockIdQRScanResponse) {
@@ -230,8 +248,6 @@ import BlockID
     func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
         print(data)
         BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: bidOrigin(data: data), userId: "") {(status, _, error) in
-            print(status)
-            print(error?.message)
             response(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
         }
     }

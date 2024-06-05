@@ -119,3 +119,13 @@ export function getScopesAttributesDic(
 export function authenticateUserWithScopes(data: Object): Promise<boolean> {
   return Blockidplugin.authenticateUserWithScopes(data);
 }
+
+export function registerDrivingLicenceWithLiveID(
+  data: Object
+): Promise<boolean> {
+  return Blockidplugin.registerDrivingLicenceWithLiveID(data);
+}
+
+export function registerPassportWithLiveID(data: Object): Promise<boolean> {
+  return Blockidplugin.registerPassportWithLiveID(data);
+}

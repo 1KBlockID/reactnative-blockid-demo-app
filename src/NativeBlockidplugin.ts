@@ -1,10 +1,8 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import type { DocType, TotpResponse } from './WrapperModel';
+import type { TotpResponse } from './WrapperModel';
 
 export interface Spec extends TurboModule {
-  multiply(a: number, b: number): Promise<number>;
-  add(a: number, b: number): Promise<number>;
   setLicenseKey(licenseKey: string): Promise<boolean>;
   isReady(): Promise<boolean>;
   initiateTempWallet(): Promise<boolean>;
@@ -27,8 +25,13 @@ export interface Spec extends TurboModule {
     licenseKey: string,
     reason: string
   ): Promise<boolean>;
-  getUserDocument(type: DocType): Promise<string | null>;
-  scanDocument(type: DocType): Promise<string | null>;
-  registerNationalIDWithLiveID(data: Map<string, any>): Promise<boolean>;
+  getUserDocument(type: number): Promise<string | null>;
+  scanDocument(type: number): Promise<string | null>;
+  registerNationalIDWithLiveID(data: Object): Promise<boolean>;
+  startQRScanning(): Promise<string | null>;
+  stopQRScanning(): Promise<boolean>;
+  isUrlTrustedSessionSources(url: string): Promise<boolean>;
+  getScopesAttributesDic(data: Object): Promise<Map<string, any> | null>;
+  authenticateUserWithScopes(data: Object): Promise<boolean>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

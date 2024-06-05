@@ -14,11 +14,19 @@ import {
   getUserDocument,
   scanDocument,
   registerNationalIDWithLiveID,
+  startQRScanning,
+  stopQRScanning,
+  isUrlTrustedSessionSources,
+  getScopesAttributesDic,
+  authenticateUserWithScopes,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
 import type { TotpResponse, DocType } from '../../src/WrapperModel';
 import { Alert } from 'react-native';
+
+import { AuthenticationPayloadV1 } from './AppModel';
+import { ApiManager } from './ApiManager';
 
 // Define the interface for TotpRes module
 class HomeViewModel {
@@ -186,9 +194,7 @@ class HomeViewModel {
 
   async scanDocument(type: DocType): Promise<Map<string, any> | null> {
     let response = await getUserDocument(type);
-    console.log('hell response', response);
     if (response == null || response === undefined) {
-      console.log('Start can', response);
       let documentStr = await scanDocument(type);
       if (documentStr != null && documentStr.length > 0) {
         let obj = this.jsonStringToDic(documentStr);
@@ -213,7 +219,64 @@ class HomeViewModel {
   }
 
   async registerNationalIDWithLiveID(obj: Map<string, any>) {
-    let response = await registerNationalIDWithLiveID(obj);
+    let response = await registerNationalIDWithLiveID(Object.fromEntries(obj));
+    return response;
+  }
+
+  async startQRScan() {
+    try {
+      let qrData = await startQRScanning();
+      await stopQRScanning();
+      const qrDataString = qrData?.toString() || '';
+      if (
+        qrDataString !== '' &&
+        qrDataString.startsWith('https://') &&
+        qrDataString.includes('/sessions')
+      ) {
+        const arrSplitStrings = qrDataString.split('/session/');
+        const url = arrSplitStrings?.[0] || '';
+        const isTrustedUrl = await isUrlTrustedSessionSources(url);
+        if (isTrustedUrl ?? false) {
+          const apiManager = new ApiManager();
+          const authenticationPayloadV2 =
+            await apiManager.getSessionData(qrDataString);
+          if (authenticationPayloadV2) {
+            const authenticationPayloadV1 = AuthenticationPayloadV1.fromV2(
+              authenticationPayloadV2,
+              qrDataString
+            );
+            authenticationPayloadV1.scopes = authenticationPayloadV2.scopes
+              ?.toLowerCase()
+              ?.replace('windows', 'scep_creds');
+            return authenticationPayloadV1;
+          } else {
+            console.error('BlockID ->>> getSessionData Api failure');
+            return null;
+          }
+        } else {
+          console.error('BlockID ->>> Not trusted url');
+          return null;
+        }
+      } else {
+        console.error('BlockID ->>> qrDataString validation error');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+
+  async getScopesAttributesDic(data: Map<string, any>): Promise<string> {
+    let response = await getScopesAttributesDic(Object.fromEntries(data));
+    if (response != null && response !== undefined) {
+      return JSON.stringify(response);
+    }
+    return 'Error Try again later';
+  }
+
+  async authenticateUserWithScopes(data: Map<string, any>) {
+    let response = await authenticateUserWithScopes(Object.fromEntries(data));
     return response;
   }
 

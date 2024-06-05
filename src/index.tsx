@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { TotpResponse, DocType } from './WrapperModel';
+import type { TotpResponse } from './WrapperModel';
 
 const LINKING_ERROR =
   `The package 'react-native-blockidplugin' doesn't seem to be linked. Make sure: \n\n` +
@@ -86,16 +86,36 @@ export function resetSDK(
   return Blockidplugin.resetSDK(tag, community, dns, licenseKey, reason);
 }
 
-export function getUserDocument(type: DocType): Promise<string | null> {
+export function getUserDocument(type: number): Promise<string | null> {
   return Blockidplugin.getUserDocument(type);
 }
 
-export function scanDocument(type: DocType): Promise<string | null> {
+export function scanDocument(type: number): Promise<string | null> {
   return Blockidplugin.scanDocument(type);
 }
 
-export function registerNationalIDWithLiveID(
-  data: Map<string, any>
-): Promise<boolean> {
+export function registerNationalIDWithLiveID(data: Object): Promise<boolean> {
   return Blockidplugin.registerNationalIDWithLiveID(data);
+}
+
+export function startQRScanning(): Promise<string | null> {
+  return Blockidplugin.startQRScanning();
+}
+
+export function stopQRScanning(): Promise<boolean> {
+  return Blockidplugin.stopQRScanning();
+}
+
+export function isUrlTrustedSessionSources(url: string): Promise<boolean> {
+  return Blockidplugin.isUrlTrustedSessionSources(url);
+}
+
+export function getScopesAttributesDic(
+  data: Object
+): Promise<Map<string, any> | null> {
+  return Blockidplugin.getScopesAttributesDic(data);
+}
+
+export function authenticateUserWithScopes(data: Object): Promise<boolean> {
+  return Blockidplugin.authenticateUserWithScopes(data);
 }

@@ -136,7 +136,7 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         }
         break;
       case FeatureIdentifier.QRScan:
-        // Handle QR Scan Auth
+        navigation.navigate('QRScan');
         break;
       case FeatureIdentifier.Reset:
         await HomeViewModel.getInstance().resetSDK();

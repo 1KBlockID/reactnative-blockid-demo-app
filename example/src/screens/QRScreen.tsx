@@ -1,50 +1,33 @@
 import * as React from 'react';
 
-import {
-  StyleSheet,
-  View,
-  NativeEventEmitter,
-  NativeModules,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
-import { useNavigation } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '../RootStackParam';
 import { ScannerView } from '../ScannerView';
 
-const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
-
-interface StatusChangeEvent {
-  status: string | null;
-  error: Error | null;
-}
-
-export default function LiveIDScreen() {
-  const navigation = useNavigation();
+type QRScreenNavigationProp = StackNavigationProp<RootStackParamList, 'QRScan'>;
+type Props = {
+  navigation: QRScreenNavigationProp;
+};
+const QRScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const startLiveIDScanning = async () => {
-    eventEmitter.addListener('onStatusChanged', (event: StatusChangeEvent) => {
-      console.log('onStatusChanged', event);
-      if (event.status === 'faceLivenessCheckStarted') {
-        setLoading(true);
-      } else if (event.status === 'focusOnFaceChanged') {
-        //  Alert.alert('Info', 'Face focusOnFaceChanged');
-      } else if (event.status === 'completed') {
-        setLoading(false);
-        Alert.alert('Info', 'Live ID Registered successfully');
-        navigation.goBack();
-      } else if (event.status === 'failed') {
-        setLoading(false);
-        Alert.alert('Info', 'Failed to register Live ID try again!');
-        navigation.goBack();
-      }
-    });
     const viewModel = HomeViewModel.getInstance();
-    viewModel.startLiveIDScanning();
+    setLoading(true);
+    let authenticationPayloadV1 = await viewModel.startQRScan();
+    setLoading(false);
+    if (
+      authenticationPayloadV1 == null ||
+      authenticationPayloadV1 === undefined
+    ) {
+      Alert.alert('Error', 'Failed to do QR Scan. Please try again later.');
+    } else {
+      navigation.navigate('QRAuth', { payload: authenticationPayloadV1 });
+    }
   };
 
   return (
@@ -55,13 +38,13 @@ export default function LiveIDScreen() {
           onPress={startLiveIDScanning}
           style={styles.appButtonContainer}
         >
-          <Text style={styles.appButtonText}>Start LiveID Scan</Text>
+          <Text style={styles.appButtonText}>Start QR Scan</Text>
         </TouchableOpacity>
       </View>
       <SpinnerOverlay visible={loading} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -100,3 +83,5 @@ const styles = StyleSheet.create({
     height: 48,
   },
 });
+
+export default QRScreen;

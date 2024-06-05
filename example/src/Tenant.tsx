@@ -59,7 +59,7 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
       })
       .finally(() => setLoading(false)); // Finally block ensures setLoading(false) is called regardless of success or failure
   }, []);
-  console.log('loading', loading);
+
   return (
     <View style={styles.buttonContainer}>
       {loading && <SpinnerOverlay visible={loading} />}

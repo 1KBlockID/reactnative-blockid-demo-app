@@ -17,6 +17,10 @@ import BlockID
     public typealias BlockIdLiveIDResponse = (_ response: [String: Any]) -> Void
     
     public typealias BlockIdDocumentScanResponse = (_ response: String?, _ error: ErrorResponse?) -> Void
+    
+    public typealias BlockIdQRScanResponse = (_ response: String?) -> Void
+    
+    public typealias BlockIdWrapperDataResponse = (_ response: [String: Any]?, _ error: ErrorResponse?) -> Void
 
     private var liveIdScannerHelper: LiveIDScannerHelper?
     
@@ -27,7 +31,11 @@ import BlockID
     private var blockIdDocumentScanResponse: BlockIdDocumentScanResponse?
     
     private var blockIdWrapperResponse: BlockIdWrapperResponse?
+
+    private var qrScannerHelper: QRScannerHelper?
     
+    private var blockIdQRScanResponse: BlockIdQRScanResponse?
+
     func version() -> NSString {
         return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
     }
@@ -108,6 +116,12 @@ import BlockID
              }
     }
     
+    func stopLiveIDScanning() {
+        DispatchQueue.main.async { [unowned self]  in
+            liveIdScannerHelper?.stopLiveIDScanning()
+        }
+    }
+    
     func bidScannerView() -> BlockID.BIDScannerView {
         let scannerView = BlockID.BIDScannerView();
         return scannerView
@@ -172,7 +186,56 @@ import BlockID
             }
         }
     }
- 
+    
+    /// Scan QR
+
+    func startQRScanning(response: @escaping BlockIdQRScanResponse) {
+        blockIdQRScanResponse = response
+        DispatchQueue.main.async { [unowned self]  in
+            if (qrScannerHelper?.isRunning() == false || qrScannerHelper?.isRunning() == nil) {
+                qrScannerHelper = QRScannerHelper.init(bidScannerView: ScannerViewManagerHelper.sharedManager().scannerView as! BlockID.BIDScannerView,
+                                                       kQRScanResponseDelegate: self)
+                qrScannerHelper?.startQRScanning()
+            }
+        }
+    }
+    
+    func stopQRScanning() {
+        DispatchQueue.main.async { [unowned self]  in
+            qrScannerHelper?.stopQRScanning()
+        }
+    }
+    
+    func isUrlTrustedSessionSources(url: String) -> Bool {
+        return BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url)
+    }
+    
+    func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {
+        let bidOrigin = bidOrigin(data: data)
+        if (bidOrigin.authPage == nil) { //default to native auth without a specific method.
+            bidOrigin.authPage = AccountAuthConstants.kNativeAuthScehema
+        }
+        BlockIDSDK.sharedInstance.getScopesAttributesDic(scopes: data["scopes"] as? String ?? "",
+                                                             creds: data["creds"] as? String ?? "",
+                                                             origin: bidOrigin,
+                                                         userId: nil) { scopesAttributesDict, error in
+            guard let scopeDictionary = scopesAttributesDict else {
+                response(nil, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
+                return
+            }
+            response(scopeDictionary, nil)
+        }
+    }
+    
+    func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
+        print(data)
+        BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: bidOrigin(data: data), userId: "") {(status, _, error) in
+            print(status)
+            print(error?.message)
+            response(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
+        }
+    }
+
     private func getRootViewController() -> UIViewController? {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                    let window = windowScene.windows.first,
@@ -190,6 +253,18 @@ import BlockID
         dictIdcardObject?["type"] = type
         obj = dictIdcardObject ?? [:]
 
+    }
+    
+    private func bidOrigin(data: [String: Any]) -> BIDOrigin {
+        let bidOrigin = BIDOrigin()
+        bidOrigin.api = data["api"] as? String ?? ""
+        bidOrigin.tag = data["tag"] as? String ?? ""
+        bidOrigin.name = data["name"] as? String ?? ""
+        bidOrigin.community = data["community"] as? String ?? ""
+        bidOrigin.publicKey = data["publicKey"] as? String ?? ""
+        bidOrigin.session = data["session"] as? String ?? ""
+        bidOrigin.authPage = data["authPage"] as? String ??  AccountAuthConstants.kNativeAuthScehema
+        return bidOrigin
     }
 }
 
@@ -277,6 +352,14 @@ private enum DocType: Int {
          }
      }
     
+}
+
+
+extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
+    public func onQRScanResult(qrCodeData: String?) {
+        qrScannerHelper!.stopQRScanning()
+        blockIdQRScanResponse?(qrCodeData);
+    }
 }
 
 // Document Scan utils

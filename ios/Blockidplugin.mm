@@ -13,8 +13,8 @@ RCT_EXPORT_METHOD(multiply:(double)a
                   b:(double)b
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-     resolve(@"sdfdf");
- }
+    resolve(@"sdfdf");
+}
 
 RCT_EXPORT_METHOD(isReady: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
@@ -39,11 +39,11 @@ RCT_EXPORT_METHOD(initiateTempWallet: (RCTPromiseResolveBlock)resolve reject:(RC
 
 RCT_EXPORT_METHOD(registerTenantWith:(NSString *)tag community:(NSString *)community dns: (NSString *)dns  resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     [wrapper registerTenantWithTag:tag community:community dns:dns response:^(BOOL status, ErrorResponse * _Nullable error) {
-            if (status) {
-                resolve(@(status));
-            } else {
-                reject(@"", @"", error);
-            }
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
     }];
 }
 
@@ -60,11 +60,11 @@ RCT_EXPORT_METHOD(enrollDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
 RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     bool result = [wrapper isDeviceAuthRegisterd];
-
-     dispatch_async(dispatch_get_main_queue(), ^{
-         [ScannerViewManagerHelper sharedManager].scannerView.backgroundColor = [UIColor brownColor];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ScannerViewManagerHelper sharedManager].scannerView.backgroundColor = [UIColor brownColor];
     });
-
+    
     resolve(@(result));
 }
 
@@ -81,7 +81,7 @@ RCT_EXPORT_METHOD(verifyDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
 
 RCT_EXPORT_METHOD(totp: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
- 
+    
     [wrapper totpWithTotpResponse:^(NSDictionary<NSString *,id> * _Nullable response, ErrorResponse * _Nullable error) {
         if (response != nil) {
             resolve(response);
@@ -111,12 +111,12 @@ RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: 
     }];
 }
 
-RCT_EXPORT_METHOD(getUserDocument:(NSInteger)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getUserDocument:(double)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([wrapper getUserDocumentWithType:type]);
 }
 
-RCT_EXPORT_METHOD(scanDocument:(NSInteger)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-[wrapper scanDocumentWithType:type response:^(NSString * _Nullable response, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(scanDocument:(double)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper scanDocumentWithType:type response:^(NSString * _Nullable response, ErrorResponse * _Nullable error) {
         if (response != nil) {
             resolve(response);
         } else {
@@ -137,17 +137,49 @@ RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary*)data resolve:(RCTP
 
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"onStatusChanged"];
+    return @[@"onStatusChanged"];
 }
 
 - (void)add:(double)a b:(double)b resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-     
+    
 }
 
-- (void)stopLiveIDScanning:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
- }
+RCT_EXPORT_METHOD(stopLiveIDScanning:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper stopLiveIDScanning];
+    resolve(@true);
+}
 
+RCT_EXPORT_METHOD(startQRScanning:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper startQRScanningWithResponse:^(NSString * _Nullable response) {
+        resolve(response);
+    }];
+}
 
+RCT_EXPORT_METHOD(stopQRScanning:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper stopQRScanning];
+    resolve(@true);
+}
+
+RCT_EXPORT_METHOD(isUrlTrustedSessionSources:(NSString*)url resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    bool result = [wrapper isUrlTrustedSessionSourcesWithUrl:url];
+    resolve(@(result));
+}
+
+RCT_EXPORT_METHOD(getScopesAttributesDic:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper getScopesAttributesDicWithData:data response:^(NSDictionary<NSString *,id> * _Nullable response, ErrorResponse * _Nullable error) {
+        if (response !=nil) {
+            resolve(response);
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(authenticateUserWithScopes:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper authenticateUserWithScopesWithData:data response:^(BOOL result, ErrorResponse * _Nullable error) {
+        resolve(@(result));
+    }];
+}
 
 // Don't compile this code when we build for the old architecture.
 //#ifdef RCT_NEW_ARCH_ENABLED

@@ -7,6 +7,8 @@ import HomeScreen from './screens/HomeScreen';
 import FeatureEnrollmentScreen from './screens/FeatureEnrollmentScreen';
 import TOTPScreen from './screens/TOTPScreen';
 import LiveIDScreen from './screens/LiveIDScreen';
+import QRAuthScreen from './screens/QRAuthScreen';
+import QRScreen from './screens/QRScreen';
 
 const Theme = {
   ...DefaultTheme,
@@ -36,6 +38,8 @@ export default function App() {
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
         <Stack.Screen name="LiveID" component={LiveIDScreen} />
+        <Stack.Screen name="QRScan" component={QRScreen} />
+        <Stack.Screen name="QRAuth" component={QRAuthScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,15 +7,6 @@ RCT_EXPORT_MODULE()
 
 BlockIdWrapper *wrapper = [[BlockIdWrapper alloc] init];
 
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_EXPORT_METHOD(multiply:(double)a
-                  b:(double)b
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-    resolve(@"sdfdf");
-}
-
 RCT_EXPORT_METHOD(isReady: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     bool result = [wrapper isReady];
@@ -125,16 +116,6 @@ RCT_EXPORT_METHOD(scanDocument:(double)type resolve:(RCTPromiseResolveBlock)reso
     }];
 }
 
-RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerNationalIDWithLiveIDWithData:data response:^(BOOL status, ErrorResponse * _Nullable error) {
-        if (status) {
-            resolve(@(status));
-        } else {
-            reject(@"", @"", error);
-        }
-    }];
-}
-
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[@"onStatusChanged"];
@@ -177,8 +158,8 @@ RCT_EXPORT_METHOD(authenticateUserWithScopes:(NSDictionary*)data resolve:(RCTPro
     }];
 }
 
-RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerDrivingLicenceWithLiveIDWithData:data response:^(BOOL status, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerNationalIDWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
             resolve(@(status));
         } else {
@@ -187,8 +168,18 @@ RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary*)data resolve:(
     }];
 }
 
-RCT_EXPORT_METHOD(registerPassportWithLiveID:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerPassportWithLiveIDWithData:data response:^(BOOL status, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerDrivingLicenceWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
+        if (status) {
+            resolve(@(status));
+        } else {
+            reject(@"", @"", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(registerPassportWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerPassportWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
             resolve(@(status));
         } else {

@@ -194,13 +194,12 @@ class HomeViewModel {
     return status;
   }
 
-  async scanDocument(type: DocType): Promise<Map<string, any> | null> {
+  async scanDocument(type: DocType): Promise<string | null> {
     let response = await getUserDocument(type);
     if (response == null || response === undefined) {
       let documentStr = await scanDocument(type);
       if (documentStr != null && documentStr.length > 0) {
-        let obj = this.jsonStringToDic(documentStr);
-        return obj;
+        return documentStr;
       } else {
         console.warn('Scan document failed');
       }
@@ -210,19 +209,8 @@ class HomeViewModel {
     return null;
   }
 
-  jsonStringToDic(json: string): Map<string, any> | null {
-    try {
-      const data = JSON.parse(json) as Map<string, any>;
-      return data;
-    } catch (e) {
-      console.error('jsonStringToDic', e);
-      return null;
-    }
-  }
-
-  async registerNationalIDWithLiveID(obj: Map<string, any>) {
-    let response = await registerNationalIDWithLiveID(Object.fromEntries(obj));
-    return response;
+  isString(value: any): value is string {
+    return typeof value === 'string';
   }
 
   async startQRScan() {
@@ -282,18 +270,109 @@ class HomeViewModel {
     return response;
   }
 
-  async registerDrivingLicenceWithLiveID(
-    obj: Map<string, any>
-  ): Promise<boolean> {
-    let response = await registerDrivingLicenceWithLiveID(
-      Object.fromEntries(obj)
-    );
-    return response;
+  async registerNationalIDWithLiveID(strJson: string) {
+    try {
+      const obj = JSON.parse(strJson);
+      if (obj) {
+        let idCardObj = obj.idcard_object;
+        if (idCardObj) {
+          idCardObj.proof = idCardObj.proof_jwt;
+          idCardObj.certificate_token = obj.token;
+          const liveidObj = obj.liveid_object;
+          if (liveidObj) {
+            const face = liveidObj.face;
+            const proofedBy = liveidObj.proofedBy;
+            if (this.isString(face) && this.isString(proofedBy)) {
+              const idCardEntries = Object.entries(idCardObj);
+              let response = await registerNationalIDWithLiveID(
+                Object.fromEntries(idCardEntries),
+                face,
+                proofedBy
+              );
+              return response;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+    return false;
   }
 
-  async registerPassportWithLiveID(obj: Map<string, any>): Promise<boolean> {
-    let response = await registerPassportWithLiveID(Object.fromEntries(obj));
-    return response;
+  async registerDrivingLicenceWithLiveID(strJson: string): Promise<boolean> {
+    try {
+      const obj = JSON.parse(strJson);
+      if (obj) {
+        let dlObj = obj.dl_object;
+        if (dlObj) {
+          dlObj.proof = dlObj.proof_jwt;
+          dlObj.certificate_token = obj.token;
+          const liveidObj = obj.liveid_object;
+          if (liveidObj) {
+            const face = liveidObj.face;
+            const proofedBy = liveidObj.proofedBy;
+            if (this.isString(face) && this.isString(proofedBy)) {
+              const idCardEntries = Object.entries(dlObj);
+              let response = await registerDrivingLicenceWithLiveID(
+                Object.fromEntries(idCardEntries),
+                face,
+                proofedBy
+              );
+              return response;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+    return false;
+  }
+
+  async registerPassportWithLiveID(strJson: string): Promise<boolean> {
+    try {
+      const obj = JSON.parse(strJson);
+      if (obj) {
+        let pptObj = obj.ppt_object;
+        if (pptObj) {
+          pptObj.proof = pptObj.proof_jwt;
+          pptObj.certificate_token = obj.token;
+          const liveidObj = obj.liveid_object;
+          if (liveidObj) {
+            const face = liveidObj.face;
+            const proofedBy = liveidObj.proofedBy;
+            if (this.isString(face) && this.isString(proofedBy)) {
+              const idCardEntries = Object.entries(pptObj);
+              let response = await registerPassportWithLiveID(
+                Object.fromEntries(idCardEntries),
+                face,
+                proofedBy
+              );
+              return response;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+      return false;
+    }
+    return false;
   }
 
   // Public method to get the instance of the class

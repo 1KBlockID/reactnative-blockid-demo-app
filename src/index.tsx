@@ -25,10 +25,6 @@ const Blockidplugin = BlockidpluginModule
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Blockidplugin.multiply(a, b);
-}
-
 export function setLicenseKey(licenseKey: string): Promise<boolean> {
   return Blockidplugin.setLicenseKey(licenseKey);
 }
@@ -64,12 +60,12 @@ export async function totp(): Promise<TotpResponse | null> {
   return await Blockidplugin.totp();
 }
 
-export async function startLiveIDScanning(dvcID: string): Promise<void> {
-  return await Blockidplugin.startLiveIDScanning(dvcID);
-}
-
 export function isLiveIDRegisterd(): Promise<boolean> {
   return Blockidplugin.isLiveIDRegisterd();
+}
+
+export async function startLiveIDScanning(dvcID: string): Promise<void> {
+  return await Blockidplugin.startLiveIDScanning(dvcID);
 }
 
 export function stopLiveIDScanning(): Promise<void> {
@@ -84,18 +80,6 @@ export function resetSDK(
   reason: string
 ): Promise<boolean> {
   return Blockidplugin.resetSDK(tag, community, dns, licenseKey, reason);
-}
-
-export function getUserDocument(type: number): Promise<string | null> {
-  return Blockidplugin.getUserDocument(type);
-}
-
-export function scanDocument(type: number): Promise<string | null> {
-  return Blockidplugin.scanDocument(type);
-}
-
-export function registerNationalIDWithLiveID(data: Object): Promise<boolean> {
-  return Blockidplugin.registerNationalIDWithLiveID(data);
 }
 
 export function startQRScanning(): Promise<string | null> {
@@ -120,12 +104,34 @@ export function authenticateUserWithScopes(data: Object): Promise<boolean> {
   return Blockidplugin.authenticateUserWithScopes(data);
 }
 
-export function registerDrivingLicenceWithLiveID(
-  data: Object
-): Promise<boolean> {
-  return Blockidplugin.registerDrivingLicenceWithLiveID(data);
+export function getUserDocument(type: number): Promise<string | null> {
+  return Blockidplugin.getUserDocument(type);
 }
 
-export function registerPassportWithLiveID(data: Object): Promise<boolean> {
-  return Blockidplugin.registerPassportWithLiveID(data);
+export function scanDocument(type: number): Promise<string | null> {
+  return Blockidplugin.scanDocument(type);
+}
+
+export function registerNationalIDWithLiveID(
+  data: Object,
+  face: string,
+  proofedBy: string
+): Promise<boolean> {
+  return Blockidplugin.registerNationalIDWithLiveID(data, face, proofedBy);
+}
+
+export function registerDrivingLicenceWithLiveID(
+  data: Object,
+  face: string,
+  proofedBy: string
+): Promise<boolean> {
+  return Blockidplugin.registerDrivingLicenceWithLiveID(data, face, proofedBy);
+}
+
+export function registerPassportWithLiveID(
+  data: Object,
+  face: string,
+  proofedBy: string
+): Promise<boolean> {
+  return Blockidplugin.registerPassportWithLiveID(data, face, proofedBy);
 }

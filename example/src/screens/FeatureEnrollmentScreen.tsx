@@ -117,6 +117,8 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
           setLoading(false);
           if (status) {
             Alert.alert('Success', 'registerNationalIDWithLiveID Success');
+          } else {
+            Alert.alert('Failed', 'registerNationalIDWithLiveID Failed');
           }
         }
         break;
@@ -133,6 +135,8 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
           setLoading(false);
           if (result) {
             Alert.alert('Success', 'registerDrivingLicenceWithLiveID Success');
+          } else {
+            Alert.alert('Failed', 'registerDrivingLicenceWithLiveID Failed');
           }
         }
         break;
@@ -147,6 +151,8 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
           setLoading(false);
           if (result) {
             Alert.alert('Success', 'registerPassportWithLiveID Success');
+          } else {
+            Alert.alert('Failed', 'registerPassportWithLiveID Failed');
           }
         }
         break;

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Text,
   Alert,
+  Image,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import { useNavigation } from '@react-navigation/native';
@@ -20,25 +21,35 @@ const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
 interface StatusChangeEvent {
   status: string | null;
   error: Error | null;
+  info: FaceInfo | null;
+}
+interface FaceInfo {
+  isFocused: boolean | null;
+  message: string | null;
 }
 
 export default function LiveIDScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [faceState, setFaceState] = useState<FaceInfo | null>(null);
 
   const startLiveIDScanning = async () => {
     eventEmitter.addListener('onStatusChanged', (event: StatusChangeEvent) => {
       console.log('onStatusChanged', event);
       if (event.status === 'faceLivenessCheckStarted') {
         setLoading(true);
+        setFaceState(null);
       } else if (event.status === 'focusOnFaceChanged') {
         //  Alert.alert('Info', 'Face focusOnFaceChanged');
+        setFaceState(event.info);
       } else if (event.status === 'completed') {
         setLoading(false);
+        setFaceState(null);
         Alert.alert('Info', 'Live ID Registered successfully');
         navigation.goBack();
       } else if (event.status === 'failed') {
         setLoading(false);
+        setFaceState(null);
         Alert.alert('Info', 'Failed to register Live ID try again!');
         navigation.goBack();
       }
@@ -49,7 +60,16 @@ export default function LiveIDScreen() {
 
   return (
     <View style={styles.container}>
-      <ScannerView style={styles.scannerView} />
+      <View style={styles.scannerViewContainer}>
+        <ScannerView style={styles.scannerView} />
+        <Image source={require('../../assets/live.png')} style={styles.image} />
+      </View>
+      {faceState?.isFocused === false &&
+        (faceState?.message ?? '').length > 0 && (
+          <View style={styles.overlay}>
+            <Text>{faceState?.message}</Text>
+          </View>
+        )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={startLiveIDScanning}
@@ -69,15 +89,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
   scannerView: {
-    width: 350,
-    height: 400,
-    // backgroundColor: 'green',
+    ...StyleSheet.absoluteFillObject,
+  },
+  image: {
+    width: 300,
+    height: 250,
+    resizeMode: 'contain',
+    position: 'absolute',
+    top: '20%',
+  },
+  scannerViewContainer: {
+    backgroundColor: 'gray',
+    width: '100%',
+    height: '70%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   appButtonText: {
     fontSize: 18,
@@ -98,5 +126,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     height: 48,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 16,
+    right: 16,
+    backgroundColor: 'gray',
+    padding: 16,
+    alignItems: 'center',
   },
 });

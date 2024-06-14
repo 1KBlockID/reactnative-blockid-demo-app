@@ -52,7 +52,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private var activity: FragmentActivity? = null
   private var docScanPromise: Promise? = null
   private var mQRScannerHelper: QRScannerHelper? = null
-  private var context: Context ?= null
+  private var context: ReactApplicationContext? = null
 
   private val mActivityEventListener = object : BaseActivityEventListener() {
 //    override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
@@ -65,17 +65,19 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   override fun initialize() {
     super.initialize()
-    val activity = currentActivity as? FragmentActivity
-    documentSessionResult = activity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-      handleDocumentSessionResult(result)
-    }
+//    val activity = currentActivity as? FragmentActivity
+//    documentSessionResult = activity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//      handleDocumentSessionResult(result)
+//    }
   }
   override fun getName(): String {
     return NAME
   }
 
   init {
-      BlockIDSDK.initialize(context)
+    println("Hello $context")
+    BlockIDSDK.initialize(context)
+    this.context = context
   }
 
   @ReactMethod
@@ -99,12 +101,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun registerTenantWith(tag: String, community: String,dns: String ,promise: Promise){
+    println("registerTenantWith")
     val bidTenant = BIDTenant(tag,community,dns)
     BlockIDSDK.getInstance().registerTenant(bidTenant) { status, error, _ ->
+      println("registerTenantWith, $status" )
+
       if (status) {
         BlockIDSDK.getInstance().commitApplicationWallet()
         promise.resolve(true)
       } else {
+        println("registerTenantWith, $error" )
+
         promise.reject(error?.message ?: "", "")
       }
     }
@@ -158,6 +165,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun totp(promise: Promise){
+    println("Hello")
+
     val response = BlockIDSDK.getInstance().totp
     if (response.status) {
       val totp = response.getDataObject<TOTP>()
@@ -183,7 +192,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun startLiveIDScanning(dvcID: String,promise: Promise){
-   val currentactivity = activity
+
   }
 
   @ReactMethod
@@ -202,13 +211,14 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun startQRScanning(promise: Promise){
+  override fun startQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       if (mQRScannerHelper?.isRunning == true) {
         mQRScannerHelper?.stopQRScanning()
         mQRScannerHelper = null
       }
-      mQRScannerHelper =  QRScannerHelper(activity, object: IOnQRScanResponseListener{
+
+      mQRScannerHelper =  QRScannerHelper(currentActivity, object: IOnQRScanResponseListener{
         override fun onQRScanResultResponse(p0: String?) {
           mQRScannerHelper?.stopQRScanning()
           p0?.let {

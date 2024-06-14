@@ -15,7 +15,7 @@ type Props = {
 const QRScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
-  const startLiveIDScanning = async () => {
+  const startQRScan = async () => {
     const viewModel = HomeViewModel.getInstance();
     setLoading(true);
     let authenticationPayloadV1 = await viewModel.startQRScan();
@@ -25,6 +25,7 @@ const QRScreen: React.FC<Props> = ({ navigation }) => {
       authenticationPayloadV1 === undefined
     ) {
       Alert.alert('Error', 'Failed to do QR Scan. Please try again later.');
+      navigation.goBack();
     } else {
       navigation.navigate('QRAuth', { payload: authenticationPayloadV1 });
     }
@@ -35,7 +36,7 @@ const QRScreen: React.FC<Props> = ({ navigation }) => {
       <ScannerView style={styles.scannerView} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={startLiveIDScanning}
+          onPress={startQRScan}
           style={styles.appButtonContainer}
         >
           <Text style={styles.appButtonText}>Start QR Scan</Text>

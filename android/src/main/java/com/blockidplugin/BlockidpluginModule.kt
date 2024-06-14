@@ -40,6 +40,7 @@ import org.json.JSONObject
 import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.Base64
+import androidx.activity.result.contract.ActivityResultContracts
 import com.facebook.react.bridge.ReadableType
 import com.onekosmos.blockid.sdk.document.BIDDocumentProvider.RegisterDocCategory
 
@@ -49,26 +50,31 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private var mLiveIDScannerHelper: LiveIDScannerHelper? = null
   private lateinit var documentSessionResult: ActivityResultLauncher<Intent>
   private var activity: FragmentActivity? = null
-  private val factory: FlNativeViewFactory = FlNativeViewFactory()
-  private val promise: Promise? = null
+  private var docScanPromise: Promise? = null
   private var mQRScannerHelper: QRScannerHelper? = null
   private var context: Context ?= null
 
-//  private val mActivityEventListener = object : BaseActivityEventListener() {
+  private val mActivityEventListener = object : BaseActivityEventListener() {
 //    override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
 //      val result = ActivityResult(resultCode, data)
-//      documentSessionResult = activities!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//      documentSessionResult = currentActivity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 //        handleDocumentSessionResult(result)
 //      }
 //    }
-//  }
+  }
 
+  override fun initialize() {
+    super.initialize()
+    val activity = currentActivity as? FragmentActivity
+    documentSessionResult = activity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+      handleDocumentSessionResult(result)
+    }
+  }
   override fun getName(): String {
     return NAME
   }
 
   init {
-//    context.addActivityEventListener(mActivityEventListener)
       BlockIDSDK.initialize(context)
   }
 
@@ -215,7 +221,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
                 )
           }
         }
-      },factory.nativeView!!.bidScannerView)
+      }, ScannerViewRef.bidScannerView)
       mQRScannerHelper?.startQRScanning()
     }
   }
@@ -287,6 +293,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       promise.reject( "Error", "Document type not supported", null)
       return
     }
+    docScanPromise = promise
+
     val intent = Intent( reactApplicationContext , DocumentScannerActivity::class.java).apply {
       putExtra("K_DOCUMENT_SCAN_TYPE", docType.docScannerType.value)
     }
@@ -470,14 +478,14 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       if (data != null) {
         val errorString = data.getStringExtra("K_DOCUMENT_SCAN_ERROR")
         error = BIDUtil.JSONStringToObject(errorString, ErrorManager.ErrorResponse::class.java)
-        promise?.reject(error?.code?.toString() ?: "0", error?.message ?: "", null)
+        docScanPromise?.reject(error?.code?.toString() ?: "0", error?.message ?: "", null)
       } else {
-        promise?.reject("0", "Document Scan Failed", null)
+        docScanPromise?.reject("0", "Document Scan Failed", null)
       }
     } else if (BIDDocumentDataHolder.hasData()) {
-     promise?.resolve(BIDDocumentDataHolder.getData())
+      docScanPromise?.resolve(BIDDocumentDataHolder.getData())
     } else {
-      promise?.reject("0", "Document Scan Failed", null)
+      docScanPromise?.reject("0", "Document Scan Failed", null)
     }
   }
 

@@ -99,11 +99,35 @@ android {
       }
     }
   }
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+    exclude 'lib/x86_64/darwin/libscrypt.dylib'
+    exclude 'lib/x86_64/freebsd/libscrypt.so'
+    exclude 'lib/x86_64/linux/libscrypt.so'
+    exclude 'META-INF/INDEX.LIST'
+    exclude 'META-INF/LICENSE.md'
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/NOTICE.md'
+    exclude 'AndroidManifest.xml'
+  }
 }
 
 repositories {
   mavenCentral()
   google()
+  gradlePluginPortal()
+  maven {
+    url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
+    credentials {
+      username = "developer"
+      password = "q5k#06ZcjSo#"
+    }
+  }
+  maven { url "https://jitpack.io" }
+  maven {
+    url 'http://www.baka.sk/maven2'
+    allowInsecureProtocol = true
+  }
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -114,6 +138,8 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  // Add BlockIDSDK dependency
+  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.10.30.66449422'
 }
 
 if (isNewArchitectureEnabled()) {
@@ -121,5 +147,12 @@ if (isNewArchitectureEnabled()) {
     jsRootDir = file("../src/")
     libraryName = "Blockidplugin"
     codegenJavaPackageName = "com.blockidplugin"
+  }
+}
+configurations.configureEach {
+  resolutionStrategy.eachDependency {
+    if (requested.group == "org.bouncycastle") {
+      useTarget("org.bouncycastle:bcprov-jdk15to18:1.70")
+    }
   }
 }

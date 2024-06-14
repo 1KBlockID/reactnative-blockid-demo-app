@@ -1,7 +1,7 @@
 buildscript {
     ext {
         buildToolsVersion = "34.0.0"
-        minSdkVersion = 23
+        minSdkVersion = 25
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "26.1.10909125"
@@ -17,5 +17,25 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
+
+ allprojects {
+   repositories {
+     google()
+     mavenCentral()
+     gradlePluginPortal()
+     maven {
+       url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
+       credentials {
+         username = "developer"
+         password = "q5k#06ZcjSo#"
+       }
+     }
+     maven { url "https://jitpack.io" }
+     maven {
+       url 'http://www.baka.sk/maven2'
+       allowInsecureProtocol = true
+     }
+   }
+ }
 
 apply plugin: "com.facebook.react.rootproject"

@@ -6,14 +6,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
-import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentActivity
-import com.facebook.react.bridge.ActivityEventListener
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.BaseActivityEventListener
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
@@ -42,16 +37,23 @@ import com.onekosmos.blockid.sdk.documentScanner.DocumentScannerType
 import com.onekosmos.blockid.sdk.totp.TOTP
 import com.onekosmos.blockid.sdk.utils.BIDUtil
 import org.json.JSONObject
+import android.graphics.BitmapFactory
+import android.text.TextUtils
+import android.util.Base64
+import com.facebook.react.bridge.ReadableType
+import com.onekosmos.blockid.sdk.document.BIDDocumentProvider.RegisterDocCategory
 
 class BlockidpluginModule internal constructor(context: ReactApplicationContext) :
-  NativeBlockidpluginSpec(context) {
+  BlockidpluginSpec(context) {
+
   private var mLiveIDScannerHelper: LiveIDScannerHelper? = null
   private lateinit var documentSessionResult: ActivityResultLauncher<Intent>
-  private var activities: FragmentActivity? = null
+  private var activity: FragmentActivity? = null
   private val factory: FlNativeViewFactory = FlNativeViewFactory()
   private val promise: Promise? = null
   private var mQRScannerHelper: QRScannerHelper? = null
   private var context: Context ?= null
+
 //  private val mActivityEventListener = object : BaseActivityEventListener() {
 //    override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
 //      val result = ActivityResult(resultCode, data)
@@ -70,12 +72,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       BlockIDSDK.initialize(context)
   }
 
-
-
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
-  override fun setLicenseKey(licenseKey: String,promise: Promise){
+  override fun setLicenseKey(licenseKey: String, promise: Promise){
     Handler(Looper.getMainLooper()).post {
       BlockIDSDK.getInstance().setLicenseKey(licenseKey)
       promise.resolve(true)
@@ -97,11 +95,12 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   override fun registerTenantWith(tag: String, community: String,dns: String ,promise: Promise){
     val bidTenant = BIDTenant(tag,community,dns)
     BlockIDSDK.getInstance().registerTenant(bidTenant) { status, error, _ ->
-      if(status && error != null){
-        promise.reject("Error", error.message)
+      if (status) {
+        BlockIDSDK.getInstance().commitApplicationWallet()
+        promise.resolve(true)
+      } else {
+        promise.reject(error?.message ?: "", "")
       }
-      BlockIDSDK.getInstance().commitApplicationWallet()
-      promise.resolve(true)
     }
   }
 
@@ -115,14 +114,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         false,
         object : IBiometricResponseListener {
           override fun onNonBiometricAuth(b: Boolean) {
-            val resultMap: WritableMap = WritableNativeMap()
-            resultMap.putBoolean("status",b)
-            promise.resolve(resultMap)
+            promise.resolve(b)
           }
           override fun onBiometricAuthResult(success: Boolean, errorResponse: ErrorManager.ErrorResponse?) {
-            val resultMap: WritableMap = WritableNativeMap()
-            resultMap.putBoolean("status",success)
-            promise.resolve(resultMap)
+            promise.resolve(success)
           }
         }
       )
@@ -144,15 +139,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         false,
         object : IBiometricResponseListener {
           override fun onBiometricAuthResult(success: Boolean, error: ErrorManager.ErrorResponse?) {
-            val resultMap: WritableMap = Arguments.createMap()
-            resultMap.putBoolean("status", success)
-            promise.resolve(resultMap)
+            promise.resolve(success)
           }
 
           override fun onNonBiometricAuth(success: Boolean) {
-            val resultMap: WritableMap = Arguments.createMap()
-            resultMap.putBoolean("status", success)
-            promise.resolve(resultMap)
+            promise.resolve(success)
           }
         }
       )
@@ -162,19 +153,19 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun totp(promise: Promise){
     val response = BlockIDSDK.getInstance().totp
-    if(response.status){
+    if (response.status) {
       val totp = response.getDataObject<TOTP>()
-      if (totp != null){
+      if (totp != null) {
         val resultMap = WritableNativeMap().apply {
-          putString("totp",totp.otp)
-          putInt("getRemainingSecs",totp.remainingSecs.toInt())
+          putString("totp", totp.otp)
+          putInt("getRemainingSecs", totp.remainingSecs.toInt())
         }
         promise.resolve(resultMap)
-      }else{
-        promise.resolve(null)
+      } else{
+        promise.reject(response?.errorResponse?.message ?: "", "")
       }
-    }else{
-      promise.resolve(null)
+    } else{
+      promise.reject(response?.errorResponse?.message ?: "", "")
     }
   }
 
@@ -186,7 +177,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun startLiveIDScanning(dvcID: String,promise: Promise){
-   val currentactivity = activities
+   val currentactivity = activity
   }
 
   @ReactMethod
@@ -196,7 +187,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun resetSDK(tag: String,community: String,dns: String,licenseKey: String,reason: String ,promise: Promise){
+  override fun resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String, promise: Promise){
     Handler(Looper.getMainLooper()).post {
       val bidTenant = BIDTenant(tag, community, dns)
       BlockIDSDK.getInstance().resetSDK(licenseKey, bidTenant, reason)
@@ -205,40 +196,13 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun getUserDocument(type: Double,promise: Promise){
-    val docType = BIDocType.from(type.toInt())
-    val strDocuments = BIDDocumentProvider.getInstance().getUserDocument(null,docType?.type,
-      docType?.category)
-    println("strDocuments ---> $strDocuments")
-    println("strDocuments1 ---> ${docType?.type}")
-    println("strDocuments2 ---> ${docType?.category}")
-      promise.resolve(strDocuments)
-  }
-
-  @ReactMethod
-  override fun scanDocument(type: Double,promise: Promise){
-    val docType = BIDocType.from(type.toInt())
-    if (docType == null) {
-      promise.reject( "Error", "Document type not supported", null)
-      return
-    }
-    val intent = Intent( reactApplicationContext , DocumentScannerActivity::class.java).apply {
-      putExtra("K_DOCUMENT_SCAN_TYPE", docType.docScannerType.value)
-    }
-    documentSessionResult.launch(intent)
-  }
-
-  @ReactMethod
-  override fun registerNationalIDWithLiveID(data: ReadableMap,promise: Promise){}
-
-  @ReactMethod
   override fun startQRScanning(promise: Promise){
     Handler(Looper.getMainLooper()).post {
       if (mQRScannerHelper?.isRunning == true) {
         mQRScannerHelper?.stopQRScanning()
         mQRScannerHelper = null
       }
-      mQRScannerHelper =  QRScannerHelper(activities, object: IOnQRScanResponseListener{
+      mQRScannerHelper =  QRScannerHelper(activity, object: IOnQRScanResponseListener{
         override fun onQRScanResultResponse(p0: String?) {
           mQRScannerHelper?.stopQRScanning()
           p0?.let {
@@ -270,7 +234,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun getScopesAttributesDic(data: ReadableMap,promise: Promise){
+  override fun getScopesAttributesDic(data: ReadableMap, promise: Promise){
     val bidOrigin = bidOrigin(data)
     BlockIDSDK.getInstance().getScopes(null, data.getString("scopes") ?: "", data.getString("creds") ?: "", bidOrigin, "0", "0"
     ) { linkedHashMap, errorResponse ->
@@ -289,7 +253,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun authenticateUserWithScopes(data: ReadableMap,promise: Promise){
+  override fun authenticateUserWithScopes(data: ReadableMap, promise: Promise){
     context?.let {
       BlockIDSDK.getInstance().authenticateUser(
         it, null,
@@ -307,11 +271,133 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     }
   }
 
-  @ReactMethod
-  override fun registerDrivingLicenceWithLiveID(data: ReadableMap,promise: Promise){}
 
   @ReactMethod
-  override fun registerPassportWithLiveID(data: ReadableMap,promise: Promise){}
+  override fun getUserDocument(type: Double, promise: Promise){
+    val docType = BIDocType.from(type.toInt())
+    val strDocuments = BIDDocumentProvider.getInstance().getUserDocument(null,docType?.type,
+      docType?.category)
+    promise.resolve(strDocuments)
+  }
+
+  @ReactMethod
+  override fun scanDocument(type: Double, promise: Promise){
+    val docType = BIDocType.from(type.toInt())
+    if (docType == null) {
+      promise.reject( "Error", "Document type not supported", null)
+      return
+    }
+    val intent = Intent( reactApplicationContext , DocumentScannerActivity::class.java).apply {
+      putExtra("K_DOCUMENT_SCAN_TYPE", docType.docScannerType.value)
+    }
+    documentSessionResult.launch(intent)
+  }
+
+  @ReactMethod
+  override fun registerNationalIDWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  ) {
+    val image = faceData(face)
+    if (data != null && proofedBy != null && image != null) {
+      var obj = convertReadableMapToLinkedHashMap(data)
+      obj["category"] = RegisterDocCategory.identity_document.name
+      obj["type"] = RegisterDocType.NATIONAL_ID.value
+      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+    } else {
+      promise?.reject("Error", "obj, proofedBy, faceData mandatory")
+      return
+    }
+  }
+
+  @ReactMethod
+  override fun registerDrivingLicenceWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  ) {
+    val image = faceData(face)
+    if (data != null && proofedBy != null && image != null) {
+      var obj = convertReadableMapToLinkedHashMap(data)
+      obj["category"] = RegisterDocCategory.identity_document.name
+      obj["type"] = RegisterDocType.DL.value
+      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+    } else {
+      promise?.reject("Error", "obj, proofedBy, faceData mandatory")
+      return
+    }
+  }
+
+  @ReactMethod
+  override fun registerPassportWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  ) {
+    val image = faceData(face)
+    if (data != null && proofedBy != null && image != null) {
+      var obj = convertReadableMapToLinkedHashMap(data)
+      obj["category"] = RegisterDocCategory.identity_document.name
+      obj["type"] = RegisterDocType.PPT.value
+      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+    } else {
+      promise?.reject("Error", "obj, proofedBy, faceData mandatory")
+      return
+    }
+  }
+
+  private fun registerDocument(obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap, promise: Promise?) {
+    BlockIDSDK.getInstance().registerDocument(activity,
+      obj,
+      img,
+      proofedBy,
+      null,
+      null
+    ) { p0, p1 ->
+      if (p0) {
+        promise?.resolve(p0)
+      } else {
+        promise?.reject(p1?.code?.toString() ?: "0", p1?.message ?: "")
+      }
+    }
+  }
+
+  private fun convertReadableMapToLinkedHashMap(readableMap: ReadableMap): LinkedHashMap<String, Any> {
+    val map = LinkedHashMap<String, Any>()
+
+    val iterator = readableMap.keySetIterator()
+    while (iterator.hasNextKey()) {
+      val key = iterator.nextKey()
+      when (readableMap.getType(key)) {
+        ReadableType.Null -> map[key] = "null"
+        ReadableType.Boolean -> map[key] = readableMap.getBoolean(key)
+        ReadableType.Number -> map[key] = readableMap.getDouble(key)
+        ReadableType.String -> map[key] = readableMap.getString(key) ?: "null"
+        ReadableType.Map -> map[key] = convertReadableMapToLinkedHashMap(readableMap.getMap(key)!!)
+        ReadableType.Array -> map[key] = readableMap.getArray(key)!!.toArrayList()
+        else -> throw IllegalArgumentException("Unsupported type for key: $key")
+      }
+    }
+    return map
+  }
+  private fun faceData(data: String?): Bitmap? {
+    if (data == null) {
+      return null
+    }
+    return convertBase64ToBitmap(data)
+  }
+
+  private fun convertBase64ToBitmap(img: String): Bitmap? {
+    if (TextUtils.isEmpty(img)) {
+      return null
+    }
+    val decodedString = Base64.decode(img, Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+  }
 
   private  fun bidOrigin(data: ReadableMap): BIDOrigin {
     val bidOrigin = BIDOrigin()

@@ -1,14 +1,15 @@
 package com.blockidplugin
 
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 
-abstract class NativeBlockidpluginSpec internal constructor(context: ReactApplicationContext) :
+
+abstract class BlockidpluginSpec internal constructor(context: ReactApplicationContext) :
   ReactContextBaseJavaModule(context) {
 
-//  abstract fun multiply(a: Double, b: Double, promise: Promise)
   abstract fun setLicenseKey(licenseKey: String, promise: Promise)
 
   abstract fun isReady(promise: Promise)
@@ -40,13 +41,6 @@ abstract class NativeBlockidpluginSpec internal constructor(context: ReactApplic
     promise: Promise
   )
 
-
-  abstract fun getUserDocument(type: Double, promise: Promise)
-
-  abstract fun scanDocument(type: Double, promise: Promise)
-
-  abstract fun registerNationalIDWithLiveID(data: ReadableMap, promise: Promise)
-
   abstract fun startQRScanning(promise: Promise)
 
   abstract fun stopQRScanning(promise: Promise)
@@ -57,7 +51,29 @@ abstract class NativeBlockidpluginSpec internal constructor(context: ReactApplic
 
   abstract fun authenticateUserWithScopes(data: ReadableMap, promise: Promise)
 
-  abstract fun registerDrivingLicenceWithLiveID(data: ReadableMap, promise: Promise)
+  abstract fun getUserDocument(type: Double, promise: Promise)
 
-  abstract fun registerPassportWithLiveID(data: ReadableMap, promise: Promise)
+  abstract fun scanDocument(type: Double, promise: Promise)
+
+  abstract fun registerNationalIDWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  )
+
+  abstract fun registerDrivingLicenceWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  )
+
+  abstract fun registerPassportWithLiveID(
+    data: ReadableMap?,
+    face: String?,
+    proofedBy: String?,
+    promise: Promise?
+  )
+
 }

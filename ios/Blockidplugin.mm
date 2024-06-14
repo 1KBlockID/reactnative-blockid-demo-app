@@ -51,11 +51,6 @@ RCT_EXPORT_METHOD(enrollDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
 RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     bool result = [wrapper isDeviceAuthRegisterd];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ScannerViewManagerHelper sharedManager].scannerView.backgroundColor = [UIColor brownColor];
-    });
-    
     resolve(@(result));
 }
 

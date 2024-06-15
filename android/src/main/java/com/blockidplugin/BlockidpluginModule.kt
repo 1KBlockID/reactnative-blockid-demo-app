@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableType
+import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -39,6 +40,7 @@ import com.onekosmos.blockid.sdk.documentScanner.DocumentScannerActivity
 import com.onekosmos.blockid.sdk.documentScanner.DocumentScannerType
 import com.onekosmos.blockid.sdk.totp.TOTP
 import com.onekosmos.blockid.sdk.utils.BIDUtil
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -329,15 +331,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun getScopesAttributesDic(data: ReadableMap, promise: Promise){
     val bidOrigin = bidOrigin(data)
-    BlockIDSDK.getInstance().getScopes(null, data.getString("scopes") ?: "", data.getString("creds") ?: "", bidOrigin, "0", "0"
-    ) { linkedHashMap, errorResponse ->
+
+    BlockIDSDK.getInstance().getScopes(null, data.getString("scopes") ?: "", data.getString("creds") ?: "", bidOrigin, "0", "0") { linkedHashMap, errorResponse ->
       if (linkedHashMap != null) {
-        val convertedMap = linkedHashMap.mapValues { entry ->
-          when (val value = entry.value) {
-            is JSONObject -> jsonToMap(value)
-            else -> value
-          }
-        }
+        val convertedMap = convertToReadableMap(linkedHashMap)
         promise.resolve(convertedMap)
       } else {
         promise.reject(errorResponse?.code?.toString() ?: "0", errorResponse?.message ?: "", null)
@@ -463,6 +460,24 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     }
   }
 
+  private fun convertToReadableMap(linkedHashMap: LinkedHashMap<String, Any>): WritableMap {
+    val writableMap = Arguments.createMap()
+
+    for ((key, value) in linkedHashMap) {
+      when (value) {
+        is JSONObject -> writableMap.putMap(key, jsonToWritableMap(value))
+        is String -> writableMap.putString(key, value)
+        is Int -> writableMap.putInt(key, value)
+        is Double -> writableMap.putDouble(key, value)
+        is Boolean -> writableMap.putBoolean(key, value)
+        // Handle other types as needed
+        else -> writableMap.putString(key, value.toString())
+      }
+    }
+
+    return writableMap
+  }
+
   private fun convertReadableMapToLinkedHashMap(readableMap: ReadableMap): LinkedHashMap<String, Any> {
     val map = LinkedHashMap<String, Any>()
 
@@ -508,25 +523,48 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     return bidOrigin
   }
 
-  private fun jsonToMap(jsonObject: JSONObject): Map<String, Any?> {
-    val map = mutableMapOf<String, Any?>()
+  private fun jsonToWritableMap(jsonObject: JSONObject): WritableMap {
+    val map = Arguments.createMap()
     val keys = jsonObject.keys()
+
     while (keys.hasNext()) {
       val key = keys.next()
       val value = jsonObject.get(key)
-      map[key] = when (value) {
-        is JSONObject -> jsonToMap(value) // Recursive conversion for nested JSONObjects
-        is org.json.JSONArray -> {
-          val list = mutableListOf<Any?>()
-          for (i in 0 until value.length()) {
-            list.add(value.get(i))
-          }
-          list
-        }
-        else -> value
+
+      when (value) {
+        is JSONObject -> map.putMap(key, jsonToWritableMap(value)) // Recursive conversion for nested JSONObjects
+        is JSONArray -> map.putArray(key, jsonToWritableArray(value)) // Convert JSONArray to WritableArray
+        is String -> map.putString(key, value)
+        is Int -> map.putInt(key, value)
+        is Double -> map.putDouble(key, value)
+        is Boolean -> map.putBoolean(key, value)
+        // Handle other types as needed
+        else -> map.putString(key, value.toString())
       }
     }
+
     return map
+  }
+
+  private fun jsonToWritableArray(jsonArray: JSONArray): WritableArray {
+    val array = Arguments.createArray()
+
+    for (i in 0 until jsonArray.length()) {
+      val value = jsonArray.get(i)
+
+      when (value) {
+        is JSONObject -> array.pushMap(jsonToWritableMap(value)) // Recursive conversion for nested JSONObjects
+        is JSONArray -> array.pushArray(jsonToWritableArray(value)) // Recursive conversion for nested JSONArrays
+        is String -> array.pushString(value)
+        is Int -> array.pushInt(value)
+        is Double -> array.pushDouble(value)
+        is Boolean -> array.pushBoolean(value)
+        // Handle other types as needed
+        else -> array.pushString(value.toString())
+      }
+    }
+
+    return array
   }
 
   enum class BIDocType(val value: Int) {

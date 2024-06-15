@@ -163,6 +163,8 @@ import BlockID
     func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
         DispatchQueue.main.async { [unowned self]  in
+            liveIdScannerHelper?.stopLiveIDScanning()
+            liveIdScannerHelper = nil
                  if (liveIdScannerHelper == nil) {
                      liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewManagerHelper.sharedManager().scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
                  }

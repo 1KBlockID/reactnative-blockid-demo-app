@@ -1,23 +1,30 @@
 package com.blockidplugin
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
+import android.util.Base64
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.BaseActivityEventListener
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableType
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager
 import com.onekosmos.blockid.sdk.BlockIDSDK
 import com.onekosmos.blockid.sdk.authentication.BIDAuthProvider
@@ -30,6 +37,7 @@ import com.onekosmos.blockid.sdk.datamodel.AccountAuthConstants
 import com.onekosmos.blockid.sdk.datamodel.BIDOrigin
 import com.onekosmos.blockid.sdk.datamodel.BIDTenant
 import com.onekosmos.blockid.sdk.document.BIDDocumentProvider
+import com.onekosmos.blockid.sdk.document.BIDDocumentProvider.RegisterDocCategory
 import com.onekosmos.blockid.sdk.document.RegisterDocType
 import com.onekosmos.blockid.sdk.documentScanner.BIDDocumentDataHolder
 import com.onekosmos.blockid.sdk.documentScanner.DocumentScannerActivity
@@ -37,12 +45,7 @@ import com.onekosmos.blockid.sdk.documentScanner.DocumentScannerType
 import com.onekosmos.blockid.sdk.totp.TOTP
 import com.onekosmos.blockid.sdk.utils.BIDUtil
 import org.json.JSONObject
-import android.graphics.BitmapFactory
-import android.text.TextUtils
-import android.util.Base64
-import androidx.activity.result.contract.ActivityResultContracts
-import com.facebook.react.bridge.ReadableType
-import com.onekosmos.blockid.sdk.document.BIDDocumentProvider.RegisterDocCategory
+
 
 class BlockidpluginModule internal constructor(context: ReactApplicationContext) :
   BlockidpluginSpec(context) {
@@ -54,14 +57,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private var mQRScannerHelper: QRScannerHelper? = null
   private var context: ReactApplicationContext? = null
 
-  private val mActivityEventListener = object : BaseActivityEventListener() {
-//    override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
-//      val result = ActivityResult(resultCode, data)
-//      documentSessionResult = currentActivity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        handleDocumentSessionResult(result)
-//      }
-//    }
-  }
+
 
   override fun initialize() {
     super.initialize()
@@ -75,9 +71,27 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   init {
-    println("Hello $context")
     BlockIDSDK.initialize(context)
     this.context = context
+    context.addLifecycleEventListener(object : LifecycleEventListener {
+      override fun onHostResume() {
+        val activity = currentActivity
+        if (activity is FragmentActivity) {
+          setupActivityResultLauncher(activity)
+        }
+      }
+
+      override fun onHostPause() {}
+      override fun onHostDestroy() {}
+    })
+  }
+
+  private fun setupActivityResultLauncher(activity: Activity) {
+    if (documentSessionResult == null) {
+      documentSessionResult = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        handleDocumentSessionResult(result)
+      }
+    }
   }
 
   @ReactMethod
@@ -190,9 +204,81 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     promise.resolve(response)
   }
 
-  @ReactMethod
-  override fun startLiveIDScanning(dvcID: String,promise: Promise){
+  private fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
+    reactContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      .emit(eventName, params)
+  }
 
+  @ReactMethod
+  override fun startLiveIDScanning(dvcID: String, promise: Promise) {
+    currentActivity?.runOnUiThread {
+      mLiveIDScannerHelper?.stopLiveIDScanning()
+      mLiveIDScannerHelper = null
+
+      mLiveIDScannerHelper = LiveIDScannerHelper(
+        currentActivity!!,
+        ScannerViewRef.bidScannerView!!,
+        ScannerViewRef.bidScannerView!!,
+        object : ILiveIDResponseListener {
+          override fun onLiveIDCaptured(
+            p0: Bitmap?,
+            p1: String?,
+            p2: String?,
+            p3: ErrorManager.ErrorResponse?
+          ) {
+            activity?.runOnUiThread {
+              if (p0 != null && p1 != null) {
+                BlockIDSDK.getInstance().setLiveID(
+                  p0, null, p1,
+                  p2
+                ) { status: Boolean, message: String?, error: ErrorManager.ErrorResponse? ->
+                  if (status) {
+                    val params = Arguments.createMap().apply {
+                      putString("status", "completed")
+                    }
+                    sendEvent(context!!, "onStatusChanged", params)
+                  } else {
+                    val params = Arguments.createMap().apply {
+                      putString("status", "failed")
+                    }
+                    sendEvent(context!!, "onStatusChanged", params)
+                  }
+                }
+              } else {
+                val params = Arguments.createMap().apply {
+                  putString("status", "failed")
+                }
+                sendEvent(context!!, "onStatusChanged", params)
+              }
+            }
+          }
+
+          override fun onLivenessCheckStarted() {
+            activity?.runOnUiThread {
+              mLiveIDScannerHelper?.stopLiveIDScanning()
+              val params = Arguments.createMap().apply {
+                putString("status", "faceLivenessCheckStarted")
+              }
+              sendEvent(context!!, "onStatusChanged", params)
+            }
+          }
+
+          override fun onFaceFocusChanged(isFocused: Boolean, message: String?) {
+            val params = Arguments.createMap().apply {
+              putString("status", "focusOnFaceChanged")
+
+              val info = Arguments.createMap()
+              info.putBoolean("isFocused", isFocused)
+              info.putString("message", message ?: "")
+
+              putMap("info", info)
+            }
+            sendEvent(context!!, "onStatusChanged", params)
+          }
+        })
+      mLiveIDScannerHelper?.startLiveIDScanning(dvcID)
+    }
   }
 
   @ReactMethod

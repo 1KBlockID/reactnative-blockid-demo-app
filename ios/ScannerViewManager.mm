@@ -2,13 +2,13 @@
 //  ScannerViewManager.m
 //  react-native-blockidplugin
 //
-//  Created by C Ramkumar on 01/06/24.
+//  Created by C Ramkumar on 16/06/24.
 //
+
 
 #import "UIKit/UIKit.h"
 
 #import <React/RCTViewManager.h>
-#import "ScannerViewManagerHelper.h"
 #import "react_native_blockidplugin-Swift.h"
 
 @interface ScannerViewManager : RCTViewManager
@@ -34,7 +34,7 @@ RCT_EXPORT_MODULE(RNTScannerView)
            [scannerView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
            [scannerView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
        ]];
-    [ScannerViewManagerHelper sharedManager].scannerView = scannerView;
+    [ScannerViewRef shared].scannerView = scannerView;
     return view;
 }
 

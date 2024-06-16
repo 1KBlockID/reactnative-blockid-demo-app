@@ -1,13 +1,14 @@
 
-//#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNBlockidpluginSpec.h"
+#import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "RNBlockidpluginSpec.h"
 @interface Blockidplugin : RCTEventEmitter <NativeBlockidpluginSpec, RCTBridgeModule>
-//#else
-//#import <React/RCTBridgeModule.h>
-//
-//@interface Blockidplugin : NSObject <>
-//#endif
+#else
+
+
+@interface Blockidplugin : RCTEventEmitter <RCTBridgeModule>
+#endif
 
 @end

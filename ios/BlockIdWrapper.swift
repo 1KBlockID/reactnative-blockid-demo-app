@@ -8,7 +8,7 @@
 import Foundation
 import BlockID
 
-@objcMembers class BlockIdWrapper: NSObject {
+@objcMembers public class BlockIdWrapper: NSObject {
     
     public typealias BlockIdWrapperResponse = (_ success: Bool, _ error: ErrorResponse?) -> Void
 
@@ -36,22 +36,22 @@ import BlockID
     
     private var blockIdQRScanResponse: BlockIdQRScanResponse?
 
-    func version() -> NSString {
+    public func version() -> NSString {
         return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
     }
     
-    func setLicenseKey(licenseKey: String) -> Bool {
+    public func setLicenseKey(licenseKey: String) -> Bool {
         BlockIDSDK.sharedInstance.setLicenseKey(key: licenseKey)
         return true;
     }
     
-    func isReady() -> Bool {
+    public func isReady() -> Bool {
         return BlockIDSDK.sharedInstance.isReady()
     }
     
     // MARK: Tenant Registration
     
-    func initiateTempWallet(response: @escaping BlockIdWrapperResponse) {
+    public func initiateTempWallet(response: @escaping BlockIdWrapperResponse) {
         guard !BlockIDSDK.sharedInstance.isReady() else {
             response(false, ErrorResponse(code: -1, description: "BlockIDSDK is not ready."))
             return
@@ -61,7 +61,7 @@ import BlockID
          }
     }
     
-    func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse)  {
+    public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse)  {
         let bidTenant = BIDTenant.makeTenant(tag: tag, community: community, dns: dns)
         BlockIDSDK.sharedInstance.registerTenant(tenant: bidTenant) { (status, error, _) in
             if !status, let error = error  {
@@ -75,7 +75,7 @@ import BlockID
     
     // MARK: Device Auth Registration
     
-    func enrollDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
+    public func enrollDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
         DispatchQueue.main.async {
             BIDAuthProvider.shared.enrollDeviceAuth { status, _, message in
                 response(status, ErrorResponse(code: -1, description: message ?? ""))
@@ -83,12 +83,12 @@ import BlockID
         }
     }
     
-    func isDeviceAuthRegisterd() -> Bool {
+    public func isDeviceAuthRegisterd() -> Bool {
         let isDeviceAuthRegisterd = BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()
         return isDeviceAuthRegisterd
     }
     
-    func verifyDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
+    public func verifyDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
         DispatchQueue.main.async {
             BIDAuthProvider.shared.verifyDeviceAuth { (status, _, message) in
                 response(status, ErrorResponse(code: -1, description: message ?? ""))
@@ -98,28 +98,28 @@ import BlockID
 
     // MARK: QR Scan
 
-    func startQRScanning(response: @escaping BlockIdQRScanResponse) {
+    public func startQRScanning(response: @escaping BlockIdQRScanResponse) {
         blockIdQRScanResponse = response
         DispatchQueue.main.async { [unowned self]  in
             if (qrScannerHelper?.isRunning() == false || qrScannerHelper?.isRunning() == nil) {
-                qrScannerHelper = QRScannerHelper.init(bidScannerView: ScannerViewManagerHelper.sharedManager().scannerView as! BlockID.BIDScannerView,
+                qrScannerHelper = QRScannerHelper.init(bidScannerView: ScannerViewRef.shared.scannerView as! BlockID.BIDScannerView,
                                                        kQRScanResponseDelegate: self)
                 qrScannerHelper?.startQRScanning()
             }
         }
     }
     
-    func stopQRScanning() {
+    public func stopQRScanning() {
         DispatchQueue.main.async { [unowned self]  in
             qrScannerHelper?.stopQRScanning()
         }
     }
     
-    func isUrlTrustedSessionSources(url: String) -> Bool {
+    public func isUrlTrustedSessionSources(url: String) -> Bool {
         return BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url)
     }
     
-    func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {
+    public func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {
         let bidOrigin = bidOrigin(data: data)
         if (bidOrigin.authPage == nil) { //default to native auth without a specific method.
             bidOrigin.authPage = AccountAuthConstants.kNativeAuthScehema
@@ -136,7 +136,7 @@ import BlockID
         }
     }
     
-    func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
+    public func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
         BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: bidOrigin(data: data), userId: "") {(status, _, error) in
             response(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
         }
@@ -144,7 +144,7 @@ import BlockID
     
     // MARK: TOTP
     
-    func totp(totpResponse: @escaping BlockIdTOTPResponse)  {
+    public func totp(totpResponse: @escaping BlockIdTOTPResponse)  {
         let result = BlockIDSDK.sharedInstance.getTOTP()
         if (result.error == nil && result.totp != nil) {
             totpResponse(["totp": result.totp?.getTOTP() ?? "", "getRemainingSecs": result.totp?.getRemainingSecs() ?? 0], nil)
@@ -155,35 +155,35 @@ import BlockID
     
     // MARK: LiveID Scan
     
-    func isLiveIDRegisterd() -> Bool {
+    public func isLiveIDRegisterd() -> Bool {
         let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
         return isLiveIDRegisterd
     }
     
-    func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
+    public func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
         DispatchQueue.main.async { [unowned self]  in
                  if (liveIdScannerHelper == nil) {
-                     liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewManagerHelper.sharedManager().scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
+                     liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewRef.shared.scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
                  }
                  liveIdScannerHelper?.startLiveIDScanning(dvcID: dvcID)
              }
     }
     
-    func stopLiveIDScanning() {
+    public func stopLiveIDScanning() {
         DispatchQueue.main.async { [unowned self]  in
             liveIdScannerHelper?.stopLiveIDScanning()
         }
     }
     
-    func bidScannerView() -> BlockID.BIDScannerView {
+    public func bidScannerView() -> BlockID.BIDScannerView {
         let scannerView = BlockID.BIDScannerView();
         return scannerView
     }
 
     // MARK: Document Scan
     
-    func getUserDocument(type: Int) -> String? {
+    public func getUserDocument(type: Int) -> String? {
         let docType = DocType(rawValue: type)
         guard let docType = docType else {
             return nil
@@ -194,7 +194,7 @@ import BlockID
         return strDocuments
     }
     
-    func scanDocument(type: Int, response: @escaping BlockIdDocumentScanResponse) {
+    public func scanDocument(type: Int, response: @escaping BlockIdDocumentScanResponse) {
         blockIdDocumentScanResponse = response
 
         let docType = DocType(rawValue: type)
@@ -225,7 +225,7 @@ import BlockID
         }
     }
     
-    func registerNationalIDWithLiveID(data: [String: Any]?, face: String, proofedBy: String,  response: @escaping BlockIdWrapperResponse) {
+    public func registerNationalIDWithLiveID(data: [String: Any]?, face: String, proofedBy: String,  response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
             return
@@ -236,7 +236,7 @@ import BlockID
         registerDocument(obj: obj, proofedBy: proofedBy, img: image)
     }
     
-    func registerDrivingLicenceWithLiveID(data: [String: Any]?, face: String, proofedBy: String, response: @escaping BlockIdWrapperResponse) {
+    public func registerDrivingLicenceWithLiveID(data: [String: Any]?, face: String, proofedBy: String, response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
             return
@@ -247,7 +247,7 @@ import BlockID
         registerDocument(obj: obj, proofedBy: proofedBy, img: image)
     }
     
-    func registerPassportWithLiveID(data: [String: Any]?, face: String, proofedBy: String, response: @escaping BlockIdWrapperResponse) {
+    public func registerPassportWithLiveID(data: [String: Any]?, face: String, proofedBy: String, response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
             return
@@ -260,7 +260,7 @@ import BlockID
 
     // MARK: Reset SDK
     
-    func resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String,  response: @escaping BlockIdWrapperResponse)  {
+    public func resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String,  response: @escaping BlockIdWrapperResponse)  {
         let bidTenant = BIDTenant.makeTenant(tag: tag,
                                                         community: community,
                                                         dns: dns)
@@ -271,7 +271,7 @@ import BlockID
 }
 
 
-@objcMembers class ErrorResponse: NSError {
+@objcMembers public class ErrorResponse: NSError {
     convenience init(code: Int, description: String) {
            self.init(domain: "", code: code, userInfo: [NSLocalizedDescriptionKey: description])
     }

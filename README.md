@@ -115,13 +115,6 @@ Go to podfile inside ios folder in your React native project and make below chan
       # set iOS Deployment Target to 13.0
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
 
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
-        'PERMISSION_CAMERA=1'
-      ]
-       if target.name == 'react-native-blockidplugin'
-         config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
-        end
-
        xcconfig_path = config.base_configuration_reference.real_path
        xcconfig = File.read(xcconfig_path)
        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")

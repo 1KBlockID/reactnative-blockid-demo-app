@@ -60,7 +60,7 @@ yarn
 Install the react native blockid package as a git dependency
 
 ```
-yarn add react-native-blockidplugin@git@github.com:1KBlockID/reactnative-blockid-demo-app.git#main
+yarn add react-native-blockidplugin@https://github.com/1KBlockID/reactnative-blockid-demo-app.git#main
 ```
 
 make sure you have repo access

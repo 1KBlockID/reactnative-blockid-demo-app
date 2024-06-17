@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/1KBlockID/reactnative-blockid-demo-app.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}"
+  s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency 'BlockID'
   s.source = { :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag=> 'fltr_02' }

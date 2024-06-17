@@ -163,11 +163,13 @@ import BlockID
     public func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
         DispatchQueue.main.async { [unowned self]  in
-                 if (liveIdScannerHelper == nil) {
-                     liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewRef.shared.scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
-                 }
-                 liveIdScannerHelper?.startLiveIDScanning(dvcID: dvcID)
-             }
+            liveIdScannerHelper?.stopLiveIDScanning()
+            liveIdScannerHelper = nil
+            if (liveIdScannerHelper == nil) {
+                liveIdScannerHelper = LiveIDScannerHelper.init(bidScannerView: ScannerViewRef.shared.scannerView as! BlockID.BIDScannerView, liveIdResponseDelegate: self)
+            }
+            liveIdScannerHelper?.startLiveIDScanning(dvcID: dvcID)
+        }
     }
     
     public func stopLiveIDScanning() {

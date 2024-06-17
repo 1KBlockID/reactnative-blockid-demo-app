@@ -113,7 +113,7 @@ Go to podfile inside ios folder in your React native project and make below chan
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
 
       # set iOS Deployment Target to 13.0
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.4
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
 
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         'PERMISSION_CAMERA=1'

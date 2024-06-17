@@ -24,7 +24,7 @@ import BlockID
 
     private var liveIdScannerHelper: LiveIDScannerHelper?
     
-    private var blockIdLiveIDResponse: BlockIdLiveIDResponse!
+    private var blockIdLiveIDResponse: BlockIdLiveIDResponse?
     
     private var documentScannerViewController: DocumentScannerViewController?
     
@@ -281,7 +281,7 @@ import BlockID
 
 extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
     public func onQRScanResult(qrCodeData: String?) {
-        qrScannerHelper!.stopQRScanning()
+        qrScannerHelper?.stopQRScanning()
         blockIdQRScanResponse?(qrCodeData);
     }
 }
@@ -299,9 +299,9 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
                                             sigToken: signToken,
                                             livenessResult: livenessResult) { [unowned self] (status, error) in
             if (status == true) {
-                blockIdLiveIDResponse(["status": "completed"])
+                blockIdLiveIDResponse?(["status": "completed"])
             } else {
-                blockIdLiveIDResponse(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+                blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
             }
         }
         liveIdScannerHelper?.stopLiveIDScanning()
@@ -309,16 +309,16 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
     
  
     public func focusOnFaceChanged(isFocused: Bool?, message: String?) {
-        blockIdLiveIDResponse(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
+        blockIdLiveIDResponse?(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
      }
 
     public func faceLivenessCheckStarted() {
         liveIdScannerHelper?.stopLiveIDScanning()
-        blockIdLiveIDResponse(["status": "faceLivenessCheckStarted"])
+        blockIdLiveIDResponse?(["status": "faceLivenessCheckStarted"])
     }
     
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-        blockIdLiveIDResponse(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+        blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
         liveIdScannerHelper?.stopLiveIDScanning()
     }
 

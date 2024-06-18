@@ -73,10 +73,7 @@ target 'BlockidpluginExample' do
       
           # set iOS Deployment Target to 13.0
           config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
-      
-          # config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
-          #   'PERMISSION_CAMERA=1'
-          # ]
+
           if target.name == 'react-native-blockidplugin'
             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
            end

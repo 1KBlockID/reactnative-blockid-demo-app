@@ -1285,7 +1285,7 @@ PODS:
   - YubiKit (4.2.0)
 
 DEPENDENCIES:
-  - "BlockID (from `git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git`, tag `fltr_02`)"
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `fltr_02`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EllipticCurveKeyPair (from `https://github.com/1KBlockID/EllipticCurveKeyPair.git`, tag `2.0.2`)
@@ -1367,7 +1367,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   BlockID:
-    :git: "git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git"
+    :git: https://github.com/1KBlockID/ios-blockidsdk.git
     :tag: fltr_02
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
@@ -1500,7 +1500,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BlockID:
-    :git: "git@github.com-fullstackio:1KBlockID/ios-blockidsdk.git"
+    :git: https://github.com/1KBlockID/ios-blockidsdk.git
     :tag: fltr_02
   EllipticCurveKeyPair:
     :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
@@ -1528,7 +1528,7 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: 6e1ae0555546e604dbc632a2b9a24a9c46c41ef6
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
-  RCTDeprecation: 4dc9c8fbcb15bc9e8f3cfa601ddc190e120f099b
+  RCTDeprecation: efb313d8126259e9294dc4ee0002f44a6f676aba
   RCTRequired: f49ea29cece52aee20db633ae7edc4b271435562
   RCTTypeSafety: a11979ff0570d230d74de9f604f7d19692157bc4
   React: 88794fad7f460349dbc9df8a274d95f37a009f5d
@@ -1551,7 +1551,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-blockidplugin: 30cd0ec695ddc0f454634c126897c37c6123f46e
+  react-native-blockidplugin: 9e06ee28c4b238b06f7b441d550a77c0537ed7e5
   react-native-safe-area-context: 399a5859f6acbdf67f671c69b53113f535f3b5b0
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
   React-NativeModulesApple: df46ff3e3de5b842b30b4ca8a6caae6d7c8ab09f
@@ -1578,16 +1578,16 @@ SPEC CHECKSUMS:
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
-  RNSVG: 7c3f3fac9de6d67eee5525a8bafffafaaf022991
+  RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   SwiftProtobuf: 5e8349171e7c2f88f5b9e683cb3cb79d1dc780b3
   TrustWalletCore: 221e7c95e4e3263c807cbbfda9a5613b6a975214
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
   WebAuthnKit: d84fc07aa8f07707085ffee8baa41b11d69403ca
-  Yoga: b9a182ab00cf25926e7f79657d08c5d23c2d03b0
+  Yoga: 348f8b538c3ed4423eb58a8e5730feec50bce372
   YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
 
-PODFILE CHECKSUM: 3a986b698705f33208724e60c1f77c2f86e062f4
+PODFILE CHECKSUM: 6581b7d4c182ebc25c2da490023cd0b0a310b2ff
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

@@ -93,7 +93,8 @@ Go to podfile inside ios folder in your React native project and make below chan
   pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
   pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => 'fltr_02'
 
-   post_install do |installer|
+
+    post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
@@ -101,31 +102,34 @@ Go to podfile inside ios folder in your React native project and make below chan
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-      installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-         # set build active architecture to to YES
-      config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+    installer.pods_project.targets.each do |target|
+          target.build_configurations.each do |config|
+             # set build active architecture to to YES
+          config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
 
-     # set build library for distribution to true
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+         # set build library for distribution to true
+          config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
 
-     # enable simulator support
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
+         # enable simulator support
+          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
 
-      # set iOS Deployment Target to 13.0
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
+          # set iOS Deployment Target to 13.0
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
 
-       xcconfig_path = config.base_configuration_reference.real_path
-       xcconfig = File.read(xcconfig_path)
-       xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-       File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
-    end
+          xcconfig_path = config.base_configuration_reference.real_path
+          xcconfig = File.read(xcconfig_path)
+          xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+          File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+        end
+      end
   end
+end
 ```
 
 and then finally
 
 ```
+bundle install #only one time in your project
 bundle exec pod install
 ```
 

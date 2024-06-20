@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   image: {
-    width: 300,
-    height: 250,
+    width: 360,
+    height: 320,
     resizeMode: 'contain',
     position: 'absolute',
-    top: '20%',
+    top: '10%',
   },
   scannerViewContainer: {
     backgroundColor: 'gray',

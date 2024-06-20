@@ -126,17 +126,17 @@ Go to podfile inside ios folder in your React native project and make below chan
 end
 ```
 
-and then finally
+and then
 
 ```
 bundle install #only one time in your project
 bundle exec pod install
 ```
 
-if you want to adopt new architechture
+Add permission in your info.plist
 
 ```
-RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+NSCameraUsageDescription, NSFaceIDUsageDescription
 ```
 
 ## Configuring Android:
@@ -211,10 +211,10 @@ configurations.configureEach {
 
 ```
 
-if you want to adopt new architechture, in you /android/gradle.properties
+Add permission in your manifest
 
 ```
-newArchEnabled=true
+camera
 ```
 
 ### react-native-blockidplugin usage:

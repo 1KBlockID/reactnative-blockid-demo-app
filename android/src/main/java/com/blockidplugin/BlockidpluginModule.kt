@@ -442,6 +442,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     }
   }
 
+  @ReactMethod
+  fun addListener(type: String?) {
+    // Keep: Required for RN built in Event Emitter Calls.
+  }
+
+  @ReactMethod
+  fun removeListeners(type: Int?) {
+    // Keep: Required for RN built in Event Emitter Calls.
+  }
+
   private fun registerDocument(obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap, promise: Promise?) {
     BlockIDSDK.getInstance().registerDocument(activity,
       obj,

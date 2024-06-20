@@ -218,13 +218,12 @@ class HomeViewModel {
   }
 
   async checkCamera() {
-    const result =
-      Platform.OS === 'ios'
-        ? await request(PERMISSIONS.IOS.CAMERA)
-        : await request(PERMISSIONS.ANDROID.CAMERA);
-    if (result !== RESULTS.GRANTED) {
-      Alert.alert('Error', 'Camera permission is restricted');
-      return false;
+    if (Platform.OS === 'android') {
+      const result = await request(PERMISSIONS.ANDROID.CAMERA);
+      if (result !== RESULTS.GRANTED) {
+        Alert.alert('Error', 'Camera permission is restricted');
+        return false;
+      }
     }
     return true;
   }

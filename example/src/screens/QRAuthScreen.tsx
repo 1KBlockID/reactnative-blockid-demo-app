@@ -24,13 +24,9 @@ const QRAuthScreen: React.FC<Props> = ({ navigation, route }) => {
   React.useEffect(() => {
     const viewModel = HomeViewModel.getInstance();
     const { payload } = route.params;
-    console.log('getScopesAttributesDic');
     viewModel.getScopesAttributesDic(payload.getMap()).then((result) => {
-      console.log('respons4', result);
-
       setLoading(false);
       setData(result);
-      console.log('string', result);
     });
   }, [route.params]);
 

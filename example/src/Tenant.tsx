@@ -36,13 +36,11 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
     let isDeviceAuthRegisterd = await viewModel.isDeviceAuthRegisterd();
     if (!isDeviceAuthRegisterd) {
       let isEnrolled = await viewModel.enrollDeviceAuth();
-      console.log('Enroll status', isEnrolled);
       if (isEnrolled) {
         navigation.navigate('Featurelist', { handler: setIsRegistered });
       }
     } else {
       let isAuthVerified = await viewModel.verifyDeviceAuth();
-      console.log('Verify status', isAuthVerified);
       if (isAuthVerified) {
         navigation.navigate('Featurelist', { handler: setIsRegistered });
       }
@@ -55,7 +53,6 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
       .isSDKReady()
       .then((res) => {
         setIsRegistered(res);
-        console.log('setisBlockIDSdkReady1', res);
       })
       .finally(() => setLoading(false)); // Finally block ensures setLoading(false) is called regardless of success or failure
   }, []);

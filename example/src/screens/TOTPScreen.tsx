@@ -56,7 +56,6 @@ const TOTPScreen: React.FC = () => {
   const fetchData = async () => {
     const viewModel = HomeViewModel.getInstance();
     let totp = await viewModel.totp();
-    console.log('TOTP', totp?.totp, totp?.getRemainingSecs);
     setRemainingTime(totp?.getRemainingSecs ?? 0);
     setOtp(totp?.totp ?? '');
     setProgress(1.0);

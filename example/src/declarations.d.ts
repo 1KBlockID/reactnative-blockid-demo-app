@@ -3,7 +3,7 @@ import 'react-native';
 
 declare module 'react-native' {
   interface UIManagerStatic {
-    ScannerRefViewManager: {
+    LiveIDScannerManager: {
       Commands: {
         create: number;
       };

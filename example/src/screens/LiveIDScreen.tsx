@@ -12,12 +12,13 @@ import {
   PixelRatio,
   UIManager,
   findNodeHandle,
+  Platform,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import { useNavigation } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
-import { ScannerRefViewManager } from '../ScannerView';
+import { LiveIDScannerManager, ScannerView } from '../ScannerView';
 
 interface StatusChangeEvent {
   status: string | null;
@@ -32,7 +33,7 @@ const createFragment = (viewId: number | null) =>
   UIManager.dispatchViewManagerCommand(
     viewId,
     // we are calling the 'create' command
-    UIManager.ScannerRefViewManager.Commands.create.toString(),
+    UIManager.LiveIDScannerManager.Commands.create.toString(),
     [viewId]
   );
 
@@ -75,7 +76,7 @@ export default function LiveIDScreen() {
   const [layout, setLayout] = React.useState<Layout | null>(null);
 
   React.useEffect(() => {
-    if (layout) {
+    if (Platform.OS === 'android' && layout) {
       const viewId = findNodeHandle(ref.current);
       createFragment(viewId);
     }
@@ -86,19 +87,23 @@ export default function LiveIDScreen() {
       <View
         style={styles.scannerViewContainer}
         onLayout={(event) => {
-          const { x, y, width, height } = event.nativeEvent.layout;
-          setLayout({ x, y, width, height });
+          if (Platform.OS === 'android') {
+            const { x, y, width, height } = event.nativeEvent.layout;
+            setLayout({ x, y, width, height });
+          }
         }}
       >
-        {layout && (
-          <ScannerRefViewManager
+        {layout && Platform.OS === 'android' ? (
+          <LiveIDScannerManager
             style={{
               height: PixelRatio.getPixelSizeForLayoutSize(layout.height),
               width: PixelRatio.getPixelSizeForLayoutSize(layout.width),
             }}
             ref={ref}
           />
-        )}
+        ) : Platform.OS === 'ios' ? (
+          <ScannerView style={styles.scannerView} ref={ref} />
+        ) : null}
         <Image source={require('../../assets/live.png')} style={styles.image} />
       </View>
       {faceState?.isFocused === false &&

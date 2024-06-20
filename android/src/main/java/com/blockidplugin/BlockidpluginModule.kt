@@ -212,7 +212,6 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       mLiveIDScannerHelper = LiveIDScannerHelper(
         currentActivity!!,
         ScannerViewRef.bidScannerView!!,
-//        ScannerViewRef.getCustomViewManagerInstance()?.scannerFragment?.flNativeScannerView?.bidScannerView!!,
         null,
         object : ILiveIDResponseListener {
           override fun onLiveIDCaptured(
@@ -488,8 +487,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         ReadableType.Boolean -> map[key] = readableMap.getBoolean(key)
         ReadableType.Number -> map[key] = readableMap.getDouble(key)
         ReadableType.String -> map[key] = readableMap.getString(key) ?: "null"
-        ReadableType.Map -> map[key] = convertReadableMapToLinkedHashMap(readableMap.getMap(key)!!)
-        ReadableType.Array -> map[key] = readableMap.getArray(key)!!.toArrayList()
+        ReadableType.Map -> readableMap.getMap(key)?.let {
+          map[key] = convertReadableMapToLinkedHashMap(it)
+        } ?: run {
+          map[key] = "null"
+        }
+        ReadableType.Array -> readableMap.getArray(key)?.let {
+          map[key] = it.toArrayList()
+        } ?: run {
+          map[key] = emptyList<Any>()
+        }
         else -> throw IllegalArgumentException("Unsupported type for key: $key")
       }
     }

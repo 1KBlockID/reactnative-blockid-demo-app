@@ -11,13 +11,12 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 
-class ScannerRefViewManager(
+class LiveIDScannerManager(
   private val reactContext: ReactApplicationContext
 ) : ViewGroupManager<FrameLayout>() {
 
   private var propWidth: Int? = null
   private var propHeight: Int? = null
-  var scannerFragment: ScannerFragment? = null
 
   override fun getName() = REACT_CLASS
 
@@ -58,7 +57,6 @@ class ScannerRefViewManager(
     val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
     setupLayout(parentView)
     val fragment = ScannerFragment()
-    scannerFragment = fragment
     val activity = reactContext.currentActivity as FragmentActivity
     activity.supportFragmentManager
       .beginTransaction()
@@ -92,7 +90,7 @@ class ScannerRefViewManager(
   }
 
   companion object {
-    private const val REACT_CLASS = "ScannerRefViewManager"
+    private const val REACT_CLASS = "LiveIDScannerManager"
     private const val COMMAND_CREATE = 1
   }
 }

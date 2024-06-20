@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: 'contain',
     position: 'absolute',
-    top: '20%',
+    top: '10%',
   },
   scannerViewContainer: {
     width: '100%',

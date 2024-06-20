@@ -15,7 +15,6 @@ import {
   scanDocument,
   registerNationalIDWithLiveID,
   startQRScanning,
-  stopQRScanning,
   isUrlTrustedSessionSources,
   getScopesAttributesDic,
   authenticateUserWithScopes,
@@ -26,6 +25,8 @@ import {
 import * as AppConstants from './AppConstants';
 import type { TotpResponse, DocType } from '../../src/WrapperModel';
 import { Alert } from 'react-native';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { Platform } from 'react-native';
 
 import { AuthenticationPayloadV1 } from './AppModel';
 import { ApiManager } from './ApiManager';
@@ -169,6 +170,9 @@ class HomeViewModel {
 
   async startLiveIDScanning(): Promise<void> {
     try {
+      if (!(await this.checkCamera())) {
+        return;
+      }
       await startLiveIDScanning(AppConstants.dvcID);
     } catch (error) {
       if (error instanceof Error) {
@@ -213,10 +217,24 @@ class HomeViewModel {
     return typeof value === 'string';
   }
 
+  async checkCamera() {
+    const result =
+      Platform.OS === 'ios'
+        ? await request(PERMISSIONS.IOS.CAMERA)
+        : await request(PERMISSIONS.ANDROID.CAMERA);
+    if (result !== RESULTS.GRANTED) {
+      Alert.alert('Error', 'Camera permission is restricted');
+      return false;
+    }
+    return true;
+  }
+
   async startQRScan() {
     try {
+      if (!(await this.checkCamera())) {
+        return;
+      }
       let qrData = await startQRScanning();
-      await stopQRScanning();
       const qrDataString = qrData?.toString() || '';
       if (
         qrDataString !== '' &&

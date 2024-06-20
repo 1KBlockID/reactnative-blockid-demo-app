@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableType
+import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
@@ -205,14 +206,14 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun startLiveIDScanning(dvcID: String, promise: Promise) {
-    currentActivity?.runOnUiThread {
+    UiThreadUtil.runOnUiThread {
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
-
       mLiveIDScannerHelper = LiveIDScannerHelper(
         currentActivity!!,
         ScannerViewRef.bidScannerView!!,
-        ScannerViewRef.bidScannerView!!,
+//        ScannerViewRef.getCustomViewManagerInstance()?.scannerFragment?.flNativeScannerView?.bidScannerView!!,
+        null,
         object : ILiveIDResponseListener {
           override fun onLiveIDCaptured(
             p0: Bitmap?,
@@ -220,41 +221,39 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             p2: String?,
             p3: ErrorManager.ErrorResponse?
           ) {
-            activity?.runOnUiThread {
-              if (p0 != null && p1 != null) {
-                BlockIDSDK.getInstance().setLiveID(
-                  p0, null, p1,
-                  p2
-                ) { status: Boolean, _, _ ->
-                  if (status) {
-                    val params = Arguments.createMap().apply {
-                      putString("status", "completed")
-                    }
-                    sendEvent(context!!, "onStatusChanged", params)
-                  } else {
-                    val params = Arguments.createMap().apply {
-                      putString("status", "failed")
-                    }
-                    sendEvent(context!!, "onStatusChanged", params)
+            if (p0 != null && p1 != null) {
+              BlockIDSDK.getInstance().setLiveID(
+                p0, null, p1,
+                p2
+              ) { status: Boolean, _, _ ->
+                if (status) {
+                  val params = Arguments.createMap().apply {
+                    putString("status", "completed")
                   }
+                  sendEvent(context!!, "onStatusChanged", params)
+                } else {
+                  val params = Arguments.createMap().apply {
+                    putString("status", "failed")
+                  }
+                  sendEvent(context!!, "onStatusChanged", params)
                 }
-              } else {
-                val params = Arguments.createMap().apply {
-                  putString("status", "failed")
-                }
-                sendEvent(context!!, "onStatusChanged", params)
               }
+            } else {
+              val params = Arguments.createMap().apply {
+                putString("status", "failed")
+              }
+              sendEvent(context!!, "onStatusChanged", params)
             }
           }
 
           override fun onLivenessCheckStarted() {
             activity?.runOnUiThread {
               mLiveIDScannerHelper?.stopLiveIDScanning()
-              val params = Arguments.createMap().apply {
-                putString("status", "faceLivenessCheckStarted")
-              }
-              sendEvent(context!!, "onStatusChanged", params)
             }
+            val params = Arguments.createMap().apply {
+              putString("status", "faceLivenessCheckStarted")
+            }
+            sendEvent(context!!, "onStatusChanged", params)
           }
 
           override fun onFaceFocusChanged(isFocused: Boolean, message: String?) {
@@ -310,7 +309,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
                 )
           }
         }
-      }, ScannerViewRef.bidScannerView)
+      },  ScannerViewRef.bidScannerView!!)
       mQRScannerHelper?.startQRScanning()
     }
   }

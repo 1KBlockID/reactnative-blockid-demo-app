@@ -10,3 +10,7 @@ export interface ScannerViewProps {
 
 export const ScannerView =
   requireNativeComponent<ScannerViewProps>('RNTScannerView');
+
+export const ScannerRefViewManager = requireNativeComponent<ScannerViewProps>(
+  'ScannerRefViewManager'
+);

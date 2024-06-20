@@ -39,7 +39,10 @@ class BlockidpluginPackage : TurboReactPackage() {
   }
 
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(RNTScannerViewManager())
+//    return listOf(ScannerRefViewManager(reactContext))
+    val customViewManager = ScannerRefViewManager(reactContext)
+    ScannerViewRef.setCustomViewManager(customViewManager)
+    return listOf(RNTScannerViewManager(), customViewManager)
   }
 
 }

@@ -15,7 +15,6 @@ import {
   scanDocument,
   registerNationalIDWithLiveID,
   startQRScanning,
-  stopQRScanning,
   isUrlTrustedSessionSources,
   getScopesAttributesDic,
   authenticateUserWithScopes,
@@ -171,7 +170,7 @@ class HomeViewModel {
 
   async startLiveIDScanning(): Promise<void> {
     try {
-      if (!this.checkCamera()) {
+      if (!(await this.checkCamera())) {
         return;
       }
       await startLiveIDScanning(AppConstants.dvcID);
@@ -232,11 +231,10 @@ class HomeViewModel {
 
   async startQRScan() {
     try {
-      if (!this.checkCamera()) {
+      if (!(await this.checkCamera())) {
         return;
       }
       let qrData = await startQRScanning();
-      await stopQRScanning();
       const qrDataString = qrData?.toString() || '';
       if (
         qrDataString !== '' &&

@@ -49,7 +49,11 @@ export default function LiveIDScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
   const startLiveIDScanning = async () => {
+    if (buttonDisabled) return;
+    setButtonDisabled(true);
     eventEmitter.addListener('onStatusChanged', (event: StatusChangeEvent) => {
       if (event.status === 'faceLivenessCheckStarted') {
         setLoading(true);
@@ -115,7 +119,11 @@ export default function LiveIDScreen() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={startLiveIDScanning}
-          style={styles.appButtonContainer}
+          style={[
+            styles.appButtonContainer,
+            buttonDisabled && styles.disabledButton,
+          ]}
+          disabled={buttonDisabled}
         >
           <Text style={styles.appButtonText}>Start LiveID Scan</Text>
         </TouchableOpacity>
@@ -176,5 +184,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     padding: 16,
     alignItems: 'center',
+  },
+  disabledButton: {
+    backgroundColor: 'gray',
   },
 });

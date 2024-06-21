@@ -141,22 +141,26 @@ NSCameraUsageDescription, NSFaceIDUsageDescription
 
 ## Configuring Android:
 
-Go to build.gradle inside android folder in your Flutter project and make below changes in allprojects -> repositories
+Go to build.gradle inside android/app folder in your React project and make below changes after android{}
 
 ```
-  gradlePluginPortal()
-        maven {
-            url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
-            credentials {
-                username = "developer"
-                password = "q5k#06ZcjSo#"
-            }
-        }
-        maven { url "https://jitpack.io" }
-        maven {
-            url 'http://www.baka.sk/maven2'
-            allowInsecureProtocol = true
-        }
+  repositories {
+     google()
+     mavenCentral()
+     gradlePluginPortal()
+     maven {
+       url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
+       credentials {
+         username = "developer"
+         password = "q5k#06ZcjSo#"
+       }
+     }
+     maven { url "https://jitpack.io" }
+     maven {
+       url 'http://www.baka.sk/maven2'
+       allowInsecureProtocol = true
+     }
+   }
 ```
 
 then Go to build.gradle inside android/app folder in your Flutter project and make below changes

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
-import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../RootStackParam';
@@ -13,13 +12,12 @@ type Props = {
   navigation: QRScreenNavigationProp;
 };
 const QRScreen: React.FC<Props> = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
-
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const startQRScan = async () => {
+    if (buttonDisabled) return;
+    setButtonDisabled(true);
     const viewModel = HomeViewModel.getInstance();
-    setLoading(true);
     let authenticationPayloadV1 = await viewModel.startQRScan();
-    setLoading(false);
     if (
       authenticationPayloadV1 == null ||
       authenticationPayloadV1 === undefined
@@ -37,12 +35,15 @@ const QRScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={startQRScan}
-          style={styles.appButtonContainer}
+          style={[
+            styles.appButtonContainer,
+            buttonDisabled && styles.disabledButton,
+          ]}
+          disabled={buttonDisabled}
         >
           <Text style={styles.appButtonText}>Start QR Scan</Text>
         </TouchableOpacity>
       </View>
-      <SpinnerOverlay visible={loading} />
     </View>
   );
 };
@@ -82,6 +83,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     height: 48,
+  },
+  disabledButton: {
+    backgroundColor: 'gray',
   },
 });
 

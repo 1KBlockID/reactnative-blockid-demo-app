@@ -20,6 +20,7 @@ import {
   authenticateUserWithScopes,
   registerDrivingLicenceWithLiveID,
   registerPassportWithLiveID,
+  stopQRScanning,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -235,6 +236,7 @@ class HomeViewModel {
       }
       let qrData = await startQRScanning();
       const qrDataString = qrData?.toString() || '';
+      await stopQRScanning();
       if (
         qrDataString !== '' &&
         qrDataString.startsWith('https://') &&

@@ -107,9 +107,6 @@ Go to podfile inside ios folder in your React native project and make below chan
              # set build active architecture to to YES
           config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
 
-         # set build library for distribution to true
-          config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-
          # enable simulator support
           config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
 

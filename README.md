@@ -47,6 +47,10 @@ Create new react native project
 
 ```
 npx react-native init MyProject
+
+or 
+
+npx @react-native-community/cli@latest init MyProject
 ```
 
 in the root folder execute yarn

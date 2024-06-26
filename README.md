@@ -166,7 +166,7 @@ Go to build.gradle inside android/app folder in your React project and make belo
    }
 ```
 
-then Go to build.gradle inside android/app folder in your Flutter project and make below changes
+then Go to build.gradle inside android/app folder in your React project and make below changes
 
 ```
 1. make sure minSdkVersion is 25
@@ -202,7 +202,7 @@ configurations.configureEach {
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- The INTERNET permission is required for development. Specifically,
-         the Flutter tool needs it to communicate with the running application
+         the React tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>

@@ -138,7 +138,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.github.amitshekhariitbhu.Fast-Android-F:android-networking:1.0.4'
+  implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.4'
   // Add BlockIDSDK dependency
   implementation ('com.onekosmos.blockid.sdk:blockidsdk:1.10.30.66449422') {
     exclude group: 'com.amitshekhar.android', module: 'android-networking'

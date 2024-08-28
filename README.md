@@ -48,7 +48,7 @@ Create new react native project
 ```
 npx react-native init MyProject
 
-or 
+or
 
 npx @react-native-community/cli@latest init MyProject
 ```
@@ -64,7 +64,7 @@ yarn
 Install the react native blockid package as a git dependency
 
 ```
-yarn add react-native-blockidplugin@https://github.com/1KBlockID/reactnative-blockid-demo-app.git#main
+yarn add react-native-blockidplugin@https://github.com/1KBlockID/reactnative-blockid-demo-app.git#fixed-network-library-issue
 ```
 
 make sure you have repo access

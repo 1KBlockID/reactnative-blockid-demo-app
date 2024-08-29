@@ -94,8 +94,8 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         Alert.alert(
           'Info',
           isVerification
-            ? 'Failed to Verify Live ID try again!'
-            : 'Failed to register Live ID try again!',
+            ? event.error?.message ?? 'Failed to Verify Live ID try again!'
+            : event.error?.message ?? 'Failed to register Live ID try again!',
           [
             {
               text: 'Ok',

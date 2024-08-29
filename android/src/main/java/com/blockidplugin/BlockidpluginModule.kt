@@ -23,6 +23,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager
+import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager.ErrorResponse
 import com.onekosmos.blockid.sdk.BlockIDSDK
 import com.onekosmos.blockid.sdk.authentication.BIDAuthProvider
 import com.onekosmos.blockid.sdk.authentication.biometric.IBiometricResponseListener
@@ -232,6 +233,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             } else {
               val params = Arguments.createMap().apply {
                 putString("status", "failed")
+                putMap("error", Arguments.createMap().apply {
+                  putInt("code", p3?.code ?: -1)
+                  putString("description", p3?.message)
+                })
               }
               sendEvent(context!!, "onStatusChanged", params)
             }
@@ -268,7 +273,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     BlockIDSDK.getInstance().setLiveID(
       p0, null, p1,
       p2
-    ) { status: Boolean, _, _ ->
+    ) { status: Boolean, message: String?, errorResponse: ErrorResponse? ->
       if (status) {
         val params = Arguments.createMap().apply {
           putString("status", "completed")
@@ -277,6 +282,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", errorResponse?.code ?: -1)
+            putString("description", errorResponse?.message)
+          })
         }
         sendEvent(context!!, "onStatusChanged", params)
       }
@@ -285,7 +294,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   private fun verifyLiveID(p0: Bitmap, p1: String, p2: String?) {
     BlockIDSDK.getInstance().verifyLiveID(
-      context!!, p0, p1, p2) { status: Boolean, _ ->
+      context!!, p0, p1, p2) { status: Boolean, errorResponse: ErrorResponse? ->
         if (status) {
           val params = Arguments.createMap().apply {
             putString("status", "completed")
@@ -294,7 +303,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         } else {
           val params = Arguments.createMap().apply {
             putString("status", "failed")
-          }
+            putMap("error", Arguments.createMap().apply {
+              putInt("code", errorResponse?.code ?: -1)
+              putString("description", errorResponse?.message)
+            })
+           }
           sendEvent(context!!, "onStatusChanged", params)
         }
       }

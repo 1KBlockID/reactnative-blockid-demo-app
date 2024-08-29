@@ -51,7 +51,7 @@ type FeatureEnrollmentScreenRouteProp = RouteProp<RootStackParamList, 'LiveID'>;
 type Props = {
   route: FeatureEnrollmentScreenRouteProp;
 };
-// export default function LiveIDScreen() {
+
 const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -75,19 +75,38 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
           'Info',
           isVerification
             ? 'Live ID Verified successfully'
-            : 'Live ID Registered successfully'
+            : 'Live ID Registered successfully',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                }
+              },
+            },
+          ]
         );
-        navigation.goBack();
       } else if (event.status === 'failed') {
+        console.log(event.error);
         setLoading(false);
         setFaceState(null);
         Alert.alert(
           'Info',
           isVerification
             ? 'Failed to Verify Live ID try again!'
-            : 'Failed to register Live ID try again!'
+            : 'Failed to register Live ID try again!',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                }
+              },
+            },
+          ]
         );
-        navigation.goBack();
       }
     });
     const viewModel = HomeViewModel.getInstance();

@@ -30,6 +30,8 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
 
   abstract fun startLiveIDScanning(dvcID: String, promise: Promise)
 
+  abstract fun verifyLiveIDScanning(dvcID: String, promise: Promise)
+
   abstract fun stopLiveIDScanning(promise: Promise)
 
   abstract fun resetSDK(

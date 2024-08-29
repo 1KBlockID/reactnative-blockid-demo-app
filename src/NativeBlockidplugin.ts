@@ -17,6 +17,7 @@ export interface Spec extends TurboModule {
   totp(): Promise<TotpResponse | null>;
   isLiveIDRegisterd(): Promise<boolean>;
   startLiveIDScanning(dvcID: string): Promise<void>;
+  verifyLiveIDScanning(dvcID: string): Promise<void>;
   stopLiveIDScanning(): Promise<void>;
   resetSDK(
     tag: string,

@@ -15,16 +15,23 @@ import {
   Platform,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, type RouteProp } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
 import { LiveIDScannerManager, ScannerView } from '../ScannerView';
+import type { RootStackParamList } from '../RootStackParam';
 
 interface StatusChangeEvent {
   status: string | null;
-  error: Error | null;
+  error: ErrorResponse | null;
   info: FaceInfo | null;
 }
+
+interface ErrorResponse {
+  code: number | null;
+  description: string | null;
+}
+
 interface FaceInfo {
   isFocused: boolean | null;
   message: string | null;
@@ -45,11 +52,18 @@ type Layout = {
 };
 const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
 
-export default function LiveIDScreen() {
+type FeatureEnrollmentScreenRouteProp = RouteProp<RootStackParamList, 'LiveID'>;
+
+type Props = {
+  route: FeatureEnrollmentScreenRouteProp;
+};
+
+const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { isVerification } = route.params;
 
   const startLiveIDScanning = async () => {
     if (buttonDisabled) return;
@@ -63,17 +77,50 @@ export default function LiveIDScreen() {
       } else if (event.status === 'completed') {
         setLoading(false);
         setFaceState(null);
-        Alert.alert('Info', 'Live ID Registered successfully');
-        navigation.goBack();
+        Alert.alert(
+          'Info',
+          isVerification
+            ? 'Live ID Verified successfully'
+            : 'Live ID Registered successfully',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                }
+              },
+            },
+          ]
+        );
       } else if (event.status === 'failed') {
+        console.log(event.error);
         setLoading(false);
         setFaceState(null);
-        Alert.alert('Info', 'Failed to register Live ID try again!');
-        navigation.goBack();
+        Alert.alert(
+          'Info',
+          isVerification
+            ? event.error?.description ?? 'Failed to Verify Live ID. Try again!'
+            : event.error?.description ??
+                'Failed to register Live ID. Try again!',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                }
+              },
+            },
+          ]
+        );
       }
     });
     const viewModel = HomeViewModel.getInstance();
-    viewModel.startLiveIDScanning();
+
+    isVerification
+      ? viewModel.verifyLiveIDScanning()
+      : viewModel.startLiveIDScanning();
   };
 
   const ref = React.useRef(null);
@@ -125,13 +172,15 @@ export default function LiveIDScreen() {
           ]}
           disabled={buttonDisabled}
         >
-          <Text style={styles.appButtonText}>Start LiveID Scan</Text>
+          <Text style={styles.appButtonText}>
+            {isVerification ? 'Verify LiveID' : 'Start LiveID'}
+          </Text>
         </TouchableOpacity>
       </View>
       <SpinnerOverlay visible={loading} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -189,3 +238,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
 });
+export default LiveIDScreen;

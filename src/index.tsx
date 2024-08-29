@@ -68,6 +68,10 @@ export async function startLiveIDScanning(dvcID: string): Promise<void> {
   return await Blockidplugin.startLiveIDScanning(dvcID);
 }
 
+export async function verifyLiveIDScanning(dvcID: string): Promise<void> {
+  return await Blockidplugin.verifyLiveIDScanning(dvcID);
+}
+
 export function stopLiveIDScanning(): Promise<void> {
   return Blockidplugin.stopLiveIDScanning();
 }

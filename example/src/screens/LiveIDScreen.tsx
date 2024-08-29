@@ -146,9 +146,9 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
           ]}
           disabled={buttonDisabled}
         >
-          isVerification ?
-          <Text style={styles.appButtonText}> Verify LiveID</Text>:
-          <Text style={styles.appButtonText}> Start LiveID</Text>
+          <Text style={styles.appButtonText}>
+            {isVerification ? 'Verify LiveID' : 'Start LiveID'}
+          </Text>
         </TouchableOpacity>
       </View>
       <SpinnerOverlay visible={loading} />

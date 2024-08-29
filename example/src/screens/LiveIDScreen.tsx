@@ -57,6 +57,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { isVerification } = route.params;
 
   const startLiveIDScanning = async () => {
     if (buttonDisabled) return;
@@ -70,17 +71,26 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
       } else if (event.status === 'completed') {
         setLoading(false);
         setFaceState(null);
-        Alert.alert('Info', 'Live ID Registered successfully');
+        Alert.alert(
+          'Info',
+          isVerification
+            ? 'Live ID Verified successfully'
+            : 'Live ID Registered successfully'
+        );
         navigation.goBack();
       } else if (event.status === 'failed') {
         setLoading(false);
         setFaceState(null);
-        Alert.alert('Info', 'Failed to register Live ID try again!');
+        Alert.alert(
+          'Info',
+          isVerification
+            ? 'Failed to Verify Live ID try again!'
+            : 'Failed to register Live ID try again!'
+        );
         navigation.goBack();
       }
     });
     const viewModel = HomeViewModel.getInstance();
-    const { isVerification } = route.params;
 
     isVerification
       ? viewModel.verifyLiveIDScanning()
@@ -136,7 +146,9 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
           ]}
           disabled={buttonDisabled}
         >
-          <Text style={styles.appButtonText}>Start LiveID Scan</Text>
+          <Text style={styles.appButtonText}>
+            isVerification ? Verify LiveID: Start LiveID
+          </Text>
         </TouchableOpacity>
       </View>
       <SpinnerOverlay visible={loading} />

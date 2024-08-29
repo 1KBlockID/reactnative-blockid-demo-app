@@ -302,7 +302,7 @@ extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
 extension BlockIdWrapper: LiveIDResponseDelegate {
     public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, error: BlockID.ErrorResponse?) {
         guard let face = liveIdImage, let signToken = signatureToken else {
- 
+            blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
             return
         }
  

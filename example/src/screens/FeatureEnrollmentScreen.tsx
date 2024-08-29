@@ -172,7 +172,13 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         }
         break;
       case FeatureIdentifier.LiveIDVerification:
-        navigation.navigate('LiveID', { isVerification: true });
+        let isLiveidRegistered =
+          await HomeViewModel.getInstance().isLiveIDRegisterd();
+        if (isLiveidRegistered) {
+          navigation.navigate('LiveID', { isVerification: true });
+        } else {
+          Alert.alert('Info', 'LiveID is not registered.');
+        }
         break;
       case FeatureIdentifier.QRScan:
         navigation.navigate('QRScan');

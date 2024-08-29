@@ -23,9 +23,15 @@ import type { RootStackParamList } from '../RootStackParam';
 
 interface StatusChangeEvent {
   status: string | null;
-  error: Error | null;
+  error: ErrorResponse | null;
   info: FaceInfo | null;
 }
+
+interface ErrorResponse {
+  code: number | null;
+  description: string | null;
+}
+
 interface FaceInfo {
   isFocused: boolean | null;
   message: string | null;
@@ -94,8 +100,8 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         Alert.alert(
           'Info',
           isVerification
-            ? event.error?.message ?? 'Failed to Verify Live ID try again!'
-            : event.error?.message ?? 'Failed to register Live ID try again!',
+            ? `${event.error?.description ?? 'Failed to Verify Live ID. Try again!'} (Error Code: ${event.error?.code ?? 'Unknown'})`
+            : `${event.error?.description ?? 'Failed to register Live ID. Try again!'} (Error Code: ${event.error?.code ?? 'Unknown'})`,
           [
             {
               text: 'Ok',

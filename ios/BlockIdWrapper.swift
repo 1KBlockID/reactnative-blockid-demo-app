@@ -302,7 +302,7 @@ extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
 extension BlockIdWrapper: LiveIDResponseDelegate {
     public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, error: BlockID.ErrorResponse?) {
         guard let face = liveIdImage, let signToken = signatureToken else {
-            blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+            blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             return
         }
  
@@ -312,7 +312,6 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }
-    
  
     public func focusOnFaceChanged(isFocused: Bool?, message: String?) {
         blockIdLiveIDResponse?(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
@@ -324,7 +323,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
     }
     
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-        blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+        blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
         liveIdScannerHelper?.stopLiveIDScanning()
     }
     
@@ -336,7 +335,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             if (status == true) {
                 self?.blockIdLiveIDResponse?(["status": "completed"])
             } else {
-                self?.blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             }
         }
     }
@@ -348,7 +347,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             if (status == true) {
                 self?.blockIdLiveIDResponse?(["status": "completed"])
             } else {
-                self?.blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             }
         }
     }

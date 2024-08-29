@@ -15,10 +15,11 @@ import {
   Platform,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, type RouteProp } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
 import { LiveIDScannerManager, ScannerView } from '../ScannerView';
+import type { RootStackParamList } from '../RootStackParam';
 
 interface StatusChangeEvent {
   status: string | null;
@@ -45,7 +46,13 @@ type Layout = {
 };
 const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
 
-export default function LiveIDScreen() {
+type FeatureEnrollmentScreenRouteProp = RouteProp<RootStackParamList, 'LiveID'>;
+
+type Props = {
+  route: FeatureEnrollmentScreenRouteProp;
+};
+// export default function LiveIDScreen() {
+const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
@@ -73,7 +80,11 @@ export default function LiveIDScreen() {
       }
     });
     const viewModel = HomeViewModel.getInstance();
-    viewModel.startLiveIDScanning();
+    const { isVerification } = route.params;
+
+    isVerification
+      ? viewModel.verifyLiveIDScanning()
+      : viewModel.startLiveIDScanning();
   };
 
   const ref = React.useRef(null);
@@ -131,7 +142,7 @@ export default function LiveIDScreen() {
       <SpinnerOverlay visible={loading} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -189,3 +200,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
 });
+export default LiveIDScreen;

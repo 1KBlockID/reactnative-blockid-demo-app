@@ -10,6 +10,7 @@ import {
   startLiveIDScanning,
   isLiveIDRegisterd,
   stopLiveIDScanning,
+  verifyLiveIDScanning,
   resetSDK,
   getUserDocument,
   scanDocument,
@@ -175,6 +176,21 @@ class HomeViewModel {
         return;
       }
       await startLiveIDScanning(AppConstants.dvcID);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+    }
+  }
+
+  async verifyLiveIDScanning(): Promise<void> {
+    try {
+      if (!(await this.checkCamera())) {
+        return;
+      }
+      await verifyLiveIDScanning(AppConstants.dvcID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message

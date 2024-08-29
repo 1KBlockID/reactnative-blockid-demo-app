@@ -36,6 +36,7 @@ enum FeatureIdentifier {
   LiveID = 'liveid',
   QRScan = 'qrscan',
   Reset = 'reset',
+  LiveIDVerification = 'liveidverification',
 }
 
 interface Feature {
@@ -67,8 +68,13 @@ const features: Feature[] = [
   },
   {
     title: 'LiveID',
-    desc: 'Live ID Face verification',
+    desc: 'Live ID Face Registration',
     id: FeatureIdentifier.LiveID,
+  },
+  {
+    title: 'Verify LiveID',
+    desc: 'Live ID Face Verification',
+    id: FeatureIdentifier.LiveIDVerification,
   },
   {
     title: 'QR Scan',
@@ -162,8 +168,11 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         if (isLiveIDRegisterd) {
           Alert.alert('Info', 'LiveID is already registered.');
         } else {
-          navigation.navigate('LiveID');
+          navigation.navigate('LiveID', { isVerification: false });
         }
+        break;
+      case FeatureIdentifier.LiveIDVerification:
+        navigation.navigate('LiveID', { isVerification: true });
         break;
       case FeatureIdentifier.QRScan:
         navigation.navigate('QRScan');

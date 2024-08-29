@@ -48,7 +48,7 @@ Create new react native project
 ```
 npx react-native init MyProject
 
-or 
+or
 
 npx @react-native-community/cli@latest init MyProject
 ```

@@ -138,17 +138,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.4'
-  // Add BlockIDSDK dependency
-
-  implementation ('com.onekosmos.blockid.sdk:blockidsdk:1.10.30.66449422') {
-    exclude group: 'com.amitshekhar.android', module: 'android-networking'
-
-    // FIXME -> gemalto is used in RFID scanning, right now we have not implemented in plugin
-    //  therefore we are good. Latter we need to include it.
-    //  com.gemalto.jp2 is from Jcenter and not able to compile codebase, as it is not accessible.
-    exclude group: 'com.gemalto.jp2', module: 'jp2-android'
-  }
+  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.10.60.66D05C17'
 }
 
 if (isNewArchitectureEnabled()) {

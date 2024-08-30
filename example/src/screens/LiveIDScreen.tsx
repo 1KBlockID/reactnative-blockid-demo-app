@@ -68,6 +68,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const startLiveIDScanning = async () => {
     if (buttonDisabled) return;
     setButtonDisabled(true);
+    eventEmitter.removeAllListeners('onStatusChanged');
     eventEmitter.addListener('onStatusChanged', (event: StatusChangeEvent) => {
       if (event.status === 'faceLivenessCheckStarted') {
         setLoading(true);

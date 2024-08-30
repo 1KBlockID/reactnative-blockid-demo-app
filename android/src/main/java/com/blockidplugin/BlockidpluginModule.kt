@@ -262,7 +262,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             sendEvent(context!!, "onStatusChanged", params)
           }
 
-          override fun onFaceFocusChanged(isFocused: Boolean, message: String?) {
+          override fun onFaceFocusChanged(isFocused: Boolean, message: String?, errorResponse: ErrorResponse?) {
             val params = Arguments.createMap().apply {
               putString("status", "focusOnFaceChanged")
 
@@ -346,10 +346,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun startQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
-      if (mQRScannerHelper?.isRunning == true) {
-        mQRScannerHelper?.stopQRScanning()
-        mQRScannerHelper = null
-      }
+      mQRScannerHelper?.stopQRScanning()
+      mQRScannerHelper = null
 
       mQRScannerHelper =  QRScannerHelper(currentActivity, object: IOnQRScanResponseListener{
         override fun onQRScanResultResponse(p0: String?) {

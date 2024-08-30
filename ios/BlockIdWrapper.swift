@@ -279,8 +279,10 @@ import BlockID
         let bidTenant = BIDTenant.makeTenant(tag: tag,
                                                         community: community,
                                                         dns: dns)
-        BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
-        response(true, nil)
+        DispatchQueue.main.async {
+            BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
+            response(true, nil)
+        }
      }
 
 }

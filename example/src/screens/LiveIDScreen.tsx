@@ -100,10 +100,9 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         Alert.alert(
           'Info',
           isVerification
-            ? (event.error?.description ??
-                'Failed to Verify Live ID. Try again!')
-            : (event.error?.description ??
-                'Failed to register Live ID. Try again!'),
+            ? event.error?.description ?? 'Failed to Verify Live ID. Try again!'
+            : event.error?.description ??
+                'Failed to register Live ID. Try again!',
           [
             {
               text: 'Ok',

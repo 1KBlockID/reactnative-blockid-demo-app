@@ -193,6 +193,7 @@ then Go to build.gradle inside android/app folder in your React project and make
 ```
 configurations.configureEach {
     exclude group: 'org.bouncycastle', module: 'bcprov-jdk15to18'
+    exclude group: 'com.gemalto.jp2', module: 'jp2-android'
 }
 ```
 

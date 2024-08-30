@@ -97,6 +97,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun blockIDSDKVerion(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().version)
+  }
+
+  @ReactMethod
+  override fun getDID(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().did)
+  }
+
+  @ReactMethod
   override fun setLicenseKey(licenseKey: String, promise: Promise){
     Handler(Looper.getMainLooper()).post {
       BlockIDSDK.getInstance().setLicenseKey(licenseKey)
@@ -206,7 +216,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun startLiveIDScanning(dvcID: String, promise: Promise) {
+  override fun enrollLiveIDScanning(dvcID: String, promise: Promise) {
     performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, promise)
   }
 

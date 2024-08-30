@@ -67,8 +67,8 @@ const features: Feature[] = [
     id: FeatureIdentifier.Passport,
   },
   {
-    title: 'LiveID',
-    desc: 'Live ID Face Registration',
+    title: 'Enroll LiveID',
+    desc: 'Live ID Face Enrollment',
     id: FeatureIdentifier.LiveID,
   },
   {

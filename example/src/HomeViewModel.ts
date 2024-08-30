@@ -7,7 +7,7 @@ import {
   isDeviceAuthRegisterd,
   verifyDeviceAuth,
   totp,
-  startLiveIDScanning,
+  enrollLiveIDScanning,
   isLiveIDRegisterd,
   stopLiveIDScanning,
   verifyLiveIDScanning,
@@ -170,12 +170,12 @@ class HomeViewModel {
     }
   }
 
-  async startLiveIDScanning(): Promise<void> {
+  async enrollLiveIDScanning(): Promise<void> {
     try {
       if (!(await this.checkCamera())) {
         return;
       }
-      await startLiveIDScanning(AppConstants.dvcID);
+      await enrollLiveIDScanning(AppConstants.dvcID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message

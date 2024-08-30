@@ -64,8 +64,8 @@ export function isLiveIDRegisterd(): Promise<boolean> {
   return Blockidplugin.isLiveIDRegisterd();
 }
 
-export async function startLiveIDScanning(dvcID: string): Promise<void> {
-  return await Blockidplugin.startLiveIDScanning(dvcID);
+export async function enrollLiveIDScanning(dvcID: string): Promise<void> {
+  return await Blockidplugin.enrollLiveIDScanning(dvcID);
 }
 
 export async function verifyLiveIDScanning(dvcID: string): Promise<void> {
@@ -138,4 +138,12 @@ export function registerPassportWithLiveID(
   proofedBy: string
 ): Promise<boolean> {
   return Blockidplugin.registerPassportWithLiveID(data, face, proofedBy);
+}
+
+export function blockIDSDKVerion(): Promise<string> {
+  return Blockidplugin.blockIDSDKVerion();
+}
+
+export function getDID(): Promise<string> {
+  return Blockidplugin.getDID();
 }

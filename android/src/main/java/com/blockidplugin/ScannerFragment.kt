@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+
 class ScannerFragment: Fragment() {
- private lateinit var flNativeScannerView: FLNativeScannerView
+
+  private lateinit var nativeScannerView: NativeScannerView
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     super.onCreateView(inflater, container, savedInstanceState)
-    flNativeScannerView = FLNativeScannerView(requireNotNull(context))
-    return flNativeScannerView
+    nativeScannerView = NativeScannerView(requireNotNull(context))
+    return nativeScannerView
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

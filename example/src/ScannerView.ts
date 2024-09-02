@@ -11,6 +11,12 @@ export interface ScannerViewProps {
 export const ScannerView =
   requireNativeComponent<ScannerViewProps>('RNTScannerView');
 
-export const LiveIDScannerManager = requireNativeComponent<ScannerViewProps>(
-  'LiveIDScannerManager'
-);
+export const ScannerManager =
+  requireNativeComponent<ScannerViewProps>('ScannerManager');
+
+export type Layout = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};

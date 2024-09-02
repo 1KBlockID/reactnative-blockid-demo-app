@@ -18,7 +18,7 @@ import HomeViewModel from '../HomeViewModel';
 import { useNavigation, type RouteProp } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { useState } from 'react';
-import { LiveIDScannerManager, ScannerView } from '../ScannerView';
+import { ScannerManager, ScannerView, type Layout } from '../ScannerView';
 import type { RootStackParamList } from '../RootStackParam';
 
 interface StatusChangeEvent {
@@ -39,17 +39,10 @@ interface FaceInfo {
 const createFragment = (viewId: number | null) =>
   UIManager.dispatchViewManagerCommand(
     viewId,
-    // we are calling the 'create' command
-    UIManager.LiveIDScannerManager.Commands.create.toString(),
+    UIManager.ScannerManager.Commands.create.toString(),
     [viewId]
   );
 
-type Layout = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
 const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
 
 type FeatureEnrollmentScreenRouteProp = RouteProp<RootStackParamList, 'LiveID'>;
@@ -100,9 +93,10 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         Alert.alert(
           'Info',
           isVerification
-            ? event.error?.description ?? 'Failed to Verify Live ID. Try again!'
-            : event.error?.description ??
-                'Failed to register Live ID. Try again!',
+            ? (event.error?.description ??
+                'Failed to Verify Live ID. Try again!')
+            : (event.error?.description ??
+                'Failed to register Live ID. Try again!'),
           [
             {
               text: 'Ok',
@@ -145,7 +139,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         }}
       >
         {layout && Platform.OS === 'android' ? (
-          <LiveIDScannerManager
+          <ScannerManager
             style={{
               height: PixelRatio.getPixelSizeForLayoutSize(layout.height),
               width: PixelRatio.getPixelSizeForLayoutSize(layout.width),

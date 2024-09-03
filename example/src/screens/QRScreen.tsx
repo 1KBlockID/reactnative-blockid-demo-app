@@ -1,16 +1,34 @@
 import * as React from 'react';
 
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Alert,
+  findNodeHandle,
+  Platform,
+  UIManager,
+  PixelRatio,
+} from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import { useState } from 'react';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../RootStackParam';
-import { ScannerView } from '../ScannerView';
+import { ScannerManager, ScannerView, type Layout } from '../ScannerView';
 
 type QRScreenNavigationProp = StackNavigationProp<RootStackParamList, 'QRScan'>;
 type Props = {
   navigation: QRScreenNavigationProp;
 };
+
+const createFragment = (viewId: number | null) =>
+  UIManager.dispatchViewManagerCommand(
+    viewId,
+    UIManager.ScannerManager.Commands.create.toString(),
+    [viewId]
+  );
+
 const QRScreen: React.FC<Props> = ({ navigation }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const startQRScan = async () => {
@@ -29,9 +47,41 @@ const QRScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  const ref = React.useRef(null);
+
+  const [layout, setLayout] = React.useState<Layout | null>(null);
+
+  React.useEffect(() => {
+    if (Platform.OS === 'android' && layout) {
+      const viewId = findNodeHandle(ref.current);
+      createFragment(viewId);
+    }
+  }, [layout]);
+
   return (
     <View style={styles.container}>
-      <ScannerView style={styles.scannerView} />
+      <View
+        style={styles.scannerViewContainer}
+        onLayout={(event) => {
+          if (Platform.OS === 'android') {
+            const { x, y, width, height } = event.nativeEvent.layout;
+            setLayout({ x, y, width, height });
+          }
+        }}
+      >
+        {layout && Platform.OS === 'android' ? (
+          <ScannerManager
+            style={{
+              height: PixelRatio.getPixelSizeForLayoutSize(layout.height),
+              width: PixelRatio.getPixelSizeForLayoutSize(layout.width),
+            }}
+            ref={ref}
+          />
+        ) : Platform.OS === 'ios' ? (
+          <ScannerView style={styles.scannerView} ref={ref} />
+        ) : null}
+      </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={startQRScan}
@@ -86,6 +136,13 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: 'gray',
+  },
+  scannerViewContainer: {
+    width: '100%',
+    height: '70%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
   },
 });
 

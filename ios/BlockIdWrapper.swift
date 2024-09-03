@@ -45,7 +45,11 @@ import BlockID
     private var liveIDAction: LiveIDAction = .registration
 
     public func version() -> NSString {
-        return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
+        return (BlockIDSDK.sharedInstance.getVersion() ?? "") as NSString
+    }
+    
+    public func getDID() -> NSString {
+        return BlockIDSDK.sharedInstance.getDID() as NSString
     }
     
     public func setLicenseKey(licenseKey: String) -> Bool {
@@ -168,7 +172,7 @@ import BlockID
         return isLiveIDRegisterd
     }
     
-    public func startLiveIDScanning(dvcID: String, action: LiveIDAction, response: @escaping BlockIdLiveIDResponse) {
+    public func enrollLiveIDScanning(dvcID: String, action: LiveIDAction, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
         self.liveIDAction = action
         DispatchQueue.main.async { [unowned self]  in
@@ -275,8 +279,10 @@ import BlockID
         let bidTenant = BIDTenant.makeTenant(tag: tag,
                                                         community: community,
                                                         dns: dns)
-        BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
-        response(true, nil)
+        DispatchQueue.main.async {
+            BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
+            response(true, nil)
+        }
      }
 
 }

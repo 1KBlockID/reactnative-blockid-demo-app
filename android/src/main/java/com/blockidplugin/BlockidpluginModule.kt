@@ -97,6 +97,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun blockIDSDKVerion(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().version)
+  }
+
+  @ReactMethod
+  override fun getDID(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().did)
+  }
+
+  @ReactMethod
   override fun setLicenseKey(licenseKey: String, promise: Promise){
     Handler(Looper.getMainLooper()).post {
       BlockIDSDK.getInstance().setLicenseKey(licenseKey)
@@ -206,7 +216,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun startLiveIDScanning(dvcID: String, promise: Promise) {
+  override fun enrollLiveIDScanning(dvcID: String, promise: Promise) {
     performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, promise)
   }
 
@@ -252,7 +262,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             sendEvent(context!!, "onStatusChanged", params)
           }
 
-          override fun onFaceFocusChanged(isFocused: Boolean, message: String?) {
+          override fun onFaceFocusChanged(isFocused: Boolean, message: String?, errorResponse: ErrorResponse?) {
             val params = Arguments.createMap().apply {
               putString("status", "focusOnFaceChanged")
 
@@ -336,10 +346,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun startQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
-      if (mQRScannerHelper?.isRunning == true) {
-        mQRScannerHelper?.stopQRScanning()
-        mQRScannerHelper = null
-      }
+      mQRScannerHelper?.stopQRScanning()
+      mQRScannerHelper = null
 
       mQRScannerHelper =  QRScannerHelper(currentActivity, object: IOnQRScanResponseListener{
         override fun onQRScanResultResponse(p0: String?) {

@@ -16,7 +16,8 @@ export interface Spec extends TurboModule {
   verifyDeviceAuth(): Promise<boolean>;
   totp(): Promise<TotpResponse | null>;
   isLiveIDRegisterd(): Promise<boolean>;
-  startLiveIDScanning(dvcID: string): Promise<void>;
+  enrollLiveIDScanning(dvcID: string): Promise<void>;
+  verifyLiveIDScanning(dvcID: string): Promise<void>;
   stopLiveIDScanning(): Promise<void>;
   resetSDK(
     tag: string,
@@ -47,5 +48,7 @@ export interface Spec extends TurboModule {
     face: string,
     proofedBy: string
   ): Promise<boolean>;
+  blockIDSDKVerion(): Promise<string>;
+  getDID(): Promise<string>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

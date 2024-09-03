@@ -83,8 +83,16 @@ RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
     resolve(@(result));
 }
 
-RCT_EXPORT_METHOD(startLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper startLiveIDScanningWithDvcID: dvcID response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+RCT_EXPORT_METHOD(enrollLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        
+    [wrapper enrollLiveIDScanningWithDvcID: dvcID action: LiveIDActionRegistration response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+        [self sendEventWithName:@"onStatusChanged" body: response];
+    }];
+}
+
+RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        
+    [wrapper enrollLiveIDScanningWithDvcID: dvcID action: LiveIDActionVerification response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
@@ -181,6 +189,17 @@ RCT_EXPORT_METHOD(registerPassportWithLiveID:(NSDictionary *)data face:(NSString
         }
     }];
 }
+
+RCT_EXPORT_METHOD(blockIDSDKVerion: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    resolve([wrapper version]);
+}
+
+RCT_EXPORT_METHOD(getDID: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    resolve([wrapper getDID]);
+}
+
 
 // Don't compile this code when we build for the old architecture.
 #ifdef RCT_NEW_ARCH_ENABLED

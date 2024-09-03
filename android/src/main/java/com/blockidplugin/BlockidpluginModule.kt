@@ -23,6 +23,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager
+import com.onekosmos.blockid.sdk.BIDAPIs.APIManager.ErrorManager.ErrorResponse
 import com.onekosmos.blockid.sdk.BlockIDSDK
 import com.onekosmos.blockid.sdk.authentication.BIDAuthProvider
 import com.onekosmos.blockid.sdk.authentication.biometric.IBiometricResponseListener
@@ -93,6 +94,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     BlockIDSDK.initialize(context)
     this.context = context
     context.addActivityEventListener(activityEventListener)
+  }
+
+  @ReactMethod
+  override fun blockIDSDKVerion(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().version)
+  }
+
+  @ReactMethod
+  override fun getDID(promise: Promise) {
+    promise.resolve(BlockIDSDK.getInstance().did)
   }
 
   @ReactMethod
@@ -205,7 +216,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun startLiveIDScanning(dvcID: String, promise: Promise) {
+  override fun enrollLiveIDScanning(dvcID: String, promise: Promise) {
+    performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, promise)
+  }
+
+  private fun performLiveIDScanning(dvcID: String, action: LiveIDAction, promise: Promise) {
     UiThreadUtil.runOnUiThread {
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
@@ -221,25 +236,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             p3: ErrorManager.ErrorResponse?
           ) {
             if (p0 != null && p1 != null) {
-              BlockIDSDK.getInstance().setLiveID(
-                p0, null, p1,
-                p2
-              ) { status: Boolean, _, _ ->
-                if (status) {
-                  val params = Arguments.createMap().apply {
-                    putString("status", "completed")
-                  }
-                  sendEvent(context!!, "onStatusChanged", params)
-                } else {
-                  val params = Arguments.createMap().apply {
-                    putString("status", "failed")
-                  }
-                  sendEvent(context!!, "onStatusChanged", params)
-                }
+              when (action) {
+                LiveIDAction.REGISTRATION -> registerLiveID(p0, p1, p2)
+                LiveIDAction.VERIFICATION -> verifyLiveID(p0, p1, p2)
               }
             } else {
               val params = Arguments.createMap().apply {
                 putString("status", "failed")
+                putMap("error", Arguments.createMap().apply {
+                  putInt("code", p3?.code ?: -1)
+                  putString("description", p3?.message)
+                })
               }
               sendEvent(context!!, "onStatusChanged", params)
             }
@@ -255,7 +262,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             sendEvent(context!!, "onStatusChanged", params)
           }
 
-          override fun onFaceFocusChanged(isFocused: Boolean, message: String?) {
+          override fun onFaceFocusChanged(isFocused: Boolean, message: String?, errorResponse: ErrorResponse?) {
             val params = Arguments.createMap().apply {
               putString("status", "focusOnFaceChanged")
 
@@ -270,6 +277,55 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         })
       mLiveIDScannerHelper?.startLiveIDScanning(dvcID)
     }
+  }
+
+  private fun registerLiveID(p0: Bitmap, p1: String, p2: String?) {
+    BlockIDSDK.getInstance().setLiveID(
+      p0, null, p1,
+      p2
+    ) { status: Boolean, message: String?, errorResponse: ErrorResponse? ->
+      if (status) {
+        val params = Arguments.createMap().apply {
+          putString("status", "completed")
+        }
+        sendEvent(context!!, "onStatusChanged", params)
+      } else {
+        val params = Arguments.createMap().apply {
+          putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", errorResponse?.code ?: -1)
+            putString("description", errorResponse?.message)
+          })
+        }
+        sendEvent(context!!, "onStatusChanged", params)
+      }
+    }
+  }
+
+  private fun verifyLiveID(p0: Bitmap, p1: String, p2: String?) {
+    BlockIDSDK.getInstance().verifyLiveID(
+      context!!, p0, p1, p2) { status: Boolean, errorResponse: ErrorResponse? ->
+        if (status) {
+          val params = Arguments.createMap().apply {
+            putString("status", "completed")
+          }
+          sendEvent(context!!, "onStatusChanged", params)
+        } else {
+          val params = Arguments.createMap().apply {
+            putString("status", "failed")
+            putMap("error", Arguments.createMap().apply {
+              putInt("code", errorResponse?.code ?: -1)
+              putString("description", errorResponse?.message)
+            })
+           }
+          sendEvent(context!!, "onStatusChanged", params)
+        }
+      }
+  }
+
+  @ReactMethod
+  override fun verifyLiveIDScanning(dvcID: String, promise: Promise) {
+    performLiveIDScanning(dvcID, LiveIDAction.VERIFICATION, promise)
   }
 
   @ReactMethod
@@ -290,10 +346,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun startQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
-      if (mQRScannerHelper?.isRunning == true) {
-        mQRScannerHelper?.stopQRScanning()
-        mQRScannerHelper = null
-      }
+      mQRScannerHelper?.stopQRScanning()
+      mQRScannerHelper = null
 
       mQRScannerHelper =  QRScannerHelper(currentActivity, object: IOnQRScanResponseListener{
         override fun onQRScanResultResponse(p0: String?) {
@@ -615,5 +669,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   companion object {
     const val NAME = "Blockidplugin"
     const val DOC_SCAN_REQUEST = 1
+  }
+
+  private enum class LiveIDAction {
+    REGISTRATION,
+    VERIFICATION
   }
 }

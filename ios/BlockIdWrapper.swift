@@ -8,6 +8,12 @@
 import Foundation
 import BlockID
 
+
+@objc public enum LiveIDAction: Int {
+    case registration
+    case verification
+}
+
 @objcMembers public class BlockIdWrapper: NSObject {
     
     public typealias BlockIdWrapperResponse = (_ success: Bool, _ error: ErrorResponse?) -> Void
@@ -35,9 +41,15 @@ import BlockID
     private var qrScannerHelper: QRScannerHelper?
     
     private var blockIdQRScanResponse: BlockIdQRScanResponse?
+    
+    private var liveIDAction: LiveIDAction = .registration
 
     public func version() -> NSString {
-        return (BlockIDSDK.sharedInstance.getVersion() ?? "no version") as NSString
+        return (BlockIDSDK.sharedInstance.getVersion() ?? "") as NSString
+    }
+    
+    public func getDID() -> NSString {
+        return BlockIDSDK.sharedInstance.getDID() as NSString
     }
     
     public func setLicenseKey(licenseKey: String) -> Bool {
@@ -160,8 +172,9 @@ import BlockID
         return isLiveIDRegisterd
     }
     
-    public func startLiveIDScanning(dvcID: String, response: @escaping BlockIdLiveIDResponse) {
+    public func enrollLiveIDScanning(dvcID: String, action: LiveIDAction, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
+        self.liveIDAction = action
         DispatchQueue.main.async { [unowned self]  in
             liveIdScannerHelper?.stopLiveIDScanning()
             liveIdScannerHelper = nil
@@ -266,8 +279,10 @@ import BlockID
         let bidTenant = BIDTenant.makeTenant(tag: tag,
                                                         community: community,
                                                         dns: dns)
-        BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
-        response(true, nil)
+        DispatchQueue.main.async {
+            BlockIDSDK.sharedInstance.resetSDK(licenseKey: licenseKey, rootTenant: bidTenant, reason: reason)
+            response(true, nil)
+        }
      }
 
 }
@@ -293,22 +308,16 @@ extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
 extension BlockIdWrapper: LiveIDResponseDelegate {
     public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, error: BlockID.ErrorResponse?) {
         guard let face = liveIdImage, let signToken = signatureToken else {
- 
+            blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             return
         }
-        BlockIDSDK.sharedInstance.setLiveID(liveIdImage: face,
-                                            liveIdProofedBy: "",
-                                            sigToken: signToken,
-                                            livenessResult: livenessResult) { [unowned self] (status, error) in
-            if (status == true) {
-                blockIdLiveIDResponse?(["status": "completed"])
-            } else {
-                blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
-            }
+ 
+        switch liveIDAction {
+        case .registration: self.registerLiveID(image: face, token: signToken, livenessResult: livenessResult)
+        case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult)
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }
-    
  
     public func focusOnFaceChanged(isFocused: Bool?, message: String?) {
         blockIdLiveIDResponse?(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
@@ -320,8 +329,33 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
     }
     
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-        blockIdLiveIDResponse?(["status": "failed", "error": ErrorResponse(code: error?.code ?? -1, description: error?.message ?? "")])
+        blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
         liveIdScannerHelper?.stopLiveIDScanning()
+    }
+    
+    private func registerLiveID(image: UIImage, token: String, livenessResult: String?) {
+        BlockIDSDK.sharedInstance.setLiveID(liveIdImage: image,
+                                            liveIdProofedBy: "",
+                                            sigToken: token,
+                                            livenessResult: livenessResult) { [weak self] (status, error) in
+            if (status == true) {
+                self?.blockIdLiveIDResponse?(["status": "completed"])
+            } else {
+                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+            }
+        }
+    }
+    
+    private func verifyLiveID(image: UIImage, token: String, livenessResult: String?) {
+        BlockIDSDK.sharedInstance.verifyLiveID(image: image,
+                                               sigToken: token,
+                                               livenessResult: livenessResult) { [weak self] (status, error) in
+            if (status == true) {
+                self?.blockIdLiveIDResponse?(["status": "completed"])
+            } else {
+                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+            }
+        }
     }
 
 }
@@ -412,3 +446,5 @@ extension BlockIdWrapper {
     }
 
 }
+
+

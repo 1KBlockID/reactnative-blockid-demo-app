@@ -428,12 +428,14 @@ extension BlockIdWrapper {
     }
     
     private func registerDocument(obj: [String: Any], proofedBy: String, img: UIImage) {
-        BlockIDSDK.sharedInstance.registerDocument(obj: obj,
-                                                   liveIdProofedBy: proofedBy,
-                                                   faceImage: img, completion: {[unowned self] status, error in
-            
-            blockIdWrapperResponse?(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
-        })
+        DispatchQueue.main.async { [weak self] in
+            BlockIDSDK.sharedInstance.registerDocument(obj: obj,
+                                                       liveIdProofedBy: proofedBy,
+                                                       faceImage: img, completion: {[unowned self] status, error in
+                
+                self?.blockIdWrapperResponse?(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
+            })
+        }
     }
 
     private func faceData(data: String?) -> UIImage? {

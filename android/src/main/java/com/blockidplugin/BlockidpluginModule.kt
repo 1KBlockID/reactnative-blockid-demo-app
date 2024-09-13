@@ -113,8 +113,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun unLockSDK(promise: Promise) {
-    BIDAuthProvider.getInstance().unLockSDK()
+  override fun unlockSDK(promise: Promise) {
+    BIDAuthProvider.getInstance().unlockSDK()
     promise.resolve(true)
   }
 

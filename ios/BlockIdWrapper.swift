@@ -62,7 +62,6 @@ import BlockID
         return true
     }
 
-
     public func setLicenseKey(licenseKey: String) -> Bool {
         BlockIDSDK.sharedInstance.setLicenseKey(key: licenseKey)
         return true;

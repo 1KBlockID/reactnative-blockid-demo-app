@@ -148,7 +148,6 @@ export function getDID(): Promise<string> {
   return Blockidplugin.getDID();
 }
 
-
 export function lockSDK(): Promise<Boolean> {
   return Blockidplugin.lockSDK();
 }

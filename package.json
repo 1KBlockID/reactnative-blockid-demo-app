@@ -161,8 +161,5 @@
     "name": "RNBlockidpluginSpec",
     "type": "modules",
     "jsSrcsDir": "src"
-  },
-  "dependencies": {
-    "react-native-blockidplugin": "https://github.com/1KBlockID/reactnative-blockid-demo-app.git#main"
   }
 }

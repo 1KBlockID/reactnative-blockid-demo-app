@@ -210,7 +210,6 @@ RCT_EXPORT_METHOD(unlockSDK: (RCTPromiseResolveBlock)resolve
     resolve([wrapper getDID]);
 }
 
-
 // Don't compile this code when we build for the old architecture.
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:

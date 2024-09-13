@@ -57,14 +57,12 @@ import BlockID
         return true
     }
 
-      public func unlockSDK() -> Bool {
+      public func unlockSDK() {
         BIDAuthProvider.sharedInstance.unlockSDK()
-        return true
     }
 
     public func setLicenseKey(licenseKey: String) -> Bool {
         BlockIDSDK.sharedInstance.setLicenseKey(key: licenseKey)
-        return true;
     }
     
     public func isReady() -> Bool {

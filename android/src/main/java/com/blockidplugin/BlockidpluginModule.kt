@@ -106,6 +106,18 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     promise.resolve(BlockIDSDK.getInstance().did)
   }
 
+@ReactMethod
+  override fun lockSDK(promise: Promise) {
+    BIDAuthProvider.getInstance().lockSDK()
+    promise.resolve(true)
+  }
+
+  @ReactMethod
+  override fun unLockSDK(promise: Promise) {
+        BIDAuthProvider.getInstance().unLockSDK()
+    promise.resolve(true)
+  }
+
   @ReactMethod
   override fun setLicenseKey(licenseKey: String, promise: Promise){
     Handler(Looper.getMainLooper()).post {

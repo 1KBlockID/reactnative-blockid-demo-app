@@ -50,5 +50,7 @@ export interface Spec extends TurboModule {
   ): Promise<boolean>;
   blockIDSDKVerion(): Promise<string>;
   getDID(): Promise<string>;
+  lockSDK() : Promise<boolean>;
+  unlockSDK() : Promise<boolean>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

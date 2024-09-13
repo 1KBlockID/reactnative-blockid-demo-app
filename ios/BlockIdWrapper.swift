@@ -52,6 +52,17 @@ import BlockID
         return BlockIDSDK.sharedInstance.getDID() as NSString
     }
     
+    public func lockSDK() -> Bool {
+        BIDAuthProvider.sharedInstance.lockSDK()
+        return true
+    }
+
+      public func unlockSDK() -> Bool {
+        BIDAuthProvider.sharedInstance.unlockSDK()
+        return true
+    }
+
+
     public func setLicenseKey(licenseKey: String) -> Bool {
         BlockIDSDK.sharedInstance.setLicenseKey(key: licenseKey)
         return true;

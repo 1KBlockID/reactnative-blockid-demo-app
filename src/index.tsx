@@ -148,10 +148,10 @@ export function getDID(): Promise<string> {
   return Blockidplugin.getDID();
 }
 
-export function lockSDK(): Promise<Boolean> {
+export function lockSDK(): Promise<void> {
   return Blockidplugin.lockSDK();
 }
 
-export function unlockSDK(): Promise<Boolean> {
+export function unlockSDK(): Promise<void> {
   return Blockidplugin.unlockSDK();
 }

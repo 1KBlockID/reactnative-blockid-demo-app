@@ -200,14 +200,14 @@ RCT_EXPORT_METHOD(getDID: (RCTPromiseResolveBlock)resolve
     resolve([wrapper getDID]);
 }
 
-RCT_EXPORT_METHOD(lockSDK: (RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-    resolve([wrapper version]);
+RCT_EXPORT_METHOD(lockSDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper lockSDK];
+    resolve(@true);
 }
 
-RCT_EXPORT_METHOD(unlockSDK: (RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-    resolve([wrapper getDID]);
+RCT_EXPORT_METHOD(unlockSDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper unlockSDK];
+    resolve(@true);
 }
 
 // Don't compile this code when we build for the old architecture.

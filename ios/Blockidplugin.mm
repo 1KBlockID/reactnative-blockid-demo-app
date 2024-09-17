@@ -105,7 +105,9 @@ RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: 
 }
 
 RCT_EXPORT_METHOD(getUserDocument:(double)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    resolve([wrapper getUserDocumentWithType:type]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        resolve([wrapper getUserDocumentWithType:type]);
+    });
 }
 
 RCT_EXPORT_METHOD(scanDocument:(double)type resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

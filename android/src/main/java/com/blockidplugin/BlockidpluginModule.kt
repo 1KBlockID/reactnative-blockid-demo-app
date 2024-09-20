@@ -451,7 +451,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.NATIONAL_ID.value
-      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -470,7 +470,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.DL.value
-      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -489,7 +489,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.PPT.value
-      registerDocument(convertReadableMapToLinkedHashMap(data), proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -644,7 +644,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
     val type: String
       get() = when (this) {
-        NATIONAL_ID -> "NATIONAL_ID"
+        NATIONAL_ID -> RegisterDocType.NATIONAL_ID.value
         DRIVING_LICENCE -> RegisterDocType.DL.value
         PASSPORT -> RegisterDocType.PPT.value
       }

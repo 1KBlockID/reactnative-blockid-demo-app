@@ -25,7 +25,7 @@ import {
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
-import type { TotpResponse, DocType } from '../../src/WrapperModel';
+import { DocType, type TotpResponse } from '../../src/WrapperModel';
 import { Alert } from 'react-native';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Platform } from 'react-native';
@@ -217,6 +217,7 @@ class HomeViewModel {
 
   async scanDocument(type: DocType): Promise<string | null> {
     let response = await getUserDocument(type);
+
     if (response == null || response === undefined) {
       let documentStr = await scanDocument(type);
       if (documentStr != null && documentStr.length > 0) {
@@ -225,7 +226,25 @@ class HomeViewModel {
         console.warn('Scan document failed');
       }
     } else {
-      Alert.alert('Success', 'National ID is already registered');
+      var message = '';
+      switch (type) {
+        case DocType.none:
+          message = 'No document type selected';
+          break;
+        case DocType.nationalId:
+          message = 'National ID is already registered';
+          break;
+        case DocType.drivingLicence:
+          message = 'Driving Licence is already registered';
+          break;
+        case DocType.passport:
+          message = 'Passport is already registered';
+          break;
+        default:
+          message = 'Unknown document type';
+          break;
+      }
+      Alert.alert('Success', message);
     }
     return null;
   }

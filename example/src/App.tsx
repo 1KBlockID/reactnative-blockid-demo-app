@@ -34,7 +34,7 @@ export default function App() {
         <Stack.Screen
           name="Featurelist"
           component={FeatureEnrollmentScreen}
-          options={{ title: 'Feature Enrollment' }}
+          options={{ title: 'Features' }}
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
         <Stack.Screen name="LiveID" component={LiveIDScreen} />

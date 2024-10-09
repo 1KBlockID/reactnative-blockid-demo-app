@@ -9,6 +9,8 @@ import TOTPScreen from './screens/TOTPScreen';
 import LiveIDScreen from './screens/LiveIDScreen';
 import QRAuthScreen from './screens/QRAuthScreen';
 import QRScreen from './screens/QRScreen';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import customBackIcon from '../assets/Vector.png';
 
 const Theme = {
   ...DefaultTheme,
@@ -19,6 +21,30 @@ const Theme = {
     text: 'black', // Set text color
   },
 };
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'column',
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  customIcon: {
+    width: 18,
+    height: 18,
+    top: 6,
+    left: 9,
+    marginBottom: 12,
+    objectFit: 'contain',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'black',
+    right: 20,
+    bottom: 12,
+    left: 20,
+    top: 12,
+  },
+});
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -34,7 +60,17 @@ export default function App() {
         <Stack.Screen
           name="Featurelist"
           component={FeatureEnrollmentScreen}
-          options={{ title: 'Features' }}
+          options={({ navigation }) => ({
+            headerLargeTitle: true,
+            header: () => (
+              <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Image source={customBackIcon} style={styles.customIcon} />
+                </TouchableOpacity>
+                <Text style={styles.title}>Features</Text>
+              </View>
+            ),
+          })}
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
         <Stack.Screen name="LiveID" component={LiveIDScreen} />

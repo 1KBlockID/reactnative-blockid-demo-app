@@ -81,4 +81,8 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
    abstract fun blockIDSDKVerion(promise: Promise)
 
    abstract fun getDID(promise: Promise)
+
+   abstract fun lockSDK(promise: Promise)
+
+   abstract fun unLockSDK(promise: Promise)
 }

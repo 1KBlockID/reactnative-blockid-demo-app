@@ -147,3 +147,11 @@ export function blockIDSDKVerion(): Promise<string> {
 export function getDID(): Promise<string> {
   return Blockidplugin.getDID();
 }
+
+export function lockSDK(): Promise<void> {
+  return Blockidplugin.lockSDK();
+}
+
+export function unLockSDK(): Promise<void> {
+  return Blockidplugin.unLockSDK();
+}

@@ -22,6 +22,8 @@ import {
   registerDrivingLicenceWithLiveID,
   registerPassportWithLiveID,
   stopQRScanning,
+  lockSDK,
+  unLockSDK,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -51,6 +53,32 @@ class HomeViewModel {
         console.error(error); // Log the error if its type is unknown
       }
       return false;
+    }
+  }
+
+  async lockSDK(): Promise<void> {
+    try {
+      let result = await lockSDK();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+    }
+  }
+
+  async unLockSDK(): Promise<void> {
+    try {
+      let result = await unLockSDK();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
     }
   }
 

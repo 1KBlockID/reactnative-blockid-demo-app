@@ -371,9 +371,9 @@ extension BlockIdWrapper: DocumentScanDelegate {
 }
 
 private enum DocType: Int {
-    case nationalId = 1
-    case drivingLicence = 2
-    case passport = 3
+    case nationalId = 0
+    case drivingLicence = 1
+    case passport = 2
     
     var type: String {
          switch self {

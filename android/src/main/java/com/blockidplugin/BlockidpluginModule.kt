@@ -638,9 +638,9 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   enum class BIDocType(val value: Int) {
-    NATIONAL_ID(1),
-    DRIVING_LICENCE(2),
-    PASSPORT(3);
+    NATIONAL_ID(0),
+    DRIVING_LICENCE(1),
+    PASSPORT(2);
 
     val type: String
       get() = when (this) {

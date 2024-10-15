@@ -84,5 +84,5 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
 
    abstract fun lockSDK(promise: Promise)
 
-   abstract fun unlockSDK(promise: Promise)
+   abstract fun unLockSDK(promise: Promise)
 }

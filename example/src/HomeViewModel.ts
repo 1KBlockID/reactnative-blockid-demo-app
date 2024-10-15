@@ -23,7 +23,7 @@ import {
   registerPassportWithLiveID,
   stopQRScanning,
   lockSDK,
-  unlockSDK,
+  unLockSDK,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -69,9 +69,9 @@ class HomeViewModel {
     }
   }
 
-  async unlockSDK(): Promise<void> {
+  async unLockSDK(): Promise<void> {
     try {
-      let result = await unlockSDK();
+      let result = await unLockSDK();
       return result;
     } catch (error) {
       if (error instanceof Error) {

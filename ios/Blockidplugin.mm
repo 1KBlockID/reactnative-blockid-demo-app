@@ -207,8 +207,8 @@ RCT_EXPORT_METHOD(lockSDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
     resolve(@true);
 }
 
-RCT_EXPORT_METHOD(unlockSDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper unlockSDK];
+RCT_EXPORT_METHOD(unLockSDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper unLockSDK];
     resolve(@true);
 }
 

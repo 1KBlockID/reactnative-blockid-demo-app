@@ -57,8 +57,8 @@ import BlockID
       return true
     }
 
-    public func unlockSDK() {
-      BIDAuthProvider.sharedInstance.unlockSDK()
+    public func unLockSDK() {
+      BIDAuthProvider.sharedInstance.unLockSDK()
     }
     
     public func setLicenseKey(licenseKey: String) -> Bool {

@@ -152,6 +152,6 @@ export function lockSDK(): Promise<void> {
   return Blockidplugin.lockSDK();
 }
 
-export function unlockSDK(): Promise<void> {
-  return Blockidplugin.unlockSDK();
+export function unLockSDK(): Promise<void> {
+  return Blockidplugin.unLockSDK();
 }

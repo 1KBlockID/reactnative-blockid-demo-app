@@ -9,7 +9,6 @@ import {
   Image,
 } from 'react-native';
 import type { RootStackParamList } from '../RootStackParam';
-import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RouteProp } from '@react-navigation/native';
 import HomeViewModel from '../HomeViewModel';
 import { DocType } from '../../../src/WrapperModel';
@@ -20,11 +19,8 @@ import totp from '../../assets/TOTP.png';
 import idCard from '../../assets/idcard.png';
 import driverlicense from '../../assets/driverlicense.png';
 import sdk from '../../assets/sdk.png';
+import type { FeatureEnrollmentScreenNavigationProp } from '../Navprops';
 
-type FeatureEnrollmentScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Featurelist'
->;
 type FeatureEnrollmentScreenRouteProp = RouteProp<
   RootStackParamList,
   'Featurelist'

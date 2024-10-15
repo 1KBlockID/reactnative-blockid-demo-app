@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  type StackHeaderProps,
+} from '@react-navigation/stack';
 import type { RootStackParamList } from './RootStackParam';
 import HomeScreen from './screens/HomeScreen';
 import FeatureEnrollmentScreen from './screens/FeatureEnrollmentScreen';
@@ -9,8 +12,16 @@ import TOTPScreen from './screens/TOTPScreen';
 import LiveIDScreen from './screens/LiveIDScreen';
 import QRAuthScreen from './screens/QRAuthScreen';
 import QRScreen from './screens/QRScreen';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+} from 'react-native';
 import customBackIcon from '../assets/Vector.png';
+import type { FeatureEnrollmentScreenNavigationProp } from './Navprops';
 
 const Theme = {
   ...DefaultTheme,
@@ -41,12 +52,40 @@ const styles = StyleSheet.create({
     color: 'black',
     right: 20,
     bottom: 12,
-    left: 20,
+    left: 10,
     top: 12,
   },
 });
 
 const Stack = createStackNavigator<RootStackParamList>();
+
+type CustomHeaderProps = {
+  navigation: FeatureEnrollmentScreenNavigationProp;
+};
+
+// Separate wrapper for navigation handling
+const CustomHeaderWithNavigation: React.FC<StackHeaderProps> = ({
+  navigation,
+}) => {
+  return (
+    <CustomHeader
+      navigation={navigation as FeatureEnrollmentScreenNavigationProp}
+    />
+  );
+};
+// Custom Header Component
+const CustomHeader: React.FC<CustomHeaderProps> = ({ navigation }) => {
+  return (
+    <SafeAreaView>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={customBackIcon} style={styles.customIcon} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Features</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
 
 export default function App() {
   return (
@@ -60,17 +99,9 @@ export default function App() {
         <Stack.Screen
           name="Featurelist"
           component={FeatureEnrollmentScreen}
-          options={({ navigation }) => ({
-            headerLargeTitle: true,
-            header: () => (
-              <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Image source={customBackIcon} style={styles.customIcon} />
-                </TouchableOpacity>
-                <Text style={styles.title}>Features</Text>
-              </View>
-            ),
-          })}
+          options={{
+            header: CustomHeaderWithNavigation,
+          }}
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
         <Stack.Screen name="LiveID" component={LiveIDScreen} />

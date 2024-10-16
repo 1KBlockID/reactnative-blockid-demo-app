@@ -6,18 +6,21 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  Image,
 } from 'react-native';
 import type { RootStackParamList } from '../RootStackParam';
-import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RouteProp } from '@react-navigation/native';
 import HomeViewModel from '../HomeViewModel';
 import { DocType } from '../../../src/WrapperModel';
 import SpinnerOverlay from '../SpinnerOverlay';
+import liveId from '../../assets/liveid.png';
+import qr from '../../assets/qr.png';
+import totp from '../../assets/TOTP.png';
+import idCard from '../../assets/idcard.png';
+import driverlicense from '../../assets/driverlicense.png';
+import sdk from '../../assets/sdk.png';
+import type { FeatureEnrollmentScreenNavigationProp } from '../Navprops';
 
-type FeatureEnrollmentScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Featurelist'
->;
 type FeatureEnrollmentScreenRouteProp = RouteProp<
   RootStackParamList,
   'Featurelist'
@@ -43,59 +46,59 @@ interface Feature {
   title: string;
   desc: string;
   id: FeatureIdentifier;
+  icon: any;
 }
 
 const features: Feature[] = [
   {
-    title: 'TOTP',
-    desc: 'Get TOTP each valid for 30sec',
+    title: 'One-time Passcode',
+    desc: 'Generate a passcode for MFA ',
+    icon: totp,
     id: FeatureIdentifier.TOTP,
   },
   {
-    title: 'National ID enroll',
-    desc: 'Enroll your ID',
+    title: 'ID Card ',
+    desc: 'Scan and verify an ID card  ',
+    icon: idCard,
     id: FeatureIdentifier.NationalID,
   },
   {
-    title: 'Driving Licence enroll',
-    desc: 'Enroll your Driving Licence',
+    title: 'Driver’s License',
+    desc: 'Scan and verify a driver’s license',
+    icon: driverlicense,
     id: FeatureIdentifier.DrivingLicence,
   },
   {
-    title: 'Passport enroll',
-    desc: 'Enroll your Passport',
+    title: 'Passport',
+    desc: 'Scan and verify a passport',
+    icon: idCard,
     id: FeatureIdentifier.Passport,
   },
   {
-    title: 'Enroll LiveID',
-    desc: 'Live ID Face Enrollment',
+    title: 'LiveID',
+    desc: 'Enroll a face to check for liveness',
+    icon: liveId,
     id: FeatureIdentifier.LiveID,
   },
   {
-    title: 'Verify LiveID',
-    desc: 'Live ID Face Verification',
+    title: 'LiveID Verification',
+    desc: 'Present a face for comparison',
+    icon: liveId,
     id: FeatureIdentifier.LiveIDVerification,
   },
   {
-    title: 'QR Scan',
-    desc: 'QR Scan Auth with scopes',
+    title: 'Login with a QR code',
+    desc: 'Approve login from a trusted device',
+    icon: qr,
     id: FeatureIdentifier.QRScan,
   },
   {
     title: 'Reset SDK',
     desc: 'Clears all the data',
+    icon: sdk,
     id: FeatureIdentifier.Reset,
   },
 ];
-
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
 
 const Separator: React.FC = () => {
   return <View style={styles.separator} />;
@@ -194,27 +197,22 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   const renderItem = ({ item }: { item: Feature }) => {
-    const color = getRandomColor();
-    const initials =
-      item.title.length > 1
-        ? item.title.substring(0, 2).toUpperCase()
-        : item.title;
-
     return (
       <TouchableOpacity
         onPress={() => handleFeatureTap(item.id)}
         style={styles.itemContainer}
       >
-        <View style={[styles.avatar, { backgroundColor: color }]}>
-          <Text style={styles.avatarText}>{initials}</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.desc}>{item.desc}</Text>
-        </View>
-        <View style={styles.chevronContainer}>
-          <Text style={styles.chevron}>{'›'}</Text>
-        </View>
+        <>
+          <Image source={item.icon} style={styles.icon} />
+
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.desc}>{item.desc}</Text>
+          </View>
+          <View style={styles.chevronContainer}>
+            <Text style={styles.chevron}>{'›'}</Text>
+          </View>
+        </>
       </TouchableOpacity>
     );
   };
@@ -242,24 +240,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   avatarText: {
     color: '#fff',
     fontWeight: 'bold',
   },
   textContainer: {
     flex: 1,
-    marginLeft: 16,
+    marginLeft: 13,
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
   },
   desc: {
     color: 'gray',
@@ -276,6 +269,12 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'lightgray',
     marginHorizontal: 16,
+  },
+  icon: {
+    width: 30,
+    height: 20,
+
+    objectFit: 'contain',
   },
 });
 

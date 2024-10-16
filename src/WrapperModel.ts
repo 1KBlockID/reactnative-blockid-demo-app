@@ -4,7 +4,6 @@ export interface TotpResponse {
 }
 
 export enum DocType {
-  none,
   nationalId,
   drivingLicence,
   passport,

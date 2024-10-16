@@ -256,9 +256,6 @@ class HomeViewModel {
     } else {
       var message = '';
       switch (type) {
-        case DocType.none:
-          message = 'No document type selected';
-          break;
         case DocType.nationalId:
           message = 'National ID is already registered';
           break;

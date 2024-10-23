@@ -228,11 +228,12 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun enrollLiveIDScanning(dvcID: String, promise: Promise) {
-    performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, promise)
+  override fun enrollLiveIDScanning(dvcID: String, mobileSessionID: String?, mobileDocumentID: String?, promise: Promise) {
+    performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, mobileSessionID, mobileDocumentID, promise)
   }
 
-  private fun performLiveIDScanning(dvcID: String, action: LiveIDAction, promise: Promise) {
+  private fun performLiveIDScanning(dvcID: String, action: LiveIDAction, mobileSessionID: String?,
+                                    mobileDocumentID: String?, promise: Promise) {
     UiThreadUtil.runOnUiThread {
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
@@ -245,12 +246,14 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             p0: Bitmap?,
             p1: String?,
             p2: String?,
+            mobileSessionID: String?,
+            mobileDocumentID: String?,
             p3: ErrorManager.ErrorResponse?
           ) {
             if (p0 != null && p1 != null) {
               when (action) {
-                LiveIDAction.REGISTRATION -> registerLiveID(p0, p1, p2)
-                LiveIDAction.VERIFICATION -> verifyLiveID(p0, p1, p2)
+                LiveIDAction.REGISTRATION -> registerLiveID(p0, p1, p2, mobileSessionID, mobileDocumentID)
+                LiveIDAction.VERIFICATION -> verifyLiveID(p0, p1, p2, mobileSessionID, mobileDocumentID)
               }
             } else {
               val params = Arguments.createMap().apply {
@@ -287,14 +290,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             sendEvent(context!!, "onStatusChanged", params)
           }
         })
-      mLiveIDScannerHelper?.startLiveIDScanning(dvcID)
+      mLiveIDScannerHelper?.startLiveIDScanning(dvcID, mobileSessionID, mobileDocumentID)
     }
   }
 
-  private fun registerLiveID(p0: Bitmap, p1: String, p2: String?) {
+  private fun registerLiveID(
+    p0: Bitmap, p1: String, p2: String?, mobileSessionID: String?,
+    mobileDocumentID: String?,
+  ) {
     BlockIDSDK.getInstance().setLiveID(
       p0, null, p1,
-      p2
+      p2,  mobileSessionID, mobileDocumentID
     ) { status: Boolean, message: String?, errorResponse: ErrorResponse? ->
       if (status) {
         val params = Arguments.createMap().apply {
@@ -314,9 +320,13 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     }
   }
 
-  private fun verifyLiveID(p0: Bitmap, p1: String, p2: String?) {
+  private fun verifyLiveID(
+    p0: Bitmap, p1: String, p2: String?, mobileSessionID: String?,
+    mobileDocumentID: String?,
+  ) {
     BlockIDSDK.getInstance().verifyLiveID(
-      context!!, p0, p1, p2) { status: Boolean, errorResponse: ErrorResponse? ->
+      context!!, p0, p1, p2, mobileSessionID, mobileDocumentID)
+    { status: Boolean, errorResponse: ErrorResponse? ->
         if (status) {
           val params = Arguments.createMap().apply {
             putString("status", "completed")
@@ -336,8 +346,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun verifyLiveIDScanning(dvcID: String, promise: Promise) {
-    performLiveIDScanning(dvcID, LiveIDAction.VERIFICATION, promise)
+  override fun verifyLiveIDScanning(dvcID: String, mobileSessionID: String?, mobileDocumentID: String?, promise: Promise) {
+    performLiveIDScanning(dvcID, LiveIDAction.VERIFICATION, mobileSessionID, mobileDocumentID, promise)
   }
 
   @ReactMethod
@@ -456,6 +466,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   ) {
     val image = faceData(face)
@@ -463,7 +475,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.NATIONAL_ID.value
-      registerDocument(obj, proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, mobileSessionID, mobileDocumentID, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -475,6 +487,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   ) {
     val image = faceData(face)
@@ -482,7 +496,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.DL.value
-      registerDocument(obj, proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, mobileSessionID, mobileDocumentID, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -494,6 +508,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   ) {
     val image = faceData(face)
@@ -501,7 +517,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val obj = convertReadableMapToLinkedHashMap(data)
       obj["category"] = RegisterDocCategory.identity_document.name
       obj["type"] = RegisterDocType.PPT.value
-      registerDocument(obj, proofedBy, image, promise)
+      registerDocument(obj, proofedBy, image, mobileSessionID, mobileDocumentID, promise)
     } else {
       promise?.reject("Error", "obj, proofedBy, faceData mandatory")
       return
@@ -518,13 +534,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     // Keep: Required for RN built in Event Emitter Calls.
   }
 
-  private fun registerDocument(obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap, promise: Promise?) {
+  private fun registerDocument(obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap,
+                               mobileSessionID: String?, mobileDocumentID: String?, promise: Promise?) {
     BlockIDSDK.getInstance().registerDocument(activity,
       obj,
       img,
       proofedBy,
       null,
-      null
+      null,
+      mobileSessionID,
+      mobileDocumentID
     ) { p0, p1 ->
       if (p0) {
         promise?.resolve(true)

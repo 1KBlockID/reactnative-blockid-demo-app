@@ -957,7 +957,7 @@ PODS:
   - React-Mapbuffer (0.74.1):
     - glog
     - React-debug
-  - react-native-blockidplugin (1.10.60):
+  - react-native-blockidplugin (1.10.70):
     - BlockID
     - DoubleConversion
     - EllipticCurveKeyPair (= 2.0.2)
@@ -1585,7 +1585,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-blockidplugin: c25ad622329c30f888c7ce56754d3bcc259bb99d
+  react-native-blockidplugin: 1fa55439e96cf4d5182a96bd68eff455cf255c85
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-safe-area-context: 5141f11858b033636f1788b14f32eaba92cee810
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec

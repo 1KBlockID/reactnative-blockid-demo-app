@@ -83,16 +83,16 @@ RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
     resolve(@(result));
 }
 
-RCT_EXPORT_METHOD(enrollLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-        
-    [wrapper enrollLiveIDScanningWithDvcID: dvcID action: LiveIDActionRegistration response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+RCT_EXPORT_METHOD(enrollLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID  resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    
+    [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionRegistration response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
 
-RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
         
-    [wrapper enrollLiveIDScanningWithDvcID: dvcID action: LiveIDActionVerification response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+    [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerification response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
@@ -162,8 +162,8 @@ RCT_EXPORT_METHOD(authenticateUserWithScopes:(NSDictionary*)data resolve:(RCTPro
     }];
 }
 
-RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerNationalIDWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerNationalIDWithLiveIDWithData: data face: face proofedBy: proofedBy mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID response: ^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
             resolve(@(status));
         } else {
@@ -172,8 +172,8 @@ RCT_EXPORT_METHOD(registerNationalIDWithLiveID:(NSDictionary *)data face:(NSStri
     }];
 }
 
-RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerDrivingLicenceWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerDrivingLicenceWithLiveIDWithData: data face: face proofedBy: proofedBy mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID response: ^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
             resolve(@(status));
         } else {
@@ -182,8 +182,8 @@ RCT_EXPORT_METHOD(registerDrivingLicenceWithLiveID:(NSDictionary *)data face:(NS
     }];
 }
 
-RCT_EXPORT_METHOD(registerPassportWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [wrapper registerPassportWithLiveIDWithData: data face: face proofedBy: proofedBy response: ^(BOOL status, ErrorResponse * _Nullable error) {
+RCT_EXPORT_METHOD(registerPassportWithLiveID:(NSDictionary *)data face:(NSString *)face proofedBy:(NSString *)proofedBy mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    [wrapper registerPassportWithLiveIDWithData: data face: face proofedBy: proofedBy mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID response: ^(BOOL status, ErrorResponse * _Nullable error) {
         if (status) {
             resolve(@(status));
         } else {

@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (4.9.1)
   - BigInt (4.0.0)
-  - BlockID (1.10.50):
+  - BlockID (1.10.70):
     - Alamofire (~> 4.9.1)
     - BigInt (~> 4.0)
     - CryptoSwift (~> 1.6.0)
@@ -19,7 +19,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.74.1)
   - hermes-engine/Pre-built (0.74.1)
   - KeychainAccess (4.2.2)
-  - OpenSSL-Universal (1.1.2200)
+  - OpenSSL-Universal (1.1.2301)
   - PromiseKit (6.13.1):
     - PromiseKit/CorePromise (= 6.13.1)
     - PromiseKit/Foundation (= 6.13.1)
@@ -957,7 +957,7 @@ PODS:
   - React-Mapbuffer (0.74.1):
     - glog
     - React-debug
-  - react-native-blockidplugin (0.1.0):
+  - react-native-blockidplugin (1.10.60):
     - BlockID
     - DoubleConversion
     - EllipticCurveKeyPair (= 2.0.2)
@@ -982,7 +982,7 @@ PODS:
     - Web3 (= 0.4.2)
     - WebAuthnKit (= 2.0.4)
     - Yoga
-  - react-native-safe-area-context (4.10.4):
+  - react-native-safe-area-context (4.10.5):
     - React-Core
   - React-nativeconfig (0.74.1)
   - React-NativeModulesApple (0.74.1):
@@ -1213,7 +1213,7 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
-  - RNGestureHandler (2.16.2):
+  - RNGestureHandler (2.17.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1236,7 +1236,7 @@ PODS:
     - Yoga
   - RNPermissions (4.1.5):
     - React-Core
-  - RNScreens (3.31.1):
+  - RNScreens (3.32.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1262,7 +1262,7 @@ PODS:
     - React-Core
   - secp256k1.swift (0.1.4)
   - SocketRocket (0.7.0)
-  - SwiftProtobuf (1.26.0)
+  - SwiftProtobuf (1.28.2)
   - TrustWalletCore (2.5.10):
     - TrustWalletCore/Core (= 2.5.10)
   - TrustWalletCore/Core (2.5.10):
@@ -1287,7 +1287,7 @@ PODS:
   - YubiKit (4.2.0)
 
 DEPENDENCIES:
-  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.10.50`)
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.10.70`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EllipticCurveKeyPair (from `https://github.com/1KBlockID/EllipticCurveKeyPair.git`, tag `2.0.2`)
@@ -1347,7 +1347,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNPermissions (from `../../node_modules/react-native-permissions`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Web3 (from `https://github.com/Boilertalk/Web3.swift.git`, tag `0.4.2`)
@@ -1371,7 +1371,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.50
+    :tag: 1.10.70
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -1489,7 +1489,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
-    :path: "../../node_modules/react-native-permissions"
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -1506,7 +1506,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.50
+    :tag: 1.10.70
   EllipticCurveKeyPair:
     :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
     :tag: 2.0.2
@@ -1520,7 +1520,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BlockID: 59612214515ec057a1f1dfcc5f0385d3607ad9e8
+  BlockID: 2ad84f2eafb133d00200d056eaaa53082355d76e
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
@@ -1530,7 +1530,7 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 16b8530de1b383cdada1476cf52d1b52f0692cbc
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  OpenSSL-Universal: 6e1ae0555546e604dbc632a2b9a24a9c46c41ef6
+  OpenSSL-Universal: ca89c20240633a77c776082ba76b7d90f992bf77
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: efb313d8126259e9294dc4ee0002f44a6f676aba
@@ -1556,8 +1556,8 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-blockidplugin: 9e06ee28c4b238b06f7b441d550a77c0537ed7e5
-  react-native-safe-area-context: 399a5859f6acbdf67f671c69b53113f535f3b5b0
+  react-native-blockidplugin: c25ad622329c30f888c7ce56754d3bcc259bb99d
+  react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
   React-NativeModulesApple: df46ff3e3de5b842b30b4ca8a6caae6d7c8ab09f
   React-perflogger: 3d31e0d1e8ad891e43a09ac70b7b17a79773003a
@@ -1581,19 +1581,19 @@ SPEC CHECKSUMS:
   React-runtimescheduler: e2152ed146b6a35c07386fc2ac4827b27e6aad12
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
-  RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
+  RNGestureHandler: 45a92e7dca8326094bf59160576692ab271182d3
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
-  RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
+  RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  SwiftProtobuf: 5e8349171e7c2f88f5b9e683cb3cb79d1dc780b3
+  SwiftProtobuf: 4dbaffec76a39a8dc5da23b40af1a5dc01a4c02d
   TrustWalletCore: 221e7c95e4e3263c807cbbfda9a5613b6a975214
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
   WebAuthnKit: d84fc07aa8f07707085ffee8baa41b11d69403ca
   Yoga: 348f8b538c3ed4423eb58a8e5730feec50bce372
   YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
 
-PODFILE CHECKSUM: 2d065f55c21b032d67dfb5bc6239c7144e3f241d
+PODFILE CHECKSUM: 97c05c57f3c4a50d9bf5ea735cc1f7f70bbb6aec
 
 COCOAPODS: 1.15.2

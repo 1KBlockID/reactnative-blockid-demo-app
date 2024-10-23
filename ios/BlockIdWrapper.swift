@@ -53,12 +53,12 @@ import BlockID
     }
     
     public func lockSDK() -> Bool {
-      BIDAuthProvider.sharedInstance.lockSDK()
+      BIDAuthProvider.shared.lockSDK()
       return true
     }
 
     public func unLockSDK() {
-      BIDAuthProvider.sharedInstance.unLockSDK()
+      BIDAuthProvider.shared.unLockSDK()
     }
     
     public func setLicenseKey(licenseKey: String) -> Bool {
@@ -315,7 +315,7 @@ extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
 // MARK: LiveIDResponseDelegate
 
 extension BlockIdWrapper: LiveIDResponseDelegate {
-    public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, error: BlockID.ErrorResponse?) {
+    public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, mobileSessionId: String?, mobileDocumentId: String?, error: BlockID.ErrorResponse?) {
         guard let face = liveIdImage, let signToken = signatureToken else {
             blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             return
@@ -372,7 +372,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
 // MARK: DocumentScanDelegate
 
 extension BlockIdWrapper: DocumentScanDelegate {
-    public func onDocumentScanResponse(status: Bool, document: String?, error: BlockID.ErrorResponse?) {
+    public func onDocumentScanResponse(status: Bool, document: String?, sessionID: String?, error: BlockID.ErrorResponse?) {
         documentScannerViewController?.dismiss(animated: false)
         documentScannerViewController = nil
         blockIdDocumentScanResponse?(document, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))

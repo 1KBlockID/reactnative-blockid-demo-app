@@ -329,7 +329,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
  
         switch liveIDAction {
         case .registration: self.registerLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
-        case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult)
+        case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }

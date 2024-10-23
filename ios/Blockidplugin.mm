@@ -85,7 +85,7 @@ RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
 
 RCT_EXPORT_METHOD(enrollLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID  resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     
-    [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerification response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+    [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionRegistration response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }

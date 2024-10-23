@@ -1,3 +1,5 @@
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import {
   setLicenseKey,
   isReady,
@@ -203,7 +205,8 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await enrollLiveIDScanning(AppConstants.dvcID);
+      const generatedUUID = uuidv4();
+      await enrollLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_" + generatedUUID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -218,7 +221,8 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await verifyLiveIDScanning(AppConstants.dvcID);
+    const generatedUUID = uuidv4();
+      await verifyLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_verify_" + generatedUUID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -238,7 +242,7 @@ class HomeViewModel {
       AppConstants.community,
       AppConstants.dns,
       AppConstants.licenseKey,
-      'Reseting'
+      'Resetting'
     );
     return status;
   }
@@ -363,10 +367,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(idCardObj);
+              const generatedUUID = uuidv4();
               let response = await registerNationalIDWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "nationalid_with_liveid_" + generatedUUID
               );
               return response;
             }
@@ -398,10 +405,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(dlObj);
+              const generatedUUID = uuidv4();
               let response = await registerDrivingLicenceWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "dl_with_liveid_" + generatedUUID
               );
               return response;
             }
@@ -433,10 +443,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(pptObj);
+              const generatedUUID = uuidv4();
               let response = await registerPassportWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "ppt_with_liveid_" + generatedUUID
               );
               return response;
             }

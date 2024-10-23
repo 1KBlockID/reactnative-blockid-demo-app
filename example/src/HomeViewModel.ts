@@ -203,7 +203,7 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await enrollLiveIDScanning(AppConstants.dvcID);
+      await enrollLiveIDScanning(AppConstants.dvcID, null, null);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -218,7 +218,7 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await verifyLiveIDScanning(AppConstants.dvcID);
+      await verifyLiveIDScanning(AppConstants.dvcID, null, null);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -366,7 +366,9 @@ class HomeViewModel {
               let response = await registerNationalIDWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                null,
+                null
               );
               return response;
             }
@@ -401,7 +403,9 @@ class HomeViewModel {
               let response = await registerDrivingLicenceWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                null,
+                null
               );
               return response;
             }
@@ -436,7 +440,9 @@ class HomeViewModel {
               let response = await registerPassportWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                null,
+                null
               );
               return response;
             }

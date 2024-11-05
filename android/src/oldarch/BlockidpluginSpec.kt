@@ -28,9 +28,15 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
 
   abstract fun isLiveIDRegisterd(promise: Promise)
 
-  abstract fun enrollLiveIDScanning(dvcID: String, promise: Promise)
+  abstract fun enrollLiveIDScanning(dvcID: String,
+                                    mobileSessionID: String?,
+                                    mobileDocumentID: String?,
+                                    promise: Promise)
 
-  abstract fun verifyLiveIDScanning(dvcID: String, promise: Promise)
+  abstract fun verifyLiveIDScanning(dvcID: String,
+                                    mobileSessionID: String?,
+                                    mobileDocumentID: String?,
+                                    promise: Promise)
 
   abstract fun stopLiveIDScanning(promise: Promise)
 
@@ -61,6 +67,8 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   )
 
@@ -68,6 +76,8 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   )
 
@@ -75,10 +85,16 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
     data: ReadableMap?,
     face: String?,
     proofedBy: String?,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
     promise: Promise?
   )
 
    abstract fun blockIDSDKVerion(promise: Promise)
 
    abstract fun getDID(promise: Promise)
+
+   abstract fun lockSDK(promise: Promise)
+
+   abstract fun unLockSDK(promise: Promise)
 }

@@ -16,8 +16,8 @@ export interface Spec extends TurboModule {
   verifyDeviceAuth(): Promise<boolean>;
   totp(): Promise<TotpResponse | null>;
   isLiveIDRegisterd(): Promise<boolean>;
-  enrollLiveIDScanning(dvcID: string): Promise<void>;
-  verifyLiveIDScanning(dvcID: string): Promise<void>;
+  enrollLiveIDScanning(dvcID: string, mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void>;
+  verifyLiveIDScanning(dvcID: string,  mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void>;
   stopLiveIDScanning(): Promise<void>;
   resetSDK(
     tag: string,
@@ -36,19 +36,27 @@ export interface Spec extends TurboModule {
   registerNationalIDWithLiveID(
     data: Object,
     face: string,
-    proofedBy: string
+    proofedBy: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
   ): Promise<boolean>;
   registerDrivingLicenceWithLiveID(
     data: Object,
     face: string,
-    proofedBy: string
+    proofedBy: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
   ): Promise<boolean>;
   registerPassportWithLiveID(
     data: Object,
     face: string,
-    proofedBy: string
+    proofedBy: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
   ): Promise<boolean>;
   blockIDSDKVerion(): Promise<string>;
   getDID(): Promise<string>;
+  lockSDK(): Promise<void>;
+  unLockSDK(): Promise<void>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');

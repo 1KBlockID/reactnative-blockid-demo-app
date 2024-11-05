@@ -1,3 +1,5 @@
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import {
   setLicenseKey,
   isReady,
@@ -22,6 +24,8 @@ import {
   registerDrivingLicenceWithLiveID,
   registerPassportWithLiveID,
   stopQRScanning,
+  lockSDK,
+  unLockSDK,
 } from 'react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
@@ -51,6 +55,32 @@ class HomeViewModel {
         console.error(error); // Log the error if its type is unknown
       }
       return false;
+    }
+  }
+
+  async lockSDK(): Promise<void> {
+    try {
+      let result = await lockSDK();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+    }
+  }
+
+  async unLockSDK(): Promise<void> {
+    try {
+      let result = await unLockSDK();
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
     }
   }
 
@@ -175,7 +205,8 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await enrollLiveIDScanning(AppConstants.dvcID);
+      const generatedUUID = uuidv4();
+      await enrollLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_" + generatedUUID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -190,7 +221,8 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-      await verifyLiveIDScanning(AppConstants.dvcID);
+    const generatedUUID = uuidv4();
+      await verifyLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_verify_" + generatedUUID);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -210,7 +242,7 @@ class HomeViewModel {
       AppConstants.community,
       AppConstants.dns,
       AppConstants.licenseKey,
-      'Reseting'
+      'Resetting'
     );
     return status;
   }
@@ -228,9 +260,6 @@ class HomeViewModel {
     } else {
       var message = '';
       switch (type) {
-        case DocType.none:
-          message = 'No document type selected';
-          break;
         case DocType.nationalId:
           message = 'National ID is already registered';
           break;
@@ -338,10 +367,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(idCardObj);
+              const generatedUUID = uuidv4();
               let response = await registerNationalIDWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "nationalid_with_liveid_" + generatedUUID
               );
               return response;
             }
@@ -373,10 +405,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(dlObj);
+              const generatedUUID = uuidv4();
               let response = await registerDrivingLicenceWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "dl_with_liveid_" + generatedUUID
               );
               return response;
             }
@@ -408,10 +443,13 @@ class HomeViewModel {
             const proofedBy = liveidObj.proofedBy;
             if (this.isString(face) && this.isString(proofedBy)) {
               const idCardEntries = Object.entries(pptObj);
+              const generatedUUID = uuidv4();
               let response = await registerPassportWithLiveID(
                 Object.fromEntries(idCardEntries),
                 face,
-                proofedBy
+                proofedBy,
+                generatedUUID,
+                "ppt_with_liveid_" + generatedUUID
               );
               return response;
             }

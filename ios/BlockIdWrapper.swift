@@ -53,12 +53,16 @@ import BlockID
     }
     
     public func lockSDK() -> Bool {
-      BIDAuthProvider.shared.lockSDK()
-      return true
+        DispatchQueue.main.async {
+            BIDAuthProvider.shared.lockSDK()
+        }
+        return true
     }
 
     public func unLockSDK() {
-      BIDAuthProvider.shared.unLockSDK()
+        DispatchQueue.main.async {
+            BIDAuthProvider.shared.unLockSDK()
+        }
     }
     
     public func setLicenseKey(licenseKey: String) -> Bool {

@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency 'BlockID'
-  s.source = { :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag=> '1.10.70' }
+  s.source = { :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag=> '1.10.80' }
 
   s.dependency 'WebAuthnKit', '2.0.4'
   s.source = { :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.4' }

@@ -1,7 +1,7 @@
 # react-native-blockidplugin
 
-A React native plugin for a BlockID - Low code authentication & identity proofing for developers. This package is created as a Turbo module with backward compatibilty,
-considering the old Native Module used by the legacy architecture will be depcreated once new architechture becomes stable.
+A React native plugin for a BlockID - Low code authentication & identity proofing for developers. This package is created as a Turbo module with backward compatibility,
+considering the old Native Module used by the legacy architecture will be deprecated once new architecture becomes stable.
 
 ## Getting Started
 
@@ -19,7 +19,7 @@ For help getting started with BlockID sdk development, view the
 
 **Step 1:**
 
-Make sure you have node(v18.20.3) enviroment in your system:
+Make sure you have node(v18.20.3) environment in your system:
 
 ```
 https://nodejs.org/en/download/package-manager
@@ -33,7 +33,7 @@ npm install -g react-native-cli
 
 make sure you have xcode and Android studio setup in your bash/zsh profiles for mac and windows respectively
 
-we are managing dependecies via yarn, install yarn
+we are managing dependencies via yarn, install yarn
 
 ```
 npm install --global yarn
@@ -95,7 +95,7 @@ Go to podfile inside ios folder in your React native project and make below chan
   pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.4'
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'
   pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.10.70'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.10.80'
 
 
     post_install do |installer|
@@ -172,7 +172,7 @@ then Go to build.gradle inside android/app folder in your React project and make
 1. make sure minSdkVersion is 25
 ```
 
-2. add packaging options in android hirerachy
+2. add packaging options in android hierarchy
 
 ```
    packagingOptions {

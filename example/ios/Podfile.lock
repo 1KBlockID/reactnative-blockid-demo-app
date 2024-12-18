@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (4.9.1)
   - BigInt (4.0.0)
-  - BlockID (1.10.80):
+  - BlockID (1.10.90):
     - Alamofire (~> 4.9.1)
     - BigInt (~> 4.0)
     - CryptoSwift (~> 1.6.0)
@@ -957,7 +957,7 @@ PODS:
   - React-Mapbuffer (0.74.1):
     - glog
     - React-debug
-  - react-native-blockidplugin (1.10.70):
+  - react-native-blockidplugin (1.10.90):
     - BlockID
     - DoubleConversion
     - EllipticCurveKeyPair (= 2.0.2)
@@ -1310,7 +1310,7 @@ PODS:
   - YubiKit (4.2.0)
 
 DEPENDENCIES:
-  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.10.80`)
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.10.90`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EllipticCurveKeyPair (from `https://github.com/1KBlockID/EllipticCurveKeyPair.git`, tag `2.0.2`)
@@ -1396,7 +1396,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.80
+    :tag: 1.10.90
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -1535,7 +1535,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.80
+    :tag: 1.10.90
   EllipticCurveKeyPair:
     :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
     :tag: 2.0.2
@@ -1549,7 +1549,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BlockID: 3a2910829f25ce46e041eb17713c142c207efb5e
+  BlockID: 380a37346acd3398a6db35f48ecd90ada9086395
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
@@ -1585,7 +1585,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-blockidplugin: 1fa55439e96cf4d5182a96bd68eff455cf255c85
+  react-native-blockidplugin: b23a596e0bb74a40631d7ed4049c2b695f798378
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-safe-area-context: 4532f1a0c5d34a46b9324ccaaedcb5582a302b7d
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
@@ -1625,6 +1625,6 @@ SPEC CHECKSUMS:
   Yoga: 348f8b538c3ed4423eb58a8e5730feec50bce372
   YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
 
-PODFILE CHECKSUM: 212e823fc3ddaf413aed6d266a55169484123fb2
+PODFILE CHECKSUM: bb24eb9c51b1f4ee73105896e98fa275e4fbda28
 
 COCOAPODS: 1.15.2

@@ -146,7 +146,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
       <View
         style={[
           styles.scannerViewContainer,
-          { height: isPortrait ? '100%' : '70%' },
+          Platform.OS === 'android' && { height: isPortrait ? '100%' : '70%' },
         ]}
         onLayout={(event) => {
           if (Platform.OS === 'android') {
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   },
   scannerViewContainer: {
     width: '100%',
+    height: '70%',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,

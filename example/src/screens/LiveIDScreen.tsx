@@ -13,6 +13,7 @@ import {
   UIManager,
   findNodeHandle,
   Platform,
+  Dimensions,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import { useNavigation, type RouteProp } from '@react-navigation/native';
@@ -56,6 +57,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [isPortrait, setIsPortrait] = useState(true);
   const { isVerification } = route.params;
 
   const startLiveIDScanning = async () => {
@@ -128,10 +130,24 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
     }
   }, [layout]);
 
+  React.useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setIsPortrait(height >= width);
+    };
+
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    handleOrientationChange();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View
-        style={styles.scannerViewContainer}
+        style={[
+          styles.scannerViewContainer,
+          Platform.OS === 'android' && { height: isPortrait ? '100%' : '70%' },
+        ]}
         onLayout={(event) => {
           if (Platform.OS === 'android') {
             const { x, y, width, height } = event.nativeEvent.layout;
@@ -233,4 +249,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
 });
+
 export default LiveIDScreen;

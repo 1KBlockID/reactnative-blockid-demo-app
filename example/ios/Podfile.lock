@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (4.9.1)
   - BigInt (4.0.0)
-  - BlockID (1.10.90):
+  - BlockID (1.20.00):
     - Alamofire (~> 4.9.1)
     - BigInt (~> 4.0)
     - CryptoSwift (~> 1.6.0)
@@ -1310,7 +1310,7 @@ PODS:
   - YubiKit (4.2.0)
 
 DEPENDENCIES:
-  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.10.90`)
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.20.00`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EllipticCurveKeyPair (from `https://github.com/1KBlockID/EllipticCurveKeyPair.git`, tag `2.0.2`)
@@ -1396,7 +1396,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.90
+    :tag: 1.20.00
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -1535,7 +1535,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.10.90
+    :tag: 1.20.00
   EllipticCurveKeyPair:
     :git: https://github.com/1KBlockID/EllipticCurveKeyPair.git
     :tag: 2.0.2
@@ -1549,7 +1549,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BlockID: 380a37346acd3398a6db35f48ecd90ada9086395
+  BlockID: f0048ef82f1078e3605b46ada072dcc77798dd58
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
@@ -1625,6 +1625,6 @@ SPEC CHECKSUMS:
   Yoga: 348f8b538c3ed4423eb58a8e5730feec50bce372
   YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
 
-PODFILE CHECKSUM: bb24eb9c51b1f4ee73105896e98fa275e4fbda28
+PODFILE CHECKSUM: 8ea8e7361f81613b72a40a811953de4a67f2cd18
 
 COCOAPODS: 1.15.2

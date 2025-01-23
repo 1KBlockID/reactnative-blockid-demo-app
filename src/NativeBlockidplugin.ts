@@ -16,8 +16,22 @@ export interface Spec extends TurboModule {
   verifyDeviceAuth(): Promise<boolean>;
   totp(): Promise<TotpResponse | null>;
   isLiveIDRegisterd(): Promise<boolean>;
-  enrollLiveIDScanning(dvcID: string, mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void>;
-  verifyLiveIDScanning(dvcID: string,  mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void>;
+  enrollLiveIDScanning(
+    dvcID: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
+  ): Promise<void>;
+  verifyLiveIDScanning(
+    dvcID: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
+  ): Promise<void>;
+  verifyFaceWithLiveness(
+    dvcID: string,
+    mobileSessionID: string | null,
+    mobileDocumentID: string | null
+  ): Promise<void>;
+
   stopLiveIDScanning(): Promise<void>;
   resetSDK(
     tag: string,

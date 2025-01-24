@@ -12,7 +12,7 @@ import BlockID
 @objc public enum LiveIDAction: Int {
     case registration
     case verification
-    case verifyWithLiveness
+    case verifyFaceWithLiveness
 }
 
 @objcMembers public class BlockIdWrapper: NSObject {
@@ -335,7 +335,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
         switch liveIDAction {
         case .registration: self.registerLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
-        case .verifyWithLiveness: self.verifyFaceWithLiveness(image: face, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
+        case .verifyFaceWithLiveness: self.verifyFaceWithLiveness(image: face, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }

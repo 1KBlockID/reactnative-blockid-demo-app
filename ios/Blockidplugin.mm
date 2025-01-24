@@ -99,7 +99,7 @@ RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSStri
 
 RCT_EXPORT_METHOD(verifyFaceWithLiveness:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
         
-  [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerifyWithLiveness response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+  [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerifyFaceWithLiveness response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }

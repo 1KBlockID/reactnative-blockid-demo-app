@@ -64,13 +64,40 @@ export function isLiveIDRegisterd(): Promise<boolean> {
   return Blockidplugin.isLiveIDRegisterd();
 }
 
-export async function enrollLiveIDScanning(dvcID: String, 
-  mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void> {
-  return await Blockidplugin.enrollLiveIDScanning(dvcID, mobileSessionID, mobileDocumentID);
+export async function enrollLiveIDScanning(
+  dvcID: String,
+  mobileSessionID: string | null,
+  mobileDocumentID: string | null
+): Promise<void> {
+  return await Blockidplugin.enrollLiveIDScanning(
+    dvcID,
+    mobileSessionID,
+    mobileDocumentID
+  );
 }
 
-export async function verifyLiveIDScanning(dvcID: string,  mobileSessionID: string | null, mobileDocumentID: string | null): Promise<void> {
-  return await Blockidplugin.verifyLiveIDScanning(dvcID,  mobileSessionID, mobileDocumentID);
+export async function verifyLiveIDScanning(
+  dvcID: string,
+  mobileSessionID: string | null,
+  mobileDocumentID: string | null
+): Promise<void> {
+  return await Blockidplugin.verifyLiveIDScanning(
+    dvcID,
+    mobileSessionID,
+    mobileDocumentID
+  );
+}
+
+export async function verifyFaceWithLiveness(
+  dvcID: string,
+  mobileSessionID: string | null,
+  mobileDocumentID: string | null
+): Promise<void> {
+  return await Blockidplugin.verifyFaceWithLiveness(
+    dvcID,
+    mobileSessionID,
+    mobileDocumentID
+  );
 }
 
 export function stopLiveIDScanning(): Promise<void> {
@@ -124,7 +151,13 @@ export function registerNationalIDWithLiveID(
   mobileSessionID: string | null,
   mobileDocumentID: string | null
 ): Promise<boolean> {
-  return Blockidplugin.registerNationalIDWithLiveID(data, face, proofedBy, mobileSessionID, mobileDocumentID);
+  return Blockidplugin.registerNationalIDWithLiveID(
+    data,
+    face,
+    proofedBy,
+    mobileSessionID,
+    mobileDocumentID
+  );
 }
 
 export function registerDrivingLicenceWithLiveID(
@@ -134,7 +167,13 @@ export function registerDrivingLicenceWithLiveID(
   mobileSessionID: string | null,
   mobileDocumentID: string | null
 ): Promise<boolean> {
-  return Blockidplugin.registerDrivingLicenceWithLiveID(data, face, proofedBy, mobileSessionID, mobileDocumentID);
+  return Blockidplugin.registerDrivingLicenceWithLiveID(
+    data,
+    face,
+    proofedBy,
+    mobileSessionID,
+    mobileDocumentID
+  );
 }
 
 export function registerPassportWithLiveID(
@@ -144,7 +183,13 @@ export function registerPassportWithLiveID(
   mobileSessionID: string | null,
   mobileDocumentID: string | null
 ): Promise<boolean> {
-  return Blockidplugin.registerPassportWithLiveID(data, face, proofedBy, mobileSessionID, mobileDocumentID);
+  return Blockidplugin.registerPassportWithLiveID(
+    data,
+    face,
+    proofedBy,
+    mobileSessionID,
+    mobileDocumentID
+  );
 }
 
 export function blockIDSDKVerion(): Promise<string> {

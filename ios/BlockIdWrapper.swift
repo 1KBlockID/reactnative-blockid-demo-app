@@ -12,6 +12,7 @@ import BlockID
 @objc public enum LiveIDAction: Int {
     case registration
     case verification
+    case verifyFaceWithLiveness
 }
 
 @objcMembers public class BlockIdWrapper: NSObject {
@@ -334,6 +335,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
         switch liveIDAction {
         case .registration: self.registerLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
+        case .verifyFaceWithLiveness: self.verifyFaceWithLiveness(image: face, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }
@@ -380,6 +382,19 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             }
         }
     }
+  
+  private func verifyFaceWithLiveness(image: UIImage, mobileSessionId: String? = nil, mobileDocumentId: String? = nil) {
+      BlockIDSDK.sharedInstance.verifyFaceWithLiveness(image: image,
+                                             mobileSessionId: mobileSessionId,
+                                             mobileDocumentId: mobileDocumentId) { [weak self] (status, error) in
+          if (status == true) {
+              self?.blockIdLiveIDResponse?(["status": "completed"])
+          } else {
+              self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+          }
+      }
+
+  }
 
 }
 

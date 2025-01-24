@@ -116,7 +116,7 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
     const viewModel = HomeViewModel.getInstance();
 
     isVerification
-      ? viewModel.verifyLiveIDScanning()
+      ? viewModel.verifyFaceWithLiveness()
       : viewModel.enrollLiveIDScanning();
   };
 

@@ -150,6 +150,7 @@ import BlockID
         if (bidOrigin.authPage == nil) { //default to native auth without a specific method.
             bidOrigin.authPage = AccountAuthConstants.kNativeAuthScehema
         }
+      DispatchQueue.main.async {
         BlockIDSDK.sharedInstance.getScopesAttributesDic(scopes: data["scopes"] as? String ?? "",
                                                              creds: data["creds"] as? String ?? "",
                                                              origin: bidOrigin,
@@ -160,12 +161,15 @@ import BlockID
             }
             response(scopeDictionary, nil)
         }
+      }
     }
     
     public func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
-        BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: bidOrigin(data: data), userId: "") {(status, _, error) in
+      DispatchQueue.main.async { [unowned self] in
+        BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: self.bidOrigin(data: data), userId: "") {(status, _, error) in
             response(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
         }
+      }
     }
     
     // MARK: TOTP

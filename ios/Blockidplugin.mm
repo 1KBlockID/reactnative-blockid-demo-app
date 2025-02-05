@@ -97,6 +97,13 @@ RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSStri
     }];
 }
 
+RCT_EXPORT_METHOD(verifyFaceWithLiveness:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        
+  [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerifyFaceWithLiveness response:^(NSDictionary<NSString *,id> * _Nonnull response) {
+        [self sendEventWithName:@"onStatusChanged" body: response];
+    }];
+}
+
 RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: (NSString *)dns licenseKey: (NSString *)licenseKey reason: (NSString *)reason resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     
     [wrapper resetSDKWithTag:tag community:community dns:dns licenseKey:licenseKey reason:reason response:^(BOOL status, ErrorResponse * _Nullable error) {

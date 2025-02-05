@@ -13,6 +13,7 @@ import {
   isLiveIDRegisterd,
   stopLiveIDScanning,
   verifyLiveIDScanning,
+  verifyFaceWithLiveness,
   resetSDK,
   getUserDocument,
   scanDocument,
@@ -206,7 +207,11 @@ class HomeViewModel {
         return;
       }
       const generatedUUID = uuidv4();
-      await enrollLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_" + generatedUUID);
+      await enrollLiveIDScanning(
+        AppConstants.dvcID,
+        generatedUUID,
+        'liveid_' + generatedUUID
+      );
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -221,8 +226,32 @@ class HomeViewModel {
       if (!(await this.checkCamera())) {
         return;
       }
-    const generatedUUID = uuidv4();
-      await verifyLiveIDScanning(AppConstants.dvcID, generatedUUID, "liveid_verify_" + generatedUUID);
+      const generatedUUID = uuidv4();
+      await verifyLiveIDScanning(
+        AppConstants.dvcID,
+        generatedUUID,
+        'liveid_verify_' + generatedUUID
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message); // Accessing the error message
+      } else {
+        console.error(error); // Log the error if its type is unknown
+      }
+    }
+  }
+
+  async verifyFaceWithLiveness(): Promise<void> {
+    try {
+      if (!(await this.checkCamera())) {
+        return;
+      }
+      const generatedUUID = uuidv4();
+      await verifyFaceWithLiveness(
+        AppConstants.dvcID,
+        generatedUUID,
+        'liveid_verify_' + generatedUUID
+      );
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message); // Accessing the error message
@@ -373,7 +402,7 @@ class HomeViewModel {
                 face,
                 proofedBy,
                 generatedUUID,
-                "nationalid_with_liveid_" + generatedUUID
+                'nationalid_with_liveid_' + generatedUUID
               );
               return response;
             }
@@ -411,7 +440,7 @@ class HomeViewModel {
                 face,
                 proofedBy,
                 generatedUUID,
-                "dl_with_liveid_" + generatedUUID
+                'dl_with_liveid_' + generatedUUID
               );
               return response;
             }
@@ -449,7 +478,7 @@ class HomeViewModel {
                 face,
                 proofedBy,
                 generatedUUID,
-                "ppt_with_liveid_" + generatedUUID
+                'ppt_with_liveid_' + generatedUUID
               );
               return response;
             }

@@ -68,18 +68,19 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
           docScanPromise?.let { promise ->
             if (resultCode == Activity.RESULT_CANCELED) {
               if (intent != null) {
-               val error: ErrorManager.ErrorResponse?
-               val errorString = intent.getStringExtra("K_DOCUMENT_SCAN_ERROR")
-               error = BIDUtil.JSONStringToObject(errorString, ErrorManager.ErrorResponse::class.java)
-               promise.reject(error?.code?.toString() ?: "0", error?.message ?: "")
-            } else {
-               promise.reject( "0", "Document Scan Failed")
-            }
-          } else if (BIDDocumentDataHolder.hasData()) {
+                val error: ErrorManager.ErrorResponse?
+                val errorString = intent.getStringExtra("K_DOCUMENT_SCAN_ERROR")
+                error =
+                  BIDUtil.JSONStringToObject(errorString, ErrorManager.ErrorResponse::class.java)
+                promise.reject(error?.code?.toString() ?: "0", error?.message ?: "")
+              } else {
+                promise.reject("0", "Document Scan Failed")
+              }
+            } else if (BIDDocumentDataHolder.hasData()) {
               promise.resolve(BIDDocumentDataHolder.getData())
-          } else {
-              promise.reject( "0", "Document Scan Failed")
-          }
+            } else {
+              promise.reject("0", "Document Scan Failed")
+            }
             docScanPromise = null
           }
         }
@@ -119,7 +120,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun setLicenseKey(licenseKey: String, promise: Promise){
+  override fun setLicenseKey(licenseKey: String, promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       BlockIDSDK.getInstance().setLicenseKey(licenseKey)
       promise.resolve(true)
@@ -127,19 +128,19 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isReady(promise: Promise){
+  override fun isReady(promise: Promise) {
     promise.resolve(BlockIDSDK.getInstance().isReady)
   }
 
   @ReactMethod
-  override fun initiateTempWallet(promise: Promise){
+  override fun initiateTempWallet(promise: Promise) {
     BlockIDSDK.getInstance().initiateWallet()
     promise.resolve(true)
   }
 
   @ReactMethod
-  override fun registerTenantWith(tag: String, community: String,dns: String ,promise: Promise){
-    val bidTenant = BIDTenant(tag,community,dns)
+  override fun registerTenantWith(tag: String, community: String, dns: String, promise: Promise) {
+    val bidTenant = BIDTenant(tag, community, dns)
     BlockIDSDK.getInstance().registerTenant(bidTenant) { status, error, _ ->
       if (status) {
         BlockIDSDK.getInstance().commitApplicationWallet()
@@ -151,8 +152,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun enrollDeviceAuth(promise: Promise){
-    Handler(Looper.getMainLooper()).post{
+  override fun enrollDeviceAuth(promise: Promise) {
+    Handler(Looper.getMainLooper()).post {
       BIDAuthProvider.getInstance().enrollDeviceAuth(
         currentActivity,
         "Biometric authentication",
@@ -162,7 +163,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
           override fun onNonBiometricAuth(b: Boolean) {
             promise.resolve(b)
           }
-          override fun onBiometricAuthResult(success: Boolean, errorResponse: ErrorManager.ErrorResponse?) {
+
+          override fun onBiometricAuthResult(
+            success: Boolean,
+            errorResponse: ErrorManager.ErrorResponse?
+          ) {
             promise.resolve(success)
           }
         }
@@ -171,12 +176,12 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isDeviceAuthRegisterd(promise: Promise){
+  override fun isDeviceAuthRegisterd(promise: Promise) {
     promise.resolve(BlockIDSDK.getInstance().isDeviceAuthEnrolled)
   }
 
   @ReactMethod
-  override fun verifyDeviceAuth(promise: Promise){
+  override fun verifyDeviceAuth(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       BIDAuthProvider.getInstance().verifyDeviceAuth(
         currentActivity,
@@ -197,7 +202,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun totp(promise: Promise){
+  override fun totp(promise: Promise) {
     val response = BlockIDSDK.getInstance().totp
     if (response.status) {
       val totp = response.getDataObject<TOTP>()
@@ -207,16 +212,16 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
           putInt("getRemainingSecs", totp.remainingSecs.toInt())
         }
         promise.resolve(resultMap)
-      } else{
+      } else {
         promise.reject(response?.errorResponse?.message ?: "", "")
       }
-    } else{
+    } else {
       promise.reject(response?.errorResponse?.message ?: "", "")
     }
   }
 
   @ReactMethod
-  override fun isLiveIDRegisterd(promise: Promise){
+  override fun isLiveIDRegisterd(promise: Promise) {
     val response = BlockIDSDK.getInstance().isLiveIDRegistered
     promise.resolve(response)
   }
@@ -228,12 +233,25 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun enrollLiveIDScanning(dvcID: String, mobileSessionID: String?, mobileDocumentID: String?, promise: Promise) {
-    performLiveIDScanning(dvcID, LiveIDAction.REGISTRATION, mobileSessionID, mobileDocumentID, promise)
+  override fun enrollLiveIDScanning(
+    dvcID: String,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
+    promise: Promise
+  ) {
+    performLiveIDScanning(
+      dvcID,
+      LiveIDAction.REGISTRATION,
+      mobileSessionID,
+      mobileDocumentID,
+      promise
+    )
   }
 
-  private fun performLiveIDScanning(dvcID: String, action: LiveIDAction, mobileSessionID: String?,
-                                    mobileDocumentID: String?, promise: Promise) {
+  private fun performLiveIDScanning(
+    dvcID: String, action: LiveIDAction, mobileSessionID: String?,
+    mobileDocumentID: String?, promise: Promise
+  ) {
     UiThreadUtil.runOnUiThread {
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
@@ -243,17 +261,36 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         null,
         object : ILiveIDResponseListener {
           override fun onLiveIDCaptured(
-            p0: Bitmap?,
-            p1: String?,
-            p2: String?,
+            bitmap: Bitmap?,
+            signatureToken: String?,
+            livenessResult: String?,
             mobileSessionID: String?,
             mobileDocumentID: String?,
             p3: ErrorManager.ErrorResponse?
           ) {
-            if (p0 != null && p1 != null) {
+            if (bitmap != null && signatureToken != null) {
               when (action) {
-                LiveIDAction.REGISTRATION -> registerLiveID(p0, p1, p2, mobileSessionID, mobileDocumentID)
-                LiveIDAction.VERIFICATION -> verifyLiveID(p0, p1, p2, mobileSessionID, mobileDocumentID)
+                LiveIDAction.REGISTRATION -> registerLiveID(
+                  bitmap,
+                  signatureToken,
+                  livenessResult,
+                  mobileSessionID,
+                  mobileDocumentID
+                )
+
+                LiveIDAction.VERIFICATION -> verifyLiveID(
+                  bitmap,
+                  signatureToken,
+                  livenessResult,
+                  mobileSessionID,
+                  mobileDocumentID
+                )
+
+                LiveIDAction.VERIFYFACEWITHLIVENESS -> verifyFaceWithLivenessInternel(
+                  bitmap,
+                  mobileSessionID,
+                  mobileDocumentID
+                )
               }
             } else {
               val params = Arguments.createMap().apply {
@@ -277,7 +314,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             sendEvent(context!!, "onStatusChanged", params)
           }
 
-          override fun onFaceFocusChanged(isFocused: Boolean, message: String?, errorResponse: ErrorResponse?) {
+          override fun onFaceFocusChanged(
+            isFocused: Boolean,
+            message: String?,
+            errorResponse: ErrorResponse?
+          ) {
             val params = Arguments.createMap().apply {
               putString("status", "focusOnFaceChanged")
 
@@ -295,12 +336,12 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   private fun registerLiveID(
-    p0: Bitmap, p1: String, p2: String?, mobileSessionID: String?,
+    bitmap: Bitmap, signatureToken: String, livenessResult: String?, mobileSessionID: String?,
     mobileDocumentID: String?,
   ) {
     BlockIDSDK.getInstance().setLiveID(
-      p0, null, p1,
-      p2,  mobileSessionID, mobileDocumentID
+      bitmap, null, signatureToken,
+      livenessResult, mobileSessionID, mobileDocumentID
     ) { status: Boolean, message: String?, errorResponse: ErrorResponse? ->
       if (status) {
         val params = Arguments.createMap().apply {
@@ -321,43 +362,104 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   private fun verifyLiveID(
-    p0: Bitmap, p1: String, p2: String?, mobileSessionID: String?,
+    bitmap: Bitmap, signatureToken: String, livenessResult: String?, mobileSessionID: String?,
     mobileDocumentID: String?,
   ) {
     BlockIDSDK.getInstance().verifyLiveID(
-      context!!, p0, p1, p2, mobileSessionID, mobileDocumentID)
+      context!!, bitmap, signatureToken, livenessResult, mobileSessionID, mobileDocumentID
+    )
     { status: Boolean, errorResponse: ErrorResponse? ->
-        if (status) {
-          val params = Arguments.createMap().apply {
-            putString("status", "completed")
-          }
-          sendEvent(context!!, "onStatusChanged", params)
-        } else {
-          val params = Arguments.createMap().apply {
-            putString("status", "failed")
-            putMap("error", Arguments.createMap().apply {
-              putInt("code", errorResponse?.code ?: -1)
-              putString("description", errorResponse?.message)
-            })
-           }
-          sendEvent(context!!, "onStatusChanged", params)
+      if (status) {
+        val params = Arguments.createMap().apply {
+          putString("status", "completed")
         }
+        sendEvent(context!!, "onStatusChanged", params)
+      } else {
+        val params = Arguments.createMap().apply {
+          putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", errorResponse?.code ?: -1)
+            putString("description", errorResponse?.message)
+          })
+        }
+        sendEvent(context!!, "onStatusChanged", params)
       }
+    }
+  }
+
+  private fun verifyFaceWithLivenessInternel(
+    bitmap: Bitmap, mobileSessionID: String?,
+    mobileDocumentID: String?,
+  ) {
+    BlockIDSDK.getInstance().verifyFaceWithLiveness(
+      bitmap, mobileSessionID, mobileDocumentID
+    )
+    { status: Boolean, errorResponse: ErrorResponse? ->
+      if (status) {
+        val params = Arguments.createMap().apply {
+          putString("status", "completed")
+        }
+        sendEvent(context!!, "onStatusChanged", params)
+      } else {
+        val params = Arguments.createMap().apply {
+          putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", errorResponse?.code ?: -1)
+            putString("description", errorResponse?.message)
+          })
+        }
+        sendEvent(context!!, "onStatusChanged", params)
+      }
+    }
   }
 
   @ReactMethod
-  override fun verifyLiveIDScanning(dvcID: String, mobileSessionID: String?, mobileDocumentID: String?, promise: Promise) {
-    performLiveIDScanning(dvcID, LiveIDAction.VERIFICATION, mobileSessionID, mobileDocumentID, promise)
+  override fun verifyLiveIDScanning(
+    dvcID: String,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
+    promise: Promise
+  ) {
+    performLiveIDScanning(
+      dvcID,
+      LiveIDAction.VERIFICATION,
+      mobileSessionID,
+      mobileDocumentID,
+      promise
+    )
   }
 
   @ReactMethod
-  override fun stopLiveIDScanning(promise: Promise){
-      mLiveIDScannerHelper?.stopLiveIDScanning()
-      promise.resolve(true)
+  override fun verifyFaceWithLiveness(
+    dvcID: String,
+    mobileSessionID: String?,
+    mobileDocumentID: String?,
+    promise: Promise
+  ) {
+    performLiveIDScanning(
+      dvcID,
+      LiveIDAction.VERIFYFACEWITHLIVENESS,
+      mobileSessionID,
+      mobileDocumentID,
+      promise
+    )
   }
 
   @ReactMethod
-  override fun resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String, promise: Promise){
+  override fun stopLiveIDScanning(promise: Promise) {
+    mLiveIDScannerHelper?.stopLiveIDScanning()
+    promise.resolve(true)
+  }
+
+  @ReactMethod
+  override fun resetSDK(
+    tag: String,
+    community: String,
+    dns: String,
+    licenseKey: String,
+    reason: String,
+    promise: Promise
+  ) {
     Handler(Looper.getMainLooper()).post {
       val bidTenant = BIDTenant(tag, community, dns)
       BlockIDSDK.getInstance().resetSDK(licenseKey, bidTenant, reason)
@@ -371,26 +473,26 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       mQRScannerHelper?.stopQRScanning()
       mQRScannerHelper = null
 
-      mQRScannerHelper =  QRScannerHelper(currentActivity, object: IOnQRScanResponseListener{
-        override fun onQRScanResultResponse(p0: String?) {
+      mQRScannerHelper = QRScannerHelper(currentActivity, object : IOnQRScanResponseListener {
+        override fun onQRScanResultResponse(qrCodeData: String?) {
           mQRScannerHelper?.stopQRScanning()
-          p0?.let {
-            promise.resolve(p0)
+          qrCodeData?.let {
+            promise.resolve(qrCodeData)
           } ?: run {
-           promise.reject(
-                  "Error",
-                  "QRScan Failed",
-                  null
-                )
+            promise.reject(
+              "Error",
+              "QRScan Failed",
+              null
+            )
           }
         }
-      },  ScannerViewRef.bidScannerView!!)
+      }, ScannerViewRef.bidScannerView!!)
       mQRScannerHelper?.startQRScanning()
     }
   }
 
   @ReactMethod
-  override fun stopQRScanning(promise: Promise){
+  override fun stopQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       mQRScannerHelper?.stopQRScanning()
       promise.resolve(true)
@@ -398,15 +500,22 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isUrlTrustedSessionSources(url: String,promise: Promise){
+  override fun isUrlTrustedSessionSources(url: String, promise: Promise) {
     promise.resolve(BlockIDSDK.getInstance().isTrustedSessionSource(url))
   }
 
   @ReactMethod
-  override fun getScopesAttributesDic(data: ReadableMap, promise: Promise){
+  override fun getScopesAttributesDic(data: ReadableMap, promise: Promise) {
     val bidOrigin = bidOrigin(data)
 
-    BlockIDSDK.getInstance().getScopes(null, data.getString("scopes") ?: "", data.getString("creds") ?: "", bidOrigin, "0", "0") { linkedHashMap, errorResponse ->
+    BlockIDSDK.getInstance().getScopes(
+      null,
+      data.getString("scopes") ?: "",
+      data.getString("creds") ?: "",
+      bidOrigin,
+      "0",
+      "0"
+    ) { linkedHashMap, errorResponse ->
       if (linkedHashMap != null) {
         val convertedMap = convertToReadableMap(linkedHashMap)
         promise.resolve(convertedMap)
@@ -417,43 +526,45 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun authenticateUserWithScopes(data: ReadableMap, promise: Promise){
+  override fun authenticateUserWithScopes(data: ReadableMap, promise: Promise) {
     context?.let {
       BlockIDSDK.getInstance().authenticateUser(
         it, null,
         data.getString("session") ?: "", data.getString("sessionUrl") ?: "",
         data.getString("scopes") ?: "", null, data.getString("creds") ?: "",
-          bidOrigin(data), "0",
+        bidOrigin(data), "0",
         "0", BlockIDSDK.getInstance().version, null, "" //pass auth type here
-    ) { status: Boolean, _, error: ErrorManager.ErrorResponse? ->
+      ) { status: Boolean, _, error: ErrorManager.ErrorResponse? ->
         if (status) {
           promise.resolve(true)
         } else {
           promise.reject(error?.code?.toString() ?: "0", error?.message ?: "", null)
         }
-    }
+      }
     }
   }
 
 
   @ReactMethod
-  override fun getUserDocument(type: Double, promise: Promise){
+  override fun getUserDocument(type: Double, promise: Promise) {
     val docType = BIDocType.from(type.toInt())
-    val strDocuments = BIDDocumentProvider.getInstance().getUserDocument(null,docType?.type,
-      docType?.category)
+    val strDocuments = BIDDocumentProvider.getInstance().getUserDocument(
+      null, docType?.type,
+      docType?.category
+    )
     promise.resolve(strDocuments)
   }
 
   @ReactMethod
-  override fun scanDocument(type: Double, promise: Promise){
+  override fun scanDocument(type: Double, promise: Promise) {
     val docType = BIDocType.from(type.toInt())
     if (docType == null) {
-      promise.reject( "Error", "Document type not supported", null)
+      promise.reject("Error", "Document type not supported", null)
       return
     }
     docScanPromise = promise
 
-    val intent = Intent( reactApplicationContext , DocumentScannerActivity::class.java).apply {
+    val intent = Intent(reactApplicationContext, DocumentScannerActivity::class.java).apply {
       putExtra("K_DOCUMENT_SCAN_TYPE", docType.docScannerType.value)
     }
 //    documentSessionResult.launch(intent)
@@ -534,9 +645,12 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     // Keep: Required for RN built in Event Emitter Calls.
   }
 
-  private fun registerDocument(obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap,
-                               mobileSessionID: String?, mobileDocumentID: String?, promise: Promise?) {
-    BlockIDSDK.getInstance().registerDocument(activity,
+  private fun registerDocument(
+    obj: LinkedHashMap<String, Any>, proofedBy: String, img: Bitmap,
+    mobileSessionID: String?, mobileDocumentID: String?, promise: Promise?
+  ) {
+    BlockIDSDK.getInstance().registerDocument(
+      activity,
       obj,
       img,
       proofedBy,
@@ -544,11 +658,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       null,
       mobileSessionID,
       mobileDocumentID
-    ) { p0, p1 ->
-      if (p0) {
+    ) { status, errorResponse ->
+      if (status) {
         promise?.resolve(true)
       } else {
-        promise?.reject(p1?.code?.toString() ?: "0", p1?.message ?: "")
+        promise?.reject(errorResponse?.code?.toString() ?: "0", errorResponse?.message ?: "")
       }
     }
   }
@@ -587,16 +701,19 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         } ?: run {
           map[key] = "null"
         }
+
         ReadableType.Array -> readableMap.getArray(key)?.let {
           map[key] = it.toArrayList()
         } ?: run {
           map[key] = emptyList<Any>()
         }
+
         else -> throw IllegalArgumentException("Unsupported type for key: $key")
       }
     }
     return map
   }
+
   private fun faceData(data: String?): Bitmap? {
     if (data == null) {
       return null
@@ -612,7 +729,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
   }
 
-  private  fun bidOrigin(data: ReadableMap): BIDOrigin {
+  private fun bidOrigin(data: ReadableMap): BIDOrigin {
     val bidOrigin = BIDOrigin()
     bidOrigin.api = data.getString("api") ?: ""
     bidOrigin.tag = data.getString("tag") ?: ""
@@ -620,7 +737,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     bidOrigin.community = data.getString("community") ?: ""
     bidOrigin.publicKey = data.getString("publicKey") ?: ""
     bidOrigin.session = data.getString("session") ?: ""
-    bidOrigin.authPage = data.getString("authPage") ?:  AccountAuthConstants.K_NATIVE_AUTH_SCHEMA
+    bidOrigin.authPage = data.getString("authPage") ?: AccountAuthConstants.K_NATIVE_AUTH_SCHEMA
     return bidOrigin
   }
 
@@ -633,8 +750,14 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val value = jsonObject.get(key)
 
       when (value) {
-        is JSONObject -> map.putMap(key, jsonToWritableMap(value)) // Recursive conversion for nested JSONObjects
-        is JSONArray -> map.putArray(key, jsonToWritableArray(value)) // Convert JSONArray to WritableArray
+        is JSONObject -> map.putMap(
+          key,
+          jsonToWritableMap(value)
+        ) // Recursive conversion for nested JSONObjects
+        is JSONArray -> map.putArray(
+          key,
+          jsonToWritableArray(value)
+        ) // Convert JSONArray to WritableArray
         is String -> map.putString(key, value)
         is Int -> map.putInt(key, value)
         is Double -> map.putDouble(key, value)
@@ -704,6 +827,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   private enum class LiveIDAction {
     REGISTRATION,
-    VERIFICATION
+    VERIFICATION,
+    VERIFYFACEWITHLIVENESS
   }
 }

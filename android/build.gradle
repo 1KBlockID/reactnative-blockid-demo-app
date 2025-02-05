@@ -138,7 +138,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.10.90.676A5D2F'
+  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.20.00.679B448F'
 }
 
 if (isNewArchitectureEnabled()) {

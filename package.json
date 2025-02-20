@@ -1,6 +1,6 @@
 {
   "name": "react-native-blockidplugin",
-  "version": "1.20.00",
+  "version": "1.20.10",
   "description": "React Native BlockId Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -161,5 +161,10 @@
     "name": "RNBlockidpluginSpec",
     "type": "modules",
     "jsSrcsDir": "src"
+  },
+  "dependencies": {
+    "react-native-get-random-values": "^1.11.0",
+    "react-native-permissions": "^5.2.5",
+    "react-native-vector-icons": "^10.2.0"
   }
 }

@@ -1,5 +1,9 @@
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
+    ext {
+        agp_version = '8.8.0'
+    }
+
+    // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["Blockidplugin_kotlinVersion"]
 
   repositories {
@@ -8,7 +12,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:$agp_version"
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
@@ -82,8 +86,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
   }
 
   sourceSets {
@@ -138,7 +142,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.20.20.67DC1B37'
+  implementation 'com.onekosmos.blockid.sdk:blockidsdk:1.20.30.67DDABBF'
 }
 
 if (isNewArchitectureEnabled()) {

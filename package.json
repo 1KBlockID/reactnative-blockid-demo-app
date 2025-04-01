@@ -1,6 +1,6 @@
 {
   "name": "react-native-blockidplugin",
-  "version": "1.20.10",
+  "version": "1.20.20",
   "description": "React Native BlockId Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

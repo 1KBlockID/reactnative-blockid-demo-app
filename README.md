@@ -169,7 +169,7 @@ Go to build.gradle inside android/app folder in your React project and make belo
 then Go to build.gradle inside android/app folder in your React project and make below changes
 
 ```
-1. make sure minSdkVersion is 25
+1. make sure minSdkVersion is 26
 ```
 
 2. add packaging options in android hierarchy

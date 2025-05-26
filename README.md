@@ -95,7 +95,7 @@ Go to podfile inside ios folder in your React native project and make below chan
   pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.4'
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'
   pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.20'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.30'
 
 
     post_install do |installer|
@@ -114,8 +114,8 @@ Go to podfile inside ios folder in your React native project and make below chan
          # enable simulator support
           config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
 
-          # set iOS Deployment Target to 13.0
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
+          # set iOS Deployment Target to 15.0
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.0
 
           if dynamic_frameworks.include?(target.name)
             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
@@ -169,7 +169,7 @@ Go to build.gradle inside android/app folder in your React project and make belo
 then Go to build.gradle inside android/app folder in your React project and make below changes
 
 ```
-1. make sure minSdkVersion is 25
+1. make sure minSdkVersion is 26
 ```
 
 2. add packaging options in android hierarchy
@@ -193,7 +193,6 @@ then Go to build.gradle inside android/app folder in your React project and make
 ```
 configurations.configureEach {
     exclude group: 'org.bouncycastle', module: 'bcprov-jdk15to18'
-    exclude group: 'org.bouncycastle', module: 'bcutil-jdk15on'
 }
 ```
 

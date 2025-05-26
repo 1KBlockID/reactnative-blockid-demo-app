@@ -5,7 +5,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.0'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -45,7 +45,7 @@ target 'BlockidpluginExample' do
   pod 'WebAuthnKit', :git => 'https://github.com/1KBlockID/WebAuthnKit-iOS.git', :tag => '2.0.4'
   pod 'EllipticCurveKeyPair', :git => 'https://github.com/1KBlockID/EllipticCurveKeyPair.git', :tag => '2.0.2'
   pod 'Web3', :git => 'https://github.com/Boilertalk/Web3.swift.git', :tag => '0.4.2'
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.20'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.30'
 
   target 'BlockidpluginExampleTests' do
     inherit! :complete
@@ -68,8 +68,8 @@ target 'BlockidpluginExample' do
          # enable simulator support
           config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
       
-          # set iOS Deployment Target to 13.0
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 13.0
+          # set iOS Deployment Target to 15.0
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.0
 
           if dynamic_frameworks.include?(target.name)
             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'

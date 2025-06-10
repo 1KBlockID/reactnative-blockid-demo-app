@@ -501,7 +501,9 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
   @ReactMethod
   override fun isUrlTrustedSessionSources(url: String, promise: Promise) {
-    promise.resolve(BlockIDSDK.getInstance().isTrustedSessionSource(url))
+    BlockIDSDK.getInstance().isTrustedSessionSource(url) { isTrusted: Boolean ->
+      promise.resolve(isTrusted)
+    }
   }
 
   @ReactMethod

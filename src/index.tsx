@@ -48,8 +48,8 @@ export function isReady(): Promise<boolean> {
 export function enrollDeviceAuth(): Promise<boolean> {
   return Blockidplugin.enrollDeviceAuth();
 }
-export function isDeviceAuthRegisterd(): Promise<boolean> {
-  return Blockidplugin.isDeviceAuthRegisterd();
+export function isDeviceAuthRegistered(): Promise<boolean> {
+  return Blockidplugin.isDeviceAuthRegistered();
 }
 
 export function verifyDeviceAuth(): Promise<boolean> {
@@ -60,8 +60,8 @@ export async function totp(): Promise<TotpResponse | null> {
   return await Blockidplugin.totp();
 }
 
-export function isLiveIDRegisterd(): Promise<boolean> {
-  return Blockidplugin.isLiveIDRegisterd();
+export function isLiveIDRegistered(): Promise<boolean> {
+  return Blockidplugin.isLiveIDRegistered();
 }
 
 export async function enrollLiveIDScanning(

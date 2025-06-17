@@ -33,8 +33,8 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
 
   const handleFeatureEnrollment = async () => {
     const viewModel = HomeViewModel.getInstance();
-    let isDeviceAuthRegisterd = await viewModel.isDeviceAuthRegisterd();
-    if (!isDeviceAuthRegisterd) {
+    let isDeviceAuthRegistered = await viewModel.isDeviceAuthRegistered();
+    if (!isDeviceAuthRegistered) {
       let isEnrolled = await viewModel.enrollDeviceAuth();
       if (isEnrolled) {
         navigation.navigate('Featurelist', { handler: setIsRegistered });

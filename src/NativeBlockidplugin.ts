@@ -12,10 +12,10 @@ export interface Spec extends TurboModule {
   ): Promise<boolean>;
   isReady(): Promise<boolean>;
   enrollDeviceAuth(): Promise<boolean>;
-  isDeviceAuthRegisterd(): Promise<boolean>;
+  isDeviceAuthRegistered(): Promise<boolean>;
   verifyDeviceAuth(): Promise<boolean>;
   totp(): Promise<TotpResponse | null>;
-  isLiveIDRegisterd(): Promise<boolean>;
+  isLiveIDRegistered(): Promise<boolean>;
   enrollLiveIDScanning(
     dvcID: string,
     mobileSessionID: string | null,

@@ -6,11 +6,11 @@ import {
   initiateTempWallet,
   registerTenantWith,
   enrollDeviceAuth,
-  isDeviceAuthRegisterd,
+  isDeviceAuthRegistered,
   verifyDeviceAuth,
   totp,
   enrollLiveIDScanning,
-  isLiveIDRegisterd,
+  isLiveIDRegistered,
   stopLiveIDScanning,
   verifyLiveIDScanning,
   verifyFaceWithLiveness,
@@ -145,9 +145,9 @@ class HomeViewModel {
     }
   }
 
-  async isDeviceAuthRegisterd(): Promise<boolean> {
+  async isDeviceAuthRegistered(): Promise<boolean> {
     try {
-      let result = await isDeviceAuthRegisterd();
+      let result = await isDeviceAuthRegistered();
       return result;
     } catch (error) {
       if (error instanceof Error) {
@@ -187,9 +187,9 @@ class HomeViewModel {
     }
   }
 
-  async isLiveIDRegisterd(): Promise<boolean> {
+  async isLiveIDRegistered(): Promise<boolean> {
     try {
-      let result = await isLiveIDRegisterd();
+      let result = await isLiveIDRegistered();
       return result;
     } catch (error) {
       if (error instanceof Error) {

@@ -87,7 +87,7 @@ import BlockID
          }
     }
     
-    public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse)  {
+    public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse) {
         let bidTenant = BIDTenant.makeTenant(tag: tag, community: community, dns: dns)
         BlockIDSDK.sharedInstance.registerTenant(tenant: bidTenant) { (status, error, _) in
             if !status, let error = error  {
@@ -141,8 +141,10 @@ import BlockID
         }
     }
     
-    public func isUrlTrustedSessionSources(url: String) -> Bool {
-        return BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url)
+    public func isUrlTrustedSessionSources(url: String, completion: @escaping (Bool) -> Void) {
+        BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url) { isTrusted in
+          completion(isTrusted)
+        }
     }
     
     public func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {

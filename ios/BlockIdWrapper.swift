@@ -8,7 +8,6 @@
 import Foundation
 import BlockID
 
-
 @objc public enum LiveIDAction: Int {
     case registration
     case verification

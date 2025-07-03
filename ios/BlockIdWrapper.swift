@@ -87,7 +87,7 @@ import BlockID
          }
     }
 
-    public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse)  {
+    public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse) {
         let bidTenant = BIDTenant.makeTenant(tag: tag, community: community, dns: dns)
         BlockIDSDK.sharedInstance.registerTenant(tenant: bidTenant) { (status, error, _) in
             if !status, let error = error  {
@@ -141,8 +141,10 @@ import BlockID
         }
     }
 
-    public func isUrlTrustedSessionSources(url: String) -> Bool {
-        return BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url)
+    public func isUrlTrustedSessionSources(url: String, completion: @escaping (Bool) -> Void) {
+        BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url) { isTrusted in
+          completion(isTrusted)
+        }
     }
 
     public func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {
@@ -185,9 +187,9 @@ import BlockID
 
     // MARK: LiveID Scan
 
-    public func isLiveIDRegistered() -> Bool {
-        let isLiveIDRegistered = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
-        return isLiveIDRegistered
+    public func isLiveIDRegisterd() -> Bool {
+        let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
+        return isLiveIDRegisterd
     }
 
     public func enrollLiveIDScanning(dvcID: String, mobileSessionId: String?, mobileDocumentId: String?, action: LiveIDAction, response: @escaping BlockIdLiveIDResponse) {

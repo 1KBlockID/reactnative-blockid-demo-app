@@ -149,8 +149,9 @@ RCT_EXPORT_METHOD(stopQRScanning:(RCTPromiseResolveBlock)resolve reject:(RCTProm
 }
 
 RCT_EXPORT_METHOD(isUrlTrustedSessionSources:(NSString*)url resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    bool result = [wrapper isUrlTrustedSessionSourcesWithUrl:url];
-    resolve(@(result));
+    [wrapper isUrlTrustedSessionSourcesWithUrl:url completion:^(BOOL isTrusted) {
+        resolve(@(isTrusted));
+    }];
 }
 
 RCT_EXPORT_METHOD(getScopesAttributesDic:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

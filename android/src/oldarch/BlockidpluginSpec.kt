@@ -26,7 +26,7 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
 
   abstract fun totp(promise: Promise)
 
-  abstract fun isLiveIDRegistered(promise: Promise)
+  abstract fun isLiveIDRegisterd(promise: Promise)
 
   abstract fun enrollLiveIDScanning(
     dvcID: String,

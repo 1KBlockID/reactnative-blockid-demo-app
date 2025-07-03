@@ -77,9 +77,9 @@ RCT_EXPORT_METHOD(totp: (RCTPromiseResolveBlock)resolve
 
 }
 
-RCT_EXPORT_METHOD(isLiveIDRegistered: (RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-    bool result = [wrapper isLiveIDRegistered];
+    bool result = [wrapper isLiveIDRegisterd];
     resolve(@(result));
 }
 

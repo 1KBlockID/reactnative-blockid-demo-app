@@ -10,7 +10,7 @@ import {
   verifyDeviceAuth,
   totp,
   enrollLiveIDScanning,
-  isLiveIDRegistered,
+  isLiveIDRegisterd,
   stopLiveIDScanning,
   verifyLiveIDScanning,
   verifyFaceWithLiveness,
@@ -187,9 +187,9 @@ class HomeViewModel {
     }
   }
 
-  async isLiveIDRegistered(): Promise<boolean> {
+  async isLiveIDRegisterd(): Promise<boolean> {
     try {
-      let result = await isLiveIDRegistered();
+      let result = await isLiveIDRegisterd();
       return result;
     } catch (error) {
       if (error instanceof Error) {

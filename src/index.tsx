@@ -60,8 +60,8 @@ export async function totp(): Promise<TotpResponse | null> {
   return await Blockidplugin.totp();
 }
 
-export function isLiveIDRegistered(): Promise<boolean> {
-  return Blockidplugin.isLiveIDRegistered();
+export function isLiveIDRegisterd(): Promise<boolean> {
+  return Blockidplugin.isLiveIDRegisterd();
 }
 
 export async function enrollLiveIDScanning(

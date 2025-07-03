@@ -166,9 +166,9 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         }
         break;
       case FeatureIdentifier.LiveID:
-        let isLiveIDRegistered =
-          await HomeViewModel.getInstance().isLiveIDRegistered();
-        if (isLiveIDRegistered) {
+        let isLiveIDRegisterd =
+          await HomeViewModel.getInstance().isLiveIDRegisterd();
+        if (isLiveIDRegisterd) {
           Alert.alert('Info', 'LiveID is already registered.');
         } else {
           navigation.navigate('LiveID', { isVerification: false });
@@ -176,7 +176,7 @@ const FeatureEnrollmentScreen: React.FC<Props> = ({ navigation, route }) => {
         break;
       case FeatureIdentifier.LiveIDVerification:
         let isLiveidRegistered =
-          await HomeViewModel.getInstance().isLiveIDRegistered();
+          await HomeViewModel.getInstance().isLiveIDRegisterd();
         if (isLiveidRegistered) {
           navigation.navigate('LiveID', { isVerification: true });
         } else {

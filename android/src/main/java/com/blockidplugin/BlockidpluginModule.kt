@@ -221,7 +221,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isLiveIDRegistered(promise: Promise) {
+  override fun isLiveIDRegisterd(promise: Promise) {
     val response = BlockIDSDK.getInstance().isLiveIDRegistered
     promise.resolve(response)
   }

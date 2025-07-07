@@ -20,7 +20,7 @@ abstract class BlockidpluginSpec internal constructor(context: ReactApplicationC
 
   abstract fun enrollDeviceAuth(promise: Promise)
 
-  abstract fun isDeviceAuthRegisterd(promise: Promise)
+  abstract fun isDeviceAuthRegistered(promise: Promise)
 
   abstract fun verifyDeviceAuth(promise: Promise)
 

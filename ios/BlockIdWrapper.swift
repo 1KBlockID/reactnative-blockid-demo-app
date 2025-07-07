@@ -8,7 +8,6 @@
 import Foundation
 import BlockID
 
-
 @objc public enum LiveIDAction: Int {
     case registration
     case verification
@@ -16,43 +15,43 @@ import BlockID
 }
 
 @objcMembers public class BlockIdWrapper: NSObject {
-    
+
     public typealias BlockIdWrapperResponse = (_ success: Bool, _ error: ErrorResponse?) -> Void
 
     public typealias BlockIdTOTPResponse = (_ response: [String: Any]?, _ error: ErrorResponse?) -> Void
-    
+
     public typealias BlockIdLiveIDResponse = (_ response: [String: Any]) -> Void
-    
+
     public typealias BlockIdDocumentScanResponse = (_ response: String?, _ error: ErrorResponse?) -> Void
-    
+
     public typealias BlockIdQRScanResponse = (_ response: String?) -> Void
-    
+
     public typealias BlockIdWrapperDataResponse = (_ response: [String: Any]?, _ error: ErrorResponse?) -> Void
 
     private var liveIdScannerHelper: LiveIDScannerHelper?
-    
+
     private var blockIdLiveIDResponse: BlockIdLiveIDResponse?
-    
+
     private var documentScannerViewController: DocumentScannerViewController?
-    
+
     private var blockIdDocumentScanResponse: BlockIdDocumentScanResponse?
-    
+
     private var blockIdWrapperResponse: BlockIdWrapperResponse?
 
     private var qrScannerHelper: QRScannerHelper?
-    
+
     private var blockIdQRScanResponse: BlockIdQRScanResponse?
-    
+
     private var liveIDAction: LiveIDAction = .registration
 
     public func version() -> NSString {
         return (BlockIDSDK.sharedInstance.getVersion() ?? "") as NSString
     }
-    
+
     public func getDID() -> NSString {
         return BlockIDSDK.sharedInstance.getDID() as NSString
     }
-    
+
     public func lockSDK() -> Bool {
         DispatchQueue.main.async {
             BIDAuthProvider.shared.lockSDK()
@@ -65,18 +64,18 @@ import BlockID
             BIDAuthProvider.shared.unLockSDK()
         }
     }
-    
+
     public func setLicenseKey(licenseKey: String) -> Bool {
         BlockIDSDK.sharedInstance.setLicenseKey(key: licenseKey)
         return true;
     }
-    
+
     public func isReady() -> Bool {
         return BlockIDSDK.sharedInstance.isReady()
     }
-    
+
     // MARK: Tenant Registration
-    
+
     public func initiateTempWallet(response: @escaping BlockIdWrapperResponse) {
         guard !BlockIDSDK.sharedInstance.isReady() else {
             response(false, ErrorResponse(code: -1, description: "BlockIDSDK is not ready."))
@@ -86,7 +85,7 @@ import BlockID
             response(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
          }
     }
-    
+
     public func registerTenant(tag: String, community: String, dns: String, response: @escaping BlockIdWrapperResponse) {
         let bidTenant = BIDTenant.makeTenant(tag: tag, community: community, dns: dns)
         BlockIDSDK.sharedInstance.registerTenant(tenant: bidTenant) { (status, error, _) in
@@ -98,9 +97,9 @@ import BlockID
             response(true, nil)
          }
     }
-    
+
     // MARK: Device Auth Registration
-    
+
     public func enrollDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
         DispatchQueue.main.async {
             BIDAuthProvider.shared.enrollDeviceAuth { status, _, message in
@@ -108,12 +107,12 @@ import BlockID
             }
         }
     }
-    
-    public func isDeviceAuthRegisterd() -> Bool {
-        let isDeviceAuthRegisterd = BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()
-        return isDeviceAuthRegisterd
+
+    public func isDeviceAuthRegistered() -> Bool {
+      let isDeviceAuthRegistered = BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()
+        return isDeviceAuthRegistered
     }
-    
+
     public func verifyDeviceAuth(response: @escaping BlockIdWrapperResponse)  {
         DispatchQueue.main.async {
             BIDAuthProvider.shared.verifyDeviceAuth { (status, _, message) in
@@ -134,19 +133,19 @@ import BlockID
             }
         }
     }
-    
+
     public func stopQRScanning() {
         DispatchQueue.main.async { [unowned self]  in
             qrScannerHelper?.stopQRScanning()
         }
     }
-    
+
     public func isUrlTrustedSessionSources(url: String, completion: @escaping (Bool) -> Void) {
         BlockIDSDK.sharedInstance.isTrustedSessionSources(sessionUrl: url) { isTrusted in
           completion(isTrusted)
         }
     }
-    
+
     public func getScopesAttributesDic(data: [String: Any], response: @escaping BlockIdWrapperDataResponse) {
         let bidOrigin = bidOrigin(data: data)
         if (bidOrigin.authPage == nil) { //default to native auth without a specific method.
@@ -165,7 +164,7 @@ import BlockID
         }
       }
     }
-    
+
     public func authenticateUserWithScopes(data: [String: Any], response: @escaping BlockIdWrapperResponse) {
       DispatchQueue.main.async { [unowned self] in
         BlockIDSDK.sharedInstance.authenticateUser(sessionId: data["session"] as? String ?? "", sessionURL: data["sessionUrl"] as? String ?? "", creds: data["creds"] as? String ?? "", scopes: data["scopes"] as? String ?? "", lat: 0, lon: 0, origin: self.bidOrigin(data: data), userId: "") {(status, _, error) in
@@ -173,9 +172,9 @@ import BlockID
         }
       }
     }
-    
+
     // MARK: TOTP
-    
+
     public func totp(totpResponse: @escaping BlockIdTOTPResponse)  {
         let result = BlockIDSDK.sharedInstance.getTOTP()
         if (result.error == nil && result.totp != nil) {
@@ -184,14 +183,14 @@ import BlockID
             totpResponse(nil, ErrorResponse(code: result.error?.code ?? -1, description: result.error?.message ?? ""))
         }
     }
-    
+
     // MARK: LiveID Scan
-    
+
     public func isLiveIDRegisterd() -> Bool {
         let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
         return isLiveIDRegisterd
     }
-    
+
     public func enrollLiveIDScanning(dvcID: String, mobileSessionId: String?, mobileDocumentId: String?, action: LiveIDAction, response: @escaping BlockIdLiveIDResponse) {
         blockIdLiveIDResponse = response
         self.liveIDAction = action
@@ -204,20 +203,20 @@ import BlockID
             liveIdScannerHelper?.startLiveIDScanning(dvcID: dvcID, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         }
     }
-    
+
     public func stopLiveIDScanning() {
         DispatchQueue.main.async { [unowned self]  in
             liveIdScannerHelper?.stopLiveIDScanning()
         }
     }
-    
+
     public func bidScannerView() -> BlockID.BIDScannerView {
         let scannerView = BlockID.BIDScannerView();
         return scannerView
     }
 
     // MARK: Document Scan
-    
+
     public func getUserDocument(type: Int) -> String? {
         let docType = DocType(rawValue: type)
         guard let docType = docType else {
@@ -228,7 +227,7 @@ import BlockID
                                                                       category: docType.category)
         return strDocuments
     }
-    
+
     public func scanDocument(type: Int, response: @escaping BlockIdDocumentScanResponse) {
         blockIdDocumentScanResponse = response
 
@@ -237,7 +236,7 @@ import BlockID
             response(nil, ErrorResponse(code: -1, description: "Document type should not be nil"))
             return
         }
-        
+
         DispatchQueue.main.async {[unowned self] in
 
         guard let rootViewController = getRootViewController() else {
@@ -259,7 +258,7 @@ import BlockID
             }
         }
     }
-    
+
     public func registerNationalIDWithLiveID(data: [String: Any]?, face: String, proofedBy: String,  mobileSessionId: String?, mobileDocumentId: String?, response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
@@ -272,7 +271,7 @@ import BlockID
                          mobileSessionId: mobileSessionId,
                          mobileDocumentId: mobileDocumentId)
     }
-    
+
     public func registerDrivingLicenceWithLiveID(data: [String: Any]?, face: String, proofedBy: String, mobileSessionId: String?, mobileDocumentId: String?, response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
@@ -285,7 +284,7 @@ import BlockID
                          mobileSessionId: mobileSessionId,
                          mobileDocumentId: mobileDocumentId)
     }
-    
+
     public func registerPassportWithLiveID(data: [String: Any]?, face: String, proofedBy: String, mobileSessionId: String?, mobileDocumentId: String?, response: @escaping BlockIdWrapperResponse) {
         guard var obj = data, let image = faceData(data: face) else {
             response(false, ErrorResponse(code: -1, description: "data and face cannot be nil"))
@@ -300,7 +299,7 @@ import BlockID
     }
 
     // MARK: Reset SDK
-    
+
     public func resetSDK(tag: String, community: String, dns: String, licenseKey: String, reason: String,  response: @escaping BlockIdWrapperResponse)  {
         let bidTenant = BIDTenant.makeTenant(tag: tag,
                                                         community: community,
@@ -337,7 +336,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
             return
         }
- 
+
         switch liveIDAction {
         case .registration: self.registerLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
         case .verification: self.verifyLiveID(image: face, token: signToken, livenessResult: livenessResult, mobileSessionId: mobileSessionId, mobileDocumentId: mobileDocumentId)
@@ -345,7 +344,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
         }
         liveIdScannerHelper?.stopLiveIDScanning()
     }
- 
+
     public func focusOnFaceChanged(isFocused: Bool?, message: String?) {
         blockIdLiveIDResponse?(["status": "focusOnFaceChanged", "info": ["isFocused": isFocused ?? false, "message": message ?? "" ]])
      }
@@ -354,12 +353,12 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
         liveIdScannerHelper?.stopLiveIDScanning()
         blockIdLiveIDResponse?(["status": "faceLivenessCheckStarted"])
     }
-    
+
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
         blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
         liveIdScannerHelper?.stopLiveIDScanning()
     }
-    
+
     private func registerLiveID(image: UIImage, token: String, livenessResult: String?, mobileSessionId: String? = nil, mobileDocumentId: String? = nil) {
         BlockIDSDK.sharedInstance.setLiveID(liveIdImage: image,
                                             liveIdProofedBy: "",
@@ -374,7 +373,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             }
         }
     }
-    
+
     private func verifyLiveID(image: UIImage, token: String, livenessResult: String?, mobileSessionId: String? = nil, mobileDocumentId: String? = nil) {
         BlockIDSDK.sharedInstance.verifyLiveID(image: image,
                                                sigToken: token,
@@ -388,7 +387,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             }
         }
     }
-  
+
   private func verifyFaceWithLiveness(image: UIImage, mobileSessionId: String? = nil, mobileDocumentId: String? = nil) {
       BlockIDSDK.sharedInstance.verifyFaceWithLiveness(image: image,
                                              mobileSessionId: mobileSessionId,
@@ -418,7 +417,7 @@ private enum DocType: Int {
     case nationalId = 0
     case drivingLicence = 1
     case passport = 2
-    
+
     var type: String {
          switch self {
          case .nationalId:
@@ -429,7 +428,7 @@ private enum DocType: Int {
              return RegisterDocType.PPT.rawValue
          }
      }
-    
+
     var docScannerType: DocumentScannerType {
         switch self {
         case .nationalId:
@@ -440,18 +439,18 @@ private enum DocType: Int {
             return DocumentScannerType.PPT
         }
     }
-    
+
     var category: String {
          switch self {
          default: return RegisterDocCategory.Identity_Document.rawValue
          }
      }
-    
+
 }
 
 // MARK: Util methods
 extension BlockIdWrapper {
-    
+
     private func getRootViewController() -> UIViewController? {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                    let window = windowScene.windows.first,
@@ -470,7 +469,7 @@ extension BlockIdWrapper {
         bidOrigin.authPage = data["authPage"] as? String ??  AccountAuthConstants.kNativeAuthScehema
         return bidOrigin
     }
-    
+
     private func registerDocument(obj: [String: Any], proofedBy: String, img: UIImage, mobileSessionId: String?, mobileDocumentId: String?) {
         DispatchQueue.main.async { [weak self] in
             BlockIDSDK.sharedInstance.registerDocument(obj: obj,
@@ -478,7 +477,7 @@ extension BlockIdWrapper {
                                                        faceImage: img,
                                                        mobileSessionId: mobileSessionId,
                                                        mobileDocumentId: mobileDocumentId, completion: {[unowned self] status, error in
-                
+
                 self?.blockIdWrapperResponse?(status, ErrorResponse(code: error?.code ?? -1, description: error?.message ?? ""))
             })
         }

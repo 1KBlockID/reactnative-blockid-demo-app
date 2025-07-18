@@ -74,8 +74,8 @@ make sure you have repo access
 Go to podfile inside ios folder in your React native project and make below changes
 
 ```js
-  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'SwiftyTesseract', 'TrustWalletCore', 'Web3', 'secp256k1.swift',
-    'OpenSSL-Universal', 'WebAuthnKit', 'EllipticCurveKeyPair', 'YubiKit' , 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
+  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
+    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
 
     pre_install do |installer|
       installer.pod_targets.each do |pod|

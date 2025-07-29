@@ -176,7 +176,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isDeviceAuthRegisterd(promise: Promise) {
+  override fun isDeviceAuthRegistered(promise: Promise) {
     promise.resolve(BlockIDSDK.getInstance().isDeviceAuthEnrolled)
   }
 

@@ -47,9 +47,9 @@ RCT_EXPORT_METHOD(enrollDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
     }];
 }
 
-RCT_EXPORT_METHOD(isDeviceAuthRegisterd: (RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(isDeviceAuthRegistered: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-    bool result = [wrapper isDeviceAuthRegisterd];
+    bool result = [wrapper isDeviceAuthRegistered];
     resolve(@(result));
 }
 
@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(verifyDeviceAuth: (RCTPromiseResolveBlock)resolve reject:(RCTP
 
 RCT_EXPORT_METHOD(totp: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-    
+
     [wrapper totpWithTotpResponse:^(NSDictionary<NSString *,id> * _Nullable response, ErrorResponse * _Nullable error) {
         if (response != nil) {
             resolve(response);
@@ -74,7 +74,7 @@ RCT_EXPORT_METHOD(totp: (RCTPromiseResolveBlock)resolve
             reject(@"", @"", error);
         }
     }];
-    
+
 }
 
 RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
@@ -84,28 +84,28 @@ RCT_EXPORT_METHOD(isLiveIDRegisterd: (RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(enrollLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID  resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
+
     [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionRegistration response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
 
 RCT_EXPORT_METHOD(verifyLiveIDScanning:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-        
+
     [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerification response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
 
 RCT_EXPORT_METHOD(verifyFaceWithLiveness:(NSString *)dvcID mobileSessionID:(NSString *)mobileSessionID mobileDocumentID:(NSString *)mobileDocumentID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-        
+
   [wrapper enrollLiveIDScanningWithDvcID: dvcID mobileSessionId: mobileSessionID mobileDocumentId: mobileDocumentID action: LiveIDActionVerifyFaceWithLiveness response:^(NSDictionary<NSString *,id> * _Nonnull response) {
         [self sendEventWithName:@"onStatusChanged" body: response];
     }];
 }
 
 RCT_EXPORT_METHOD(resetSDK:(NSString *)tag community:(NSString *)community dns: (NSString *)dns licenseKey: (NSString *)licenseKey reason: (NSString *)reason resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
+
     [wrapper resetSDKWithTag:tag community:community dns:dns licenseKey:licenseKey reason:reason response:^(BOOL status, ErrorResponse * _Nullable error) {
         resolve(@(status));
     }];

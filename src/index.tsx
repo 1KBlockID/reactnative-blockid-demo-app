@@ -48,8 +48,8 @@ export function isReady(): Promise<boolean> {
 export function enrollDeviceAuth(): Promise<boolean> {
   return Blockidplugin.enrollDeviceAuth();
 }
-export function isDeviceAuthRegisterd(): Promise<boolean> {
-  return Blockidplugin.isDeviceAuthRegisterd();
+export function isDeviceAuthRegistered(): Promise<boolean> {
+  return Blockidplugin.isDeviceAuthRegistered();
 }
 
 export function verifyDeviceAuth(): Promise<boolean> {

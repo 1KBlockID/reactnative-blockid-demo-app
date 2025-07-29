@@ -22,11 +22,11 @@ target 'BlockidpluginExample' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  
+
   # This is needed to build BlockID dependencies as dynamic framework.
   dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
   'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
-  
+
   pre_install do |installer|
     installer.pod_targets.each do |pod|
       if dynamic_frameworks.include?(pod.name)
@@ -41,8 +41,8 @@ target 'BlockidpluginExample' do
       end
     end
   end
-  
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.40'
+
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.50'
 
   target 'BlockidpluginExampleTests' do
     inherit! :complete
@@ -61,10 +61,10 @@ target 'BlockidpluginExample' do
           target.build_configurations.each do |config|
              # set build active architecture to to YES
           config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
-      
+
          # enable simulator support
           config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
-      
+
           # set iOS Deployment Target to 15.0
           config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.0
 

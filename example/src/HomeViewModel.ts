@@ -6,7 +6,7 @@ import {
   initiateTempWallet,
   registerTenantWith,
   enrollDeviceAuth,
-  isDeviceAuthRegisterd,
+  isDeviceAuthRegistered,
   verifyDeviceAuth,
   totp,
   enrollLiveIDScanning,
@@ -145,9 +145,9 @@ class HomeViewModel {
     }
   }
 
-  async isDeviceAuthRegisterd(): Promise<boolean> {
+  async isDeviceAuthRegistered(): Promise<boolean> {
     try {
-      let result = await isDeviceAuthRegisterd();
+      let result = await isDeviceAuthRegistered();
       return result;
     } catch (error) {
       if (error instanceof Error) {

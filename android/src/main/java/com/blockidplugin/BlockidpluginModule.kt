@@ -59,10 +59,9 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private val activityEventListener =
     object : BaseActivityEventListener() {
       override fun onActivityResult(
-        activity: Activity?,
         requestCode: Int,
         resultCode: Int,
-        intent: Intent?
+        intent: Intent
       ) {
         if (requestCode == DOC_SCAN_REQUEST) {
           docScanPromise?.let { promise ->

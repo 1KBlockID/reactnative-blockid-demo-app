@@ -1,14 +1,14 @@
 PODS:
   - Alamofire (4.9.1)
-  - BigInt (4.0.0)
+  - BigInt (5.2.0)
   - BlockID (1.20.50):
     - Alamofire (~> 4.9.1)
-    - BigInt (~> 4.0)
-    - CryptoSwift (~> 1.6.0)
+    - BigInt (~> 5.2.0)
+    - CryptoSwift (~> 1.8.4)
     - OpenSSL-Universal (~> 1.1.2300)
-    - TrustWalletCore (~> 2.5.6)
+    - TrustWalletCore (~> 4.3.6)
   - boost (1.83.0)
-  - CryptoSwift (1.6.0)
+  - CryptoSwift (1.8.4)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.74.4)
   - fmt (9.1.0)
@@ -1269,17 +1269,17 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.0)
-  - SwiftProtobuf (1.30.0)
-  - TrustWalletCore (2.5.10):
-    - TrustWalletCore/Core (= 2.5.10)
-  - TrustWalletCore/Core (2.5.10):
+  - TrustWalletCore (4.3.6):
+    - TrustWalletCore/Core (= 4.3.6)
+  - TrustWalletCore/Core (4.3.6):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.5.10):
-    - SwiftProtobuf
+  - TrustWalletCore/Types (4.3.6):
+    - WalletCoreSwiftProtobuf
+  - WalletCoreSwiftProtobuf (1.29.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.20.50`)
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `6730`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -1352,13 +1352,13 @@ SPEC REPOS:
     - CryptoSwift
     - OpenSSL-Universal
     - SocketRocket
-    - SwiftProtobuf
     - TrustWalletCore
+    - WalletCoreSwiftProtobuf
 
 EXTERNAL SOURCES:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.20.50
+    :tag: '6730'
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -1488,14 +1488,14 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.20.50
+    :tag: '6730'
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BlockID: 2f93bb12c5b716afe6985f6fd8ecd4dfba4b2b58
+  BigInt: f668a80089607f521586bbe29513d708491ef2f7
+  BlockID: bd678ce00a8978bcf7fa99843efd7223bde85f48
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
+  CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 4c674c2d53de79c145d6a723910543d7b57ed74c
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
@@ -1558,10 +1558,10 @@ SPEC CHECKSUMS:
   RNSVG: 63ef964b8397204ff70b78de6c93858320816671
   RNVectorIcons: 6c795cacc9276decc31d8e1a139b9cc6fc0479ca
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  SwiftProtobuf: 3697407f0d5b23bedeba9c2eaaf3ec6fdff69349
-  TrustWalletCore: 221e7c95e4e3263c807cbbfda9a5613b6a975214
+  TrustWalletCore: b66bebe684e3d733aa0f4055452e89491f0a6321
+  WalletCoreSwiftProtobuf: a4798576a2d309511fc45f81843d348732ec571d
   Yoga: 0efb3e1bd40ba59b009f01badea863281101de78
 
-PODFILE CHECKSUM: 81c81178eb7190980cad941b0296e31a433dddac
+PODFILE CHECKSUM: d71ec2b977cec3709aa1001291d40f090e576b8f
 
 COCOAPODS: 1.16.2

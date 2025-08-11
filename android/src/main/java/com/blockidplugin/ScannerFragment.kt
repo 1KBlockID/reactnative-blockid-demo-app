@@ -29,7 +29,6 @@ class ScannerFragment : Fragment() {
       isViewCreated = true
       scannerView
     } catch (e: Exception) {
-      // Log error and return empty view
       android.util.Log.e("ScannerFragment", "Error creating scanner view", e)
       View(requireContext())
     }
@@ -38,9 +37,8 @@ class ScannerFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // Delay camera initialization to avoid conflicts
     lifecycleScope.launch {
-      delay(100) // Small delay to ensure view is fully ready
+      delay(100)
       initializeCamera()
     }
   }
@@ -48,7 +46,6 @@ class ScannerFragment : Fragment() {
   override fun onResume() {
     super.onResume()
     if (isViewCreated) {
-      // Reinitialize camera if needed
       lifecycleScope.launch {
         delay(100)
         initializeCamera()
@@ -58,11 +55,9 @@ class ScannerFragment : Fragment() {
 
   override fun onPause() {
     super.onPause()
-    // Clean up camera resources
     try {
       ScannerViewRef.bidScannerView?.let { bidScanner ->
-        // Stop camera operations
-        // Add any specific cleanup methods from BlockID SDK here
+
       }
     } catch (e: Exception) {
       android.util.Log.e("ScannerFragment", "Error during pause cleanup", e)
@@ -81,9 +76,7 @@ class ScannerFragment : Fragment() {
   private fun initializeCamera() {
     try {
       ScannerViewRef.bidScannerView?.let { bidScanner ->
-        // Initialize camera with BlockID SDK
-        // Add specific initialization calls here based on BlockID SDK documentation
-        // This might include setting up face detection, document scanning, etc.
+
       }
     } catch (e: Exception) {
       android.util.Log.e("ScannerFragment", "Error initializing camera", e)

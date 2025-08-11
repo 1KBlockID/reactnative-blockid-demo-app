@@ -40,7 +40,6 @@ class NativeScannerView : FrameLayout {
 
   private fun setupView() {
     try {
-      // Add the BIDScannerView to this FrameLayout
       addView(
         bidScannerView, LayoutParams(
           LayoutParams.MATCH_PARENT,
@@ -61,7 +60,6 @@ class NativeScannerView : FrameLayout {
     super.onDetachedFromWindow()
     android.util.Log.d("NativeScannerView", "View detached from window")
 
-    // Clean up resources
     ScannerViewRef.bidScannerView = null
   }
 }

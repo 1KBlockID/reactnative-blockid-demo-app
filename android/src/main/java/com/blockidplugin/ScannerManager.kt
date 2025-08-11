@@ -22,7 +22,6 @@ class ScannerManager(
 
   override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
     return FrameLayout(reactContext).apply {
-      // Set a unique ID for the FrameLayout
       id = View.generateViewId()
     }
   }
@@ -52,13 +51,11 @@ class ScannerManager(
   override fun onDropViewInstance(view: FrameLayout) {
     super.onDropViewInstance(view)
 
-    // Clean up choreographer callback
     choreographerCallback?.let { callback ->
       Choreographer.getInstance().removeFrameCallback(callback)
       choreographerCallback = null
     }
 
-    // Remove fragment if it exists
     val activity = reactContext.currentActivity as? FragmentActivity
     activity?.let { fragmentActivity ->
       val fragment = fragmentActivity.supportFragmentManager
@@ -75,7 +72,6 @@ class ScannerManager(
   private fun createFragment(root: FrameLayout) {
     val activity = reactContext.currentActivity as? FragmentActivity ?: return
 
-    // Check if fragment already exists
     val existingFragment = activity.supportFragmentManager
       .findFragmentByTag(root.id.toString())
 
@@ -91,7 +87,6 @@ class ScannerManager(
   }
 
   private fun setupLayout(view: View) {
-    // Clean up existing callback
     choreographerCallback?.let { callback ->
       Choreographer.getInstance().removeFrameCallback(callback)
     }

@@ -2,82 +2,128 @@ package com.blockidplugin
 
 import android.view.Choreographer
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
-import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 
 class ScannerManager(
   private val reactContext: ReactApplicationContext
-) : ViewGroupManager<FrameLayout>() {
+) : SimpleViewManager<FrameLayout>() {
 
   private var propWidth: Int? = null
   private var propHeight: Int? = null
+  private var choreographerCallback: Choreographer.FrameCallback? = null
 
-  override fun getName() = REACT_CLASS
+  override fun getName(): String = REACT_CLASS
 
-  override fun createViewInstance(reactContext: ThemedReactContext) =
-    FrameLayout(reactContext)
+  override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
+    return FrameLayout(reactContext).apply {
+      // Set a unique ID for the FrameLayout
+      id = View.generateViewId()
+    }
+  }
 
-  override fun getCommandsMap() = mapOf("create" to COMMAND_CREATE)
+  override fun getCommandsMap(): Map<String, Int> {
+    return mapOf("create" to COMMAND_CREATE)
+  }
 
-  override fun receiveCommand(
-    root: FrameLayout,
-    commandId: String,
-    args: ReadableArray?
-  ) {
-    super.receiveCommand(root, commandId, args)
-    val reactNativeViewId = requireNotNull(args).getInt(0)
-    when (commandId.toInt()) {
-      COMMAND_CREATE -> createFragment(root, reactNativeViewId)
+  override fun receiveCommand(view: FrameLayout, commandId: Int, args: ReadableArray?) {
+    when (commandId) {
+      COMMAND_CREATE -> {
+        createFragment(view)
+      }
+
+      else -> super.receiveCommand(view, commandId, args)
     }
   }
 
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
-    if (index == 0) propWidth = value
-    if (index == 1) propHeight = value
+    when (index) {
+      0 -> propWidth = value
+      1 -> propHeight = value
+    }
   }
 
-  private fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
-    val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
-    setupLayout(parentView)
-    val fragment = ScannerFragment()
-    val activity = reactContext.currentActivity as FragmentActivity
-    activity.supportFragmentManager
-      .beginTransaction()
-      .replace(reactNativeViewId, fragment, reactNativeViewId.toString())
-      .commit()
+  override fun onDropViewInstance(view: FrameLayout) {
+    super.onDropViewInstance(view)
+
+    // Clean up choreographer callback
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().removeFrameCallback(callback)
+      choreographerCallback = null
+    }
+
+    // Remove fragment if it exists
+    val activity = reactContext.currentActivity as? FragmentActivity
+    activity?.let { fragmentActivity ->
+      val fragment = fragmentActivity.supportFragmentManager
+        .findFragmentByTag(view.id.toString())
+      fragment?.let {
+        fragmentActivity.supportFragmentManager
+          .beginTransaction()
+          .remove(it)
+          .commitAllowingStateLoss()
+      }
+    }
+  }
+
+  private fun createFragment(root: FrameLayout) {
+    val activity = reactContext.currentActivity as? FragmentActivity ?: return
+
+    // Check if fragment already exists
+    val existingFragment = activity.supportFragmentManager
+      .findFragmentByTag(root.id.toString())
+
+    if (existingFragment == null) {
+      setupLayout(root)
+      val fragment = ScannerFragment()
+
+      activity.supportFragmentManager
+        .beginTransaction()
+        .replace(root.id, fragment, root.id.toString())
+        .commitAllowingStateLoss()
+    }
   }
 
   private fun setupLayout(view: View) {
-    Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
+    // Clean up existing callback
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().removeFrameCallback(callback)
+    }
+
+    choreographerCallback = object : Choreographer.FrameCallback {
       override fun doFrame(frameTimeNanos: Long) {
         manuallyLayoutChildren(view)
         view.viewTreeObserver.dispatchOnGlobalLayout()
         Choreographer.getInstance().postFrameCallback(this)
       }
-    })
+    }
+
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().postFrameCallback(callback)
+    }
   }
 
   private fun manuallyLayoutChildren(view: View) {
-    // propWidth and propHeight coming from react-native props
-    val width = requireNotNull(propWidth)
-    val height = requireNotNull(propHeight)
+    val width = propWidth ?: view.width
+    val height = propHeight ?: view.height
 
-    view.measure(
-      View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-      View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY))
-
-    view.layout(0, 0, width, height)
+    if (width > 0 && height > 0) {
+      view.measure(
+        View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+        View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+      )
+      view.layout(0, 0, width, height)
+    }
   }
 
   companion object {
-    private const val REACT_CLASS = "ScannerManager"
-    private const val COMMAND_CREATE = 1
+    const val REACT_CLASS = "ScannerManager"
+    const val COMMAND_CREATE = 1
   }
 }

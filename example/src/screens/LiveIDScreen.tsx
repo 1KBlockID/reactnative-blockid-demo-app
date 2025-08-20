@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import * as React from 'react';
 
 import {
   StyleSheet,
   View,
+  NativeEventEmitter,
+  NativeModules,
   TouchableOpacity,
   Text,
   Alert,
@@ -12,22 +14,37 @@ import {
   findNodeHandle,
   Platform,
   Dimensions,
-  type EventSubscription,
 } from 'react-native';
 import HomeViewModel from '../HomeViewModel';
 import { useNavigation, type RouteProp } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
+import { useState } from 'react';
 import { ScannerManager, ScannerView, type Layout } from '../ScannerView';
 import type { RootStackParamList } from '../RootStackParam';
-import type { FaceInfo, StatusChangeEvent } from '../../../src/NativeBlockidplugin';
-import NativeBlockidplugin from '../../../src/NativeBlockidplugin';
 
+interface StatusChangeEvent {
+  status: string | null;
+  error: ErrorResponse | null;
+  info: FaceInfo | null;
+}
+
+interface ErrorResponse {
+  code: number | null;
+  description: string | null;
+}
+
+interface FaceInfo {
+  isFocused: boolean | null;
+  message: string | null;
+}
 const createFragment = (viewId: number | null) =>
   UIManager.dispatchViewManagerCommand(
     viewId,
     UIManager.ScannerManager.Commands.create.toString(),
     [viewId]
   );
+
+const eventEmitter = new NativeEventEmitter(NativeModules.Blockidplugin);
 
 type FeatureEnrollmentScreenRouteProp = RouteProp<RootStackParamList, 'LiveID'>;
 
@@ -41,19 +58,13 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const [faceState, setFaceState] = useState<FaceInfo | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [isPortrait, setIsPortrait] = useState(true);
-  const [layout, setLayout] = useState<Layout | null>(null);
-  
-  const listenerSubscription = useRef<null | EventSubscription>(null);
-  const ref = useRef(null);
-  
   const { isVerification } = route.params;
 
   const startLiveIDScanning = async () => {
     if (buttonDisabled) return;
     setButtonDisabled(true);
-    
-    listenerSubscription.current?.remove();
-    listenerSubscription.current = NativeBlockidplugin.onValueChanged((event: StatusChangeEvent) => {
+    eventEmitter.removeAllListeners('onStatusChanged');
+    eventEmitter.addListener('onStatusChanged', (event: StatusChangeEvent) => {
       if (event.status === 'faceLivenessCheckStarted') {
         setLoading(true);
         setFaceState(null);
@@ -102,33 +113,32 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         );
       }
     });
-    
     const viewModel = HomeViewModel.getInstance();
+
     isVerification
       ? viewModel.verifyFaceWithLiveness()
       : viewModel.enrollLiveIDScanning();
   };
 
-  useEffect(() => {
+  const ref = React.useRef(null);
+  const [layout, setLayout] = React.useState<Layout | null>(null);
+
+  React.useEffect(() => {
     if (Platform.OS === 'android' && layout) {
       const viewId = findNodeHandle(ref.current);
       createFragment(viewId);
     }
   }, [layout]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleOrientationChange = () => {
       const { width, height } = Dimensions.get('window');
       setIsPortrait(height >= width);
     };
 
-    const subscription = Dimensions.addEventListener('change', handleOrientationChange);
-    handleOrientationChange();
+    Dimensions.addEventListener('change', handleOrientationChange);
 
-    return () => {
-      subscription?.remove();
-      listenerSubscription.current?.remove();
-    };
+    handleOrientationChange();
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import HomeViewModel from './HomeViewModel';
-// import SpinnerOverlay from './SpinnerOverlay';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from './RootStackParam';
 import SpinnerOverlay from './SpinnerOverlay';
@@ -54,7 +53,7 @@ const Tenant: React.FC<Props> = ({ navigation }) => {
       .then((res) => {
         setIsRegistered(res);
       })
-      .finally(() => setLoading(false)); // Finally block ensures setLoading(false) is called regardless of success or failure
+      .finally(() => setLoading(false)); 
   }, []);
 
   return (

@@ -1,6 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import type { TotpResponse } from './WrapperModel';
+import type { EventEmitter } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
   setLicenseKey(licenseKey: string): Promise<boolean>;
@@ -72,5 +73,22 @@ export interface Spec extends TurboModule {
   getDID(): Promise<string>;
   lockSDK(): Promise<void>;
   unLockSDK(): Promise<void>;
+  readonly onValueChanged: EventEmitter<StatusChangeEvent>;
 }
 export default TurboModuleRegistry.getEnforcing<Spec>('Blockidplugin');
+
+export type StatusChangeEvent = {
+  status: string | null;
+  error: ErrorResponse | null;
+  info: FaceInfo | null;
+};
+
+export interface ErrorResponse {
+  code: number | null;
+  description: string | null;
+}
+
+export interface FaceInfo {
+  isFocused: boolean | null;
+  message: string | null;
+}

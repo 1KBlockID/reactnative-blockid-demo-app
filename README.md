@@ -111,8 +111,8 @@ Go to podfile inside ios folder in your React native project and make below chan
          # enable simulator support
           config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
 
-          # set iOS Deployment Target to 15.0
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.0
+          # set iOS Deployment Target to 15.1
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.1
 
           if dynamic_frameworks.include?(target.name)
             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'

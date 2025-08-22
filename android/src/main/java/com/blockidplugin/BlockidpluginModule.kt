@@ -59,10 +59,9 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private val activityEventListener =
     object : BaseActivityEventListener() {
       override fun onActivityResult(
-        activity: Activity?,
         requestCode: Int,
         resultCode: Int,
-        intent: Intent?
+        intent: Intent
       ) {
         if (requestCode == DOC_SCAN_REQUEST) {
           docScanPromise?.let { promise ->
@@ -155,7 +154,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   override fun enrollDeviceAuth(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       BIDAuthProvider.getInstance().enrollDeviceAuth(
-        currentActivity,
+        reactApplicationContext.currentActivity,
         "Biometric authentication",
         "Do you want to allow this app to use biometric authentication?",
         false,
@@ -184,7 +183,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   override fun verifyDeviceAuth(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
       BIDAuthProvider.getInstance().verifyDeviceAuth(
-        currentActivity,
+        reactApplicationContext.currentActivity,
         "Biometric authentication",
         "Biometric authentication required to proceed",
         false,
@@ -256,7 +255,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
       mLiveIDScannerHelper = LiveIDScannerHelper(
-        currentActivity!!,
+        reactApplicationContext.currentActivity!!,
         ScannerViewRef.bidScannerView!!,
         null,
         object : ILiveIDResponseListener {
@@ -300,7 +299,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
                   putString("description", p3?.message)
                 })
               }
-              sendEvent(context!!, "onStatusChanged", params)
+              emitOnValueChanged(params)
             }
           }
 
@@ -311,7 +310,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             val params = Arguments.createMap().apply {
               putString("status", "faceLivenessCheckStarted")
             }
-            sendEvent(context!!, "onStatusChanged", params)
+            emitOnValueChanged(params)
           }
 
           override fun onFaceFocusChanged(
@@ -328,7 +327,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
 
               putMap("info", info)
             }
-            sendEvent(context!!, "onStatusChanged", params)
+            emitOnValueChanged(params)
           }
         })
       mLiveIDScannerHelper?.startLiveIDScanning(dvcID, mobileSessionID, mobileDocumentID)
@@ -347,7 +346,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         val params = Arguments.createMap().apply {
           putString("status", "completed")
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
@@ -356,7 +355,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             putString("description", errorResponse?.message)
           })
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       }
     }
   }
@@ -373,7 +372,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         val params = Arguments.createMap().apply {
           putString("status", "completed")
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
@@ -382,7 +381,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             putString("description", errorResponse?.message)
           })
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       }
     }
   }
@@ -399,7 +398,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         val params = Arguments.createMap().apply {
           putString("status", "completed")
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
@@ -408,7 +407,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             putString("description", errorResponse?.message)
           })
         }
-        sendEvent(context!!, "onStatusChanged", params)
+        emitOnValueChanged(params)
       }
     }
   }
@@ -473,20 +472,24 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       mQRScannerHelper?.stopQRScanning()
       mQRScannerHelper = null
 
-      mQRScannerHelper = QRScannerHelper(currentActivity, object : IOnQRScanResponseListener {
-        override fun onQRScanResultResponse(qrCodeData: String?) {
-          mQRScannerHelper?.stopQRScanning()
-          qrCodeData?.let {
-            promise.resolve(qrCodeData)
-          } ?: run {
-            promise.reject(
-              "Error",
-              "QRScan Failed",
-              null
-            )
+      mQRScannerHelper = QRScannerHelper(
+        reactApplicationContext.currentActivity,
+        object : IOnQRScanResponseListener {
+          override fun onQRScanResultResponse(qrCodeData: String?) {
+            mQRScannerHelper?.stopQRScanning()
+            qrCodeData?.let {
+              promise.resolve(qrCodeData)
+            } ?: run {
+              promise.reject(
+                "Error",
+                "QRScan Failed",
+                null
+              )
+            }
           }
-        }
-      }, ScannerViewRef.bidScannerView!!)
+        },
+        ScannerViewRef.bidScannerView!!
+      )
       mQRScannerHelper?.startQRScanning()
     }
   }
@@ -570,7 +573,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       putExtra("K_DOCUMENT_SCAN_TYPE", docType.docScannerType.value)
     }
 //    documentSessionResult.launch(intent)
-    currentActivity?.startActivityForResult(intent, DOC_SCAN_REQUEST)
+    reactApplicationContext.currentActivity?.startActivityForResult(intent, DOC_SCAN_REQUEST)
   }
 
 

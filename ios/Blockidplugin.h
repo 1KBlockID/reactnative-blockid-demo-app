@@ -4,7 +4,7 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNBlockidpluginSpec.h"
-@interface Blockidplugin : RCTEventEmitter <NativeBlockidpluginSpec, RCTBridgeModule>
+@interface Blockidplugin : NativeBlockidpluginSpecBase <NativeBlockidpluginSpec>
 #else
 
 

@@ -25,7 +25,7 @@ target 'BlockidpluginExample' do
 
   # This is needed to build BlockID dependencies as dynamic framework.
   dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-  'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
+  'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'secp256k1.swift', 'BlockID']
 
   pre_install do |installer|
     installer.pod_targets.each do |pod|
@@ -42,7 +42,7 @@ target 'BlockidpluginExample' do
     end
   end
 
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.50'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.60'
 
   target 'BlockidpluginExampleTests' do
     inherit! :complete

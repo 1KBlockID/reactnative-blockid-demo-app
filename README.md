@@ -75,7 +75,7 @@ Go to podfile inside ios folder in your React native project and make below chan
 
 ```js
   dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
+    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'secp256k1.swift', 'BlockID']
 
     pre_install do |installer|
       installer.pod_targets.each do |pod|
@@ -92,7 +92,7 @@ Go to podfile inside ios folder in your React native project and make below chan
       end
     end
 
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.50'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.60'
 
 
     post_install do |installer|

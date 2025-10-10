@@ -1,13 +1,17 @@
 package com.blockidplugin
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Base64
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.BaseActivityEventListener
@@ -59,16 +63,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   private val activityEventListener =
     object : BaseActivityEventListener() {
       override fun onActivityResult(
+        activity: Activity,
         requestCode: Int,
         resultCode: Int,
-        intent: Intent
+        data: Intent?
       ) {
         if (requestCode == DOC_SCAN_REQUEST) {
           docScanPromise?.let { promise ->
             if (resultCode == Activity.RESULT_CANCELED) {
-              if (intent != null) {
+              if (data != null) {
                 val error: ErrorManager.ErrorResponse?
-                val errorString = intent.getStringExtra("K_DOCUMENT_SCAN_ERROR")
+                val errorString = data.getStringExtra("K_DOCUMENT_SCAN_ERROR")
                 error =
                   BIDUtil.JSONStringToObject(errorString, ErrorManager.ErrorResponse::class.java)
                 promise.reject(error?.code?.toString() ?: "0", error?.message ?: "")
@@ -84,6 +89,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
           }
         }
       }
+
     }
 
   override fun getName(): String {
@@ -94,6 +100,26 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     BlockIDSDK.initialize(context)
     this.context = context
     context.addActivityEventListener(activityEventListener)
+    requestCameraPermissionIfNeeded()
+  }
+
+  private fun requestCameraPermissionIfNeeded() {
+    if (ContextCompat.checkSelfPermission(reactApplicationContext, Manifest.permission.CAMERA)
+      != PackageManager.PERMISSION_GRANTED
+    ) {
+      try {
+        ActivityCompat.requestPermissions(
+          reactApplicationContext.currentActivity!!,
+          arrayOf(Manifest.permission.CAMERA),
+          CAMERA_PERMISSION_REQUEST_CODE
+        )
+        android.util.Log.d("BlockidpluginModule", "Camera permission requested")
+      } catch (e: Exception) {
+        android.util.Log.e("BlockidpluginModule", "Failed to request camera permission", e)
+      }
+    } else {
+      android.util.Log.d("BlockidpluginModule", "Camera permission already granted")
+    }
   }
 
   @ReactMethod
@@ -828,6 +854,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   companion object {
     const val NAME = "Blockidplugin"
     const val DOC_SCAN_REQUEST = 1
+    const val CAMERA_PERMISSION_REQUEST_CODE = 1001
   }
 
   private enum class LiveIDAction {

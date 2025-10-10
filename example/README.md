@@ -81,5 +81,3 @@ When you want to forcefully reload, for example to reset the state of your app, 
 # Troubleshooting
  
 If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
- 
-# Learn More

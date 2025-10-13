@@ -19,7 +19,7 @@ For help getting started with BlockID sdk development, view the
 
 **Step 1:**
 
-Make sure your system has at least Node.js v18.20.3 installed.
+Make sure your system has at least Node.js v22.16.0 installed.
 
 ```
 https://nodejs.org/en/download/package-manager

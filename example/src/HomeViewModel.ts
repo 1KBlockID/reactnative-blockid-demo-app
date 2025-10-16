@@ -277,34 +277,48 @@ class HomeViewModel {
   }
 
   async scanDocument(type: DocType): Promise<string | null> {
-    let response = await getUserDocument(type);
+    try {
+      // Check camera permission before scanning
+      if (!(await this.checkCamera())) {
+        return null;
+      }
 
-    if (response == null || response === undefined) {
-      let documentStr = await scanDocument(type);
-      if (documentStr != null && documentStr.length > 0) {
-        return documentStr;
+      let response = await getUserDocument(type);
+
+      if (response == null || response === undefined) {
+        let documentStr = await scanDocument(type);
+        if (documentStr != null && documentStr.length > 0) {
+          return documentStr;
+        } else {
+          console.warn('Scan document failed');
+        }
       } else {
-        console.warn('Scan document failed');
+        var message = '';
+        switch (type) {
+          case DocType.nationalId:
+            message = 'National ID is already registered';
+            break;
+          case DocType.drivingLicence:
+            message = 'Driving Licence is already registered';
+            break;
+          case DocType.passport:
+            message = 'Passport is already registered';
+            break;
+          default:
+            message = 'Unknown document type';
+            break;
+        }
+        Alert.alert('Success', message);
       }
-    } else {
-      var message = '';
-      switch (type) {
-        case DocType.nationalId:
-          message = 'National ID is already registered';
-          break;
-        case DocType.drivingLicence:
-          message = 'Driving Licence is already registered';
-          break;
-        case DocType.passport:
-          message = 'Passport is already registered';
-          break;
-        default:
-          message = 'Unknown document type';
-          break;
+      return null;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error(error);
       }
-      Alert.alert('Success', message);
+      return null;
     }
-    return null;
   }
 
   isString(value: any): value is string {

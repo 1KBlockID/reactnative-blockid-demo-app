@@ -75,7 +75,7 @@ Go to podfile inside ios folder in your React native project and make below chan
 
 ```js
   dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'secp256k1.swift', 'BlockID']
+    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
 
     pre_install do |installer|
       installer.pod_targets.each do |pod|
@@ -92,7 +92,7 @@ Go to podfile inside ios folder in your React native project and make below chan
       end
     end
 
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.70'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.20.80'
 
 
     post_install do |installer|
@@ -156,10 +156,6 @@ Go to build.gradle inside android/app folder in your React project and make belo
        }
      }
      maven { url "https://jitpack.io" }
-     maven {
-       url 'http://www.baka.sk/maven2'
-       allowInsecureProtocol = true
-     }
    }
 ```
 

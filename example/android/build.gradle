@@ -32,10 +32,6 @@ allprojects {
       }
     }
     maven { url "https://jitpack.io" }
-    maven {
-      url 'http://www.baka.sk/maven2'
-      allowInsecureProtocol = true
-    }
   }
 }
 

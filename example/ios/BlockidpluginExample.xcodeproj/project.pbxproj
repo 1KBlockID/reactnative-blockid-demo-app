@@ -10,24 +10,24 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		215664112C08CD9A00E7D031 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 215664102C08CD9A00E7D031 /* main.jsbundle */; };
 		46D82E582E4F9AC70044D8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */; };
+		632F1AF5719DE2481020A9D2 /* libPods-BlockidpluginExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0021CBF7C7635813B1DCEC4D /* libPods-BlockidpluginExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		C33AACFA67D7CB529A4781C7 /* libPods-BlockidpluginExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B624AD7A7671190B7424D6 /* libPods-BlockidpluginExample.a */; };
 		EAC988ADE4E750B2E5386C73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0021CBF7C7635813B1DCEC4D /* libPods-BlockidpluginExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlockidpluginExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356EE1AD99517003FC87E /* BlockidpluginExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockidpluginExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* BlockidpluginExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlockidpluginExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BlockidpluginExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlockidpluginExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		215664102C08CD9A00E7D031 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		2B59BF518A5BC89B3EA7CA6E /* Pods-BlockidpluginExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.debug.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.debug.xcconfig"; sourceTree = "<group>"; };
 		46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		546D69AF20FD5ABDA0E52FDF /* Pods-BlockidpluginExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.release.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.release.xcconfig"; sourceTree = "<group>"; };
 		59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		6F2779B12188643676981E02 /* Pods-BlockidpluginExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.release.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BlockidpluginExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		84B624AD7A7671190B7424D6 /* libPods-BlockidpluginExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlockidpluginExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC39ADCC33D152E9AD20926E /* Pods-BlockidpluginExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.debug.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -36,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C33AACFA67D7CB529A4781C7 /* libPods-BlockidpluginExample.a in Frameworks */,
+				632F1AF5719DE2481020A9D2 /* libPods-BlockidpluginExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				84B624AD7A7671190B7424D6 /* libPods-BlockidpluginExample.a */,
+				0021CBF7C7635813B1DCEC4D /* libPods-BlockidpluginExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -99,8 +99,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2B59BF518A5BC89B3EA7CA6E /* Pods-BlockidpluginExample.debug.xcconfig */,
-				6F2779B12188643676981E02 /* Pods-BlockidpluginExample.release.xcconfig */,
+				EC39ADCC33D152E9AD20926E /* Pods-BlockidpluginExample.debug.xcconfig */,
+				546D69AF20FD5ABDA0E52FDF /* Pods-BlockidpluginExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -112,13 +112,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BlockidpluginExample" */;
 			buildPhases = (
-				A7149C18506B0946E1323CDC /* [CP] Check Pods Manifest.lock */,
+				0C180EF19788E253C6C74BCF /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D96F8A027FE27CC6193D709B /* [CP] Embed Pods Frameworks */,
-				4DA6455F55043C9E7C208F51 /* [CP] Copy Pods Resources */,
+				59E99253B6D291A050AB22DE /* [CP] Embed Pods Frameworks */,
+				6D1B3B999FD972E45CA0F935 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -191,24 +191,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		4DA6455F55043C9E7C208F51 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A7149C18506B0946E1323CDC /* [CP] Check Pods Manifest.lock */ = {
+		0C180EF19788E253C6C74BCF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -230,7 +213,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D96F8A027FE27CC6193D709B /* [CP] Embed Pods Frameworks */ = {
+		59E99253B6D291A050AB22DE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -245,6 +228,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6D1B3B999FD972E45CA0F935 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -263,14 +263,14 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B59BF518A5BC89B3EA7CA6E /* Pods-BlockidpluginExample.debug.xcconfig */;
+			baseConfigurationReference = EC39ADCC33D152E9AD20926E /* Pods-BlockidpluginExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CQ76NS85YW;
+				DEVELOPMENT_TEAM = WUS4823E84;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BlockidpluginExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -296,12 +296,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F2779B12188643676981E02 /* Pods-BlockidpluginExample.release.xcconfig */;
+			baseConfigurationReference = 546D69AF20FD5ABDA0E52FDF /* Pods-BlockidpluginExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CQ76NS85YW;
+				DEVELOPMENT_TEAM = WUS4823E84;
 				INFOPLIST_FILE = BlockidpluginExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -395,10 +395,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -471,10 +468,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

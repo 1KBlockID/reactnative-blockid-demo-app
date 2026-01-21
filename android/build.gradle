@@ -136,7 +136,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // Exclude legacy Android support library
-  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.20.80.69414286") {
+  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.20.90.69660287") {
     exclude group: "com.android.support", module: "support-compat"
   }
 }

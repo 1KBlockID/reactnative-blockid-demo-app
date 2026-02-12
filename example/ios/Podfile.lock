@@ -1,14 +1,14 @@
 PODS:
   - Alamofire (4.9.1)
-  - BigInt (4.0.0)
-  - BlockID (1.20.90):
+  - BigInt (5.2.0)
+  - BlockID (1.30.00):
     - Alamofire (~> 4.9.1)
-    - BigInt (~> 4.0)
-    - CryptoSwift (~> 1.6.0)
+    - BigInt (~> 5.2.0)
+    - CryptoSwift (~> 1.8.4)
     - OpenSSL-Universal (~> 1.1.2300)
-    - TrustWalletCore (~> 2.5.6)
+    - TrustWalletCore (~> 4.2.21)
   - boost (1.84.0)
-  - CryptoSwift (1.6.0)
+  - CryptoSwift (1.8.4)
   - DoubleConversion (1.1.6)
   - fast_float (8.0.0)
   - FBLazyVector (0.80.2)
@@ -1658,7 +1658,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-blockidplugin (1.20.90):
+  - react-native-blockidplugin (1.30.00):
     - BlockID
     - boost
     - DoubleConversion
@@ -2463,16 +2463,16 @@ PODS:
     - Yoga
   - SocketRocket (0.7.1)
   - SwiftProtobuf (1.33.3)
-  - TrustWalletCore (2.5.10):
-    - TrustWalletCore/Core (= 2.5.10)
-  - TrustWalletCore/Core (2.5.10):
+  - TrustWalletCore (4.2.21):
+    - TrustWalletCore/Core (= 4.2.21)
+  - TrustWalletCore/Core (4.2.21):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.5.10):
+  - TrustWalletCore/Types (4.2.21):
     - SwiftProtobuf
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.20.90`)
+  - BlockID (from `https://github.com/1KBlockID/ios-blockidsdk.git`, tag `1.30.00`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -2569,7 +2569,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.20.90
+    :tag: 1.30.00
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -2735,14 +2735,14 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   BlockID:
     :git: https://github.com/1KBlockID/ios-blockidsdk.git
-    :tag: 1.20.90
+    :tag: 1.30.00
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BlockID: 928e5b45ba90c7ad5eef6a3f42611ce43e519fe4
+  BigInt: f668a80089607f521586bbe29513d708491ef2f7
+  BlockID: 858b3675f151ff926aaa0bf44da59fb82062e98d
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  CryptoSwift: 562f8eceb40e80796fffc668b0cad9313284cfa6
+  CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBLazyVector: 86588b5a1547e7a417942a08f49559b184e002c8
@@ -2783,7 +2783,7 @@ SPEC CHECKSUMS:
   React-logger: 7cfc7b1ae1f8e5fe5097f9c746137cc3a8fad4ce
   React-Mapbuffer: 7018c5b7da5b13ed22fe55dae51d50187a00b2d7
   React-microtasksnativemodule: 8ff9cb220a8efa625b5885996bd69e69db9edf02
-  react-native-blockidplugin: 040ba87ad64a2adc6d197ab183c0b5a16eecd130
+  react-native-blockidplugin: e75697b6be058c2e52801d531d188e6fa05371af
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-safe-area-context: 68d1363b8354472a961aa6861ba8451beaf9a810
   React-NativeModulesApple: 37c08c3c54db55854de816b0df0f3683832be35a
@@ -2824,9 +2824,9 @@ SPEC CHECKSUMS:
   RNVectorIcons: be4d047a76ad307ffe54732208fb0498fcb8477f
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   SwiftProtobuf: e1b437c8e31a4c5577b643249a0bb62ed4f02153
-  TrustWalletCore: 221e7c95e4e3263c807cbbfda9a5613b6a975214
+  TrustWalletCore: 063881004982b1f57f8bce63a2dfd1056314c0d1
   Yoga: a742cc68e8366fcfc681808162492bc0aa7a9498
 
-PODFILE CHECKSUM: b3d6228e24e845a65c05ab337034e5bb5963e03a
+PODFILE CHECKSUM: 03bc65b4c4fb145124cd62b400628540e72e15b5
 
 COCOAPODS: 1.16.2

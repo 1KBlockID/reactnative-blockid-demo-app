@@ -254,11 +254,27 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     mobileDocumentID: String?, promise: Promise
   ) {
     UiThreadUtil.runOnUiThread {
+      val currentActivity = reactApplicationContext.currentActivity
+      val scannerView = ScannerViewRef.bidScannerView
+
+      if (currentActivity == null || scannerView == null) {
+        android.util.Log.e("BlockidpluginModule", "Cannot start LiveID scanning: activity=${currentActivity != null}, scannerView=${scannerView != null}")
+        val params = Arguments.createMap().apply {
+          putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", -1)
+            putString("description", "Scanner view is not available. Please ensure the scanner view is mounted before starting LiveID scanning.")
+          })
+        }
+        emitOnValueChanged(params)
+        return@runOnUiThread
+      }
+
       mLiveIDScannerHelper?.stopLiveIDScanning()
       mLiveIDScannerHelper = null
       mLiveIDScannerHelper = LiveIDScannerHelper(
-        reactApplicationContext.currentActivity!!,
-        ScannerViewRef.bidScannerView!!,
+        currentActivity,
+        scannerView,
         null,
         object : ILiveIDResponseListener {
           override fun onLiveIDCaptured(
@@ -471,6 +487,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   @ReactMethod
   override fun startQRScanning(promise: Promise) {
     Handler(Looper.getMainLooper()).post {
+      val scannerView = ScannerViewRef.bidScannerView
+      if (scannerView == null) {
+        android.util.Log.e("BlockidpluginModule", "Cannot start QR scanning: scanner view is null")
+        promise.reject(
+          "Error",
+          "Scanner view is not available. Please ensure the scanner view is mounted before starting QR scanning.",
+          null
+        )
+        return@post
+      }
+
       mQRScannerHelper?.stopQRScanning()
       mQRScannerHelper = null
 
@@ -490,7 +517,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             }
           }
         },
-        ScannerViewRef.bidScannerView!!
+        scannerView
       )
       mQRScannerHelper?.startQRScanning()
     }

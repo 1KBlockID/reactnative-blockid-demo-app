@@ -30,6 +30,15 @@ class ScannerManager(
     return mapOf("create" to COMMAND_CREATE)
   }
 
+  // New Architecture dispatches commands with String commandId
+  override fun receiveCommand(root: FrameLayout, commandId: String, args: ReadableArray?) {
+    when (commandId) {
+      "create" -> createFragment(root)
+      else -> super.receiveCommand(root, commandId, args)
+    }
+  }
+
+  // Old Architecture dispatches commands with Int commandId
   override fun receiveCommand(view: FrameLayout, commandId: Int, args: ReadableArray?) {
     when (commandId) {
       COMMAND_CREATE -> {

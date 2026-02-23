@@ -267,6 +267,11 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
           })
         }
         emitOnValueChanged(params)
+        promise.reject(
+          "SCANNER_NOT_AVAILABLE",
+          "Scanner view is not available. Please ensure the scanner view is mounted before starting LiveID scanning.",
+          null
+        )
         return@runOnUiThread
       }
 

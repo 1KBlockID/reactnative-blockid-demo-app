@@ -33,8 +33,18 @@ class ScannerManager(
   // New Architecture dispatches commands with String commandId
   override fun receiveCommand(root: FrameLayout, commandId: String, args: ReadableArray?) {
     when (commandId) {
-      "create" -> createFragment(root)
-      else -> super.receiveCommand(root, commandId, args)
+      "create",
+      COMMAND_CREATE.toString() -> {
+        createFragment(root)
+      }
+      else -> {
+        val commandIdInt = commandId.toIntOrNull()
+        if (commandIdInt != null) {
+          receiveCommand(root, commandIdInt, args)
+        } else {
+          super.receiveCommand(root, commandId, args)
+        }
+      }
     }
   }
 

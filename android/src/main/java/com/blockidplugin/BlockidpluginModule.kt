@@ -257,8 +257,26 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       val currentActivity = reactApplicationContext.currentActivity
       val scannerView = ScannerViewRef.bidScannerView
 
-      if (currentActivity == null || scannerView == null) {
-        android.util.Log.e("BlockidpluginModule", "Cannot start LiveID scanning: activity=${currentActivity != null}, scannerView=${scannerView != null}")
+      if (currentActivity == null) {
+        android.util.Log.e("BlockidpluginModule", "Cannot start LiveID scanning: currentActivity is null")
+        val params = Arguments.createMap().apply {
+          putString("status", "failed")
+          putMap("error", Arguments.createMap().apply {
+            putInt("code", -1)
+            putString("description", "Activity is not available. Please ensure the app is in the foreground before starting LiveID scanning.")
+          })
+        }
+        emitOnValueChanged(params)
+        promise.reject(
+          "ACTIVITY_NOT_AVAILABLE",
+          "Activity is not available. Please ensure the app is in the foreground before starting LiveID scanning.",
+          null
+        )
+        return@runOnUiThread
+      }
+
+      if (scannerView == null) {
+        android.util.Log.e("BlockidpluginModule", "Cannot start LiveID scanning: scannerView is null")
         val params = Arguments.createMap().apply {
           putString("status", "failed")
           putMap("error", Arguments.createMap().apply {

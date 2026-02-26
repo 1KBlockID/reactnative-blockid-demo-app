@@ -17,6 +17,7 @@ class LiveIDScannerManager(
 
   private var propWidth: Int? = null
   private var propHeight: Int? = null
+  private var choreographerCallback: Choreographer.FrameCallback? = null
 
   override fun getName() = REACT_CLASS
 
@@ -24,8 +25,11 @@ class LiveIDScannerManager(
    * Return a FrameLayout which will later hold the Fragment
    */
 
-  override fun createViewInstance(reactContext: ThemedReactContext) =
-    FrameLayout(reactContext)
+  override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
+    return FrameLayout(reactContext).apply {
+      id = View.generateViewId()
+    }
+  }
 
   override fun getCommandsMap() = mapOf("create" to COMMAND_CREATE)
 
@@ -50,43 +54,88 @@ class LiveIDScannerManager(
     if (index == 1) propHeight = value
   }
 
+  override fun onDropViewInstance(view: FrameLayout) {
+    super.onDropViewInstance(view)
+
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().removeFrameCallback(callback)
+      choreographerCallback = null
+    }
+
+    val activity = reactContext.currentActivity as? FragmentActivity
+    activity?.let { fragmentActivity ->
+      val fragment = fragmentActivity.supportFragmentManager
+        .findFragmentByTag(view.id.toString())
+      fragment?.let {
+        fragmentActivity.supportFragmentManager
+          .beginTransaction()
+          .remove(it)
+          .commitAllowingStateLoss()
+      }
+    }
+  }
+
   /**
    * Replace your React Native view with a custom fragment
    */
   private fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
     val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
-    setupLayout(parentView)
-    val fragment = ScannerFragment()
-    val activity = reactContext.currentActivity as FragmentActivity
-    activity.supportFragmentManager
-      .beginTransaction()
-      .replace(reactNativeViewId, fragment, reactNativeViewId.toString())
-      .commit()
+    if (parentView == null) {
+      android.util.Log.e("LiveIDScannerManager", "Cannot create fragment: container view $reactNativeViewId not found")
+      return
+    }
+
+    val activity = reactContext.currentActivity as? FragmentActivity
+    if (activity == null || activity.isFinishing || activity.isDestroyed) {
+      android.util.Log.e("LiveIDScannerManager", "Cannot create fragment: activity is not available")
+      return
+    }
+
+    val existingFragment = activity.supportFragmentManager
+      .findFragmentByTag(reactNativeViewId.toString())
+
+    if (existingFragment == null) {
+      setupLayout(parentView)
+      val fragment = ScannerFragment()
+      activity.supportFragmentManager
+        .beginTransaction()
+        .replace(reactNativeViewId, fragment, reactNativeViewId.toString())
+        .commitAllowingStateLoss()
+    }
   }
 
   private fun setupLayout(view: View) {
-    Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().removeFrameCallback(callback)
+    }
+
+    choreographerCallback = object : Choreographer.FrameCallback {
       override fun doFrame(frameTimeNanos: Long) {
         manuallyLayoutChildren(view)
         view.viewTreeObserver.dispatchOnGlobalLayout()
         Choreographer.getInstance().postFrameCallback(this)
       }
-    })
+    }
+
+    choreographerCallback?.let { callback ->
+      Choreographer.getInstance().postFrameCallback(callback)
+    }
   }
 
   /**
    * Layout all children properly
    */
   private fun manuallyLayoutChildren(view: View) {
-    // propWidth and propHeight coming from react-native props
-    val width = requireNotNull(propWidth)
-    val height = requireNotNull(propHeight)
+    val width = propWidth ?: view.width
+    val height = propHeight ?: view.height
 
-    view.measure(
-      View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-      View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY))
-
-    view.layout(0, 0, width, height)
+    if (width > 0 && height > 0) {
+      view.measure(
+        View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+        View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+      )
+      view.layout(0, 0, width, height)
+    }
   }
 
   companion object {

@@ -109,7 +109,7 @@ import BlockID
     }
 
     public func isDeviceAuthRegistered() -> Bool {
-      let isDeviceAuthRegistered = BlockIDSDK.sharedInstance.isDeviceAuthRegisterd()
+      let isDeviceAuthRegistered = BlockIDSDK.sharedInstance.isDeviceAuthRegistered()
         return isDeviceAuthRegistered
     }
 
@@ -187,7 +187,7 @@ import BlockID
     // MARK: LiveID Scan
 
     public func isLiveIDRegisterd() -> Bool {
-        let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegisterd()
+        let isLiveIDRegisterd = BlockIDSDK.sharedInstance.isLiveIDRegistered()
         return isLiveIDRegisterd
     }
 

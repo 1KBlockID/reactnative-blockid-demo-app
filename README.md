@@ -92,7 +92,7 @@ Go to podfile inside ios folder in your React native project and make below chan
       end
     end
 
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.30.00'
+  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.30.10'
 
 
     post_install do |installer|

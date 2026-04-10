@@ -400,11 +400,11 @@ class HomeViewModel {
     try {
       const obj = JSON.parse(strJson);
       if (obj) {
-        let idCardObj = obj.idcard_object;
+        let idCardObj = obj.document;
         if (idCardObj) {
           idCardObj.proof = idCardObj.proof_jwt;
           idCardObj.certificate_token = obj.token;
-          const liveidObj = obj.liveid_object;
+          const liveidObj = obj.liveId;
           if (liveidObj) {
             const face = liveidObj.face;
             const proofedBy = liveidObj.proofedBy;
@@ -438,11 +438,11 @@ class HomeViewModel {
     try {
       const obj = JSON.parse(strJson);
       if (obj) {
-        let dlObj = obj.dl_object;
+        let dlObj = obj.document;
         if (dlObj) {
           dlObj.proof = dlObj.proof_jwt;
           dlObj.certificate_token = obj.token;
-          const liveidObj = obj.liveid_object;
+          const liveidObj = obj.liveId;
           if (liveidObj) {
             const face = liveidObj.face;
             const proofedBy = liveidObj.proofedBy;
@@ -476,11 +476,11 @@ class HomeViewModel {
     try {
       const obj = JSON.parse(strJson);
       if (obj) {
-        let pptObj = obj.ppt_object;
+        let pptObj = obj.document;
         if (pptObj) {
           pptObj.proof = pptObj.proof_jwt;
           pptObj.certificate_token = obj.token;
-          const liveidObj = obj.liveid_object;
+          const liveidObj = obj.liveId;
           if (liveidObj) {
             const face = liveidObj.face;
             const proofedBy = liveidObj.proofedBy;

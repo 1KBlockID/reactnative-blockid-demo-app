@@ -233,6 +233,10 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       .emit(eventName, params)
   }
 
+  private fun emitOnValueChanged(params: WritableMap?) {
+    sendEvent(reactApplicationContext, "onValueChanged", params)
+  }
+
   @ReactMethod
   override fun enrollLiveIDScanning(
     dvcID: String,
@@ -586,11 +590,17 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
   override fun authenticateUserWithScopes(data: ReadableMap, promise: Promise) {
     context?.let {
       BlockIDSDK.getInstance().authenticateUser(
-        it, null,
-        data.getString("session") ?: "", data.getString("sessionUrl") ?: "",
-        data.getString("scopes") ?: "", null, data.getString("creds") ?: "",
-        bidOrigin(data), "0",
-        "0", BlockIDSDK.getInstance().version, null, "" //pass auth type here
+        it,                                      // context: Context
+        null,                                    // userId: String?
+        data.getString("session") ?: "",         // sessionId: String
+        data.getString("scopes") ?: "",          // scopes: String
+        data.getString("creds") ?: "",           // creds: String
+        bidOrigin(data),                         // bidOrigin: BIDOrigin
+        "0",                                     // latitude: String
+        "0",                                     // longitude: String
+        BlockIDSDK.getInstance().version,        // versionName: String
+        HashMap<String, Any>(),                  // extraData: HashMap<String, Object>
+        ""                                       // authFactor: String
       ) { status: Boolean, _, error: ErrorManager.ErrorResponse? ->
         if (status) {
           promise.resolve(true)

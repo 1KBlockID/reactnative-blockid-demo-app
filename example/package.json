@@ -20,7 +20,7 @@
     "react-native-get-random-values": "^1.11.0",
     "react-native-permissions": "^4.1.5",
     "react-native-safe-area-context": "latest",
-    "react-native-screens": "latest",
+    "react-native-screens": "^4.24.0",
     "react-native-svg": "^15.3.0",
     "react-native-svg-circular-progress": "^1.0.4",
     "react-native-vector-icons": "^10.2.0",

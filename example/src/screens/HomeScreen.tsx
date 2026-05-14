@@ -16,7 +16,7 @@ import Tenant from '../Tenant';
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const viewModel = HomeViewModel.getInstance();
     setLoading(true);
     viewModel.setLicenseKey().then((result) => {

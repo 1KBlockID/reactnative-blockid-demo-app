@@ -233,10 +233,6 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       .emit(eventName, params)
   }
 
-  private fun emitOnValueChanged(params: WritableMap?) {
-    sendEvent(reactApplicationContext, "onValueChanged", params)
-  }
-
   @ReactMethod
   override fun enrollLiveIDScanning(
     dvcID: String,

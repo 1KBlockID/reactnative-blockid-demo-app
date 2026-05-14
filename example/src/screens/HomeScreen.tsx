@@ -16,7 +16,7 @@ import Tenant from '../Tenant';
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const viewModel = HomeViewModel.getInstance();
     setLoading(true);
     viewModel.setLicenseKey().then((result) => {
@@ -27,6 +27,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         );
       }
       setLoading(false);
+    }).catch(() => {
+      setLoading(false);
+      Alert.alert('Error', 'Network error. Check your connection.');
     });
   }, []);
 

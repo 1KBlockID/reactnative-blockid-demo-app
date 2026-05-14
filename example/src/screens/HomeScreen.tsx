@@ -27,9 +27,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         );
       }
       setLoading(false);
-    }).catch(() => {
-      setLoading(false);
-      Alert.alert('Error', 'Network error. Check your connection.');
     });
   }, []);
 

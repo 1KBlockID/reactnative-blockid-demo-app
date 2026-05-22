@@ -590,7 +590,8 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
         data.getString("session") ?: "", data.getString("sessionUrl") ?: "",
         data.getString("scopes") ?: "", null, data.getString("creds") ?: "",
         bidOrigin(data), "0",
-        "0", BlockIDSDK.getInstance().version, null, "" //pass auth type here
+        "0", BlockIDSDK.getInstance().version, null, "", //pass auth type here
+        false
       ) { status: Boolean, _, error: ErrorManager.ErrorResponse? ->
         if (status) {
           promise.resolve(true)

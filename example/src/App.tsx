@@ -1,10 +1,10 @@
 import 'react-native-gesture-handler';
+import 'react-native-screens';
+import { enableScreens } from 'react-native-screens';
+enableScreens(false);
 import * as React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import {
-  createStackNavigator,
-  type StackHeaderProps,
-} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import type { RootStackParamList } from './RootStackParam';
 import HomeScreen from './screens/HomeScreen';
 import FeatureEnrollmentScreen from './screens/FeatureEnrollmentScreen';
@@ -23,15 +23,6 @@ import {
 import customBackIcon from '../assets/Vector.png';
 import type { FeatureEnrollmentScreenNavigationProp } from './Navprops';
 
-const Theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'white', // Set background color
-    card: 'white', // Set card background color
-    text: 'black', // Set text color
-  },
-};
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'column',
@@ -57,22 +48,23 @@ const styles = StyleSheet.create({
   },
 });
 
+const Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white',
+    card: 'white',
+    text: 'black',
+    primary: 'black',
+  },
+};
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 type CustomHeaderProps = {
   navigation: FeatureEnrollmentScreenNavigationProp;
 };
 
-// Separate wrapper for navigation handling
-const CustomHeaderWithNavigation: React.FC<StackHeaderProps> = ({
-  navigation,
-}) => {
-  return (
-    <CustomHeader
-      navigation={navigation as FeatureEnrollmentScreenNavigationProp}
-    />
-  );
-};
 // Custom Header Component
 const CustomHeader: React.FC<CustomHeaderProps> = ({ navigation }) => {
   return (
@@ -90,7 +82,14 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ navigation }) => {
 export default function App() {
   return (
     <NavigationContainer theme={Theme}>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          cardStyle: { backgroundColor: 'white' },
+          headerTintColor: 'black',
+          detachInactiveScreens: false,
+        }}
+      >
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -100,11 +99,13 @@ export default function App() {
           name="Featurelist"
           component={FeatureEnrollmentScreen}
           options={{
-            header: CustomHeaderWithNavigation,
+            header: ({ navigation }) => (
+              <CustomHeader navigation={navigation as FeatureEnrollmentScreenNavigationProp} />
+            ),
           }}
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
-        <Stack.Screen name="LiveID" component={LiveIDScreen} />
+        <Stack.Screen name="LiveID" component={LiveIDScreen} options={{ title: 'LiveID' }} />
         <Stack.Screen name="QRScan" component={QRScreen} />
         <Stack.Screen name="QRAuth" component={QRAuthScreen} />
       </Stack.Navigator>

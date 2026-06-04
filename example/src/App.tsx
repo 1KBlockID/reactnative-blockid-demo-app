@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-import 'react-native-screens';
 import { enableScreens } from 'react-native-screens';
 enableScreens(false);
 import * as React from 'react';

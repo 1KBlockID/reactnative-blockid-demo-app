@@ -58,9 +58,11 @@ target 'BlockidpluginExample' do
     fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
     if File.exist?(fmt_base_header)
       content = File.read(fmt_base_header)
-      unless content.include?('Patched: disable consteval')
-        patched = content.gsub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
+      patched = content.sub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
+      if patched != content
         File.write(fmt_base_header, patched)
+      else
+        Pod::UI.warn "fmt patch: expected pattern not found in #{fmt_base_header} — header may have changed"
       end
     end
 

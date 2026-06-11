@@ -55,14 +55,17 @@ target 'BlockidpluginExample' do
     )
     # Fix fmt consteval errors with Xcode 16+
     # Patch fmt base.h to force FMT_USE_CONSTEVAL=0 (workaround for Xcode 16+ clang)
-    fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
-    if File.exist?(fmt_base_header)
-      content = File.read(fmt_base_header)
-      patched = content.sub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
-      if patched != content
-        File.write(fmt_base_header, patched)
-      else
-        Pod::UI.warn "fmt patch: expected pattern not found in #{fmt_base_header} — header may have changed"
+    xcode_version = `xcrun xcodebuild -version 2>/dev/null`.match(/Xcode (\d+)/)&.captures&.first.to_i
+    if xcode_version >= 16
+      fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
+      if File.exist?(fmt_base_header)
+        content = File.read(fmt_base_header)
+        patched = content.sub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
+        if patched != content
+          File.write(fmt_base_header, patched)
+        else
+          Pod::UI.warn "fmt patch: expected pattern not found in #{fmt_base_header} — header may have changed"
+        end
       end
     end
 

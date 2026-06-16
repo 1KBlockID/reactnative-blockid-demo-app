@@ -10,8 +10,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		215664112C08CD9A00E7D031 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 215664102C08CD9A00E7D031 /* main.jsbundle */; };
 		46D82E582E4F9AC70044D8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */; };
-		5C240E89B1FC8DFAFF2FF460 /* libPods-BlockidpluginExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A50C650CDDE8FFAD6CCA81 /* libPods-BlockidpluginExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */; };
 		EAC988ADE4E750B2E5386C73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -22,9 +22,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlockidpluginExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		215664102C08CD9A00E7D031 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		40A50C650CDDE8FFAD6CCA81 /* libPods-BlockidpluginExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlockidpluginExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockidpluginExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		713E34B16E5938FF7C888051 /* Pods-BlockidpluginExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.release.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.release.xcconfig"; sourceTree = "<group>"; };
 		738CFCFF3A1761C4E31505FD /* Pods-BlockidpluginExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.debug.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BlockidpluginExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C240E89B1FC8DFAFF2FF460 /* libPods-BlockidpluginExample.a in Frameworks */,
+				9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				40A50C650CDDE8FFAD6CCA81 /* libPods-BlockidpluginExample.a */,
+				68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,6 +125,14 @@
 			dependencies = (
 			);
 			name = BlockidpluginExample;
+			packageProductDependencies = (
+				F945CB69A783581CF374D714 /* BlockID */,
+				D4349E83FDD134FFDAAD80EB /* Alamofire */,
+				60EFF1AB1C7B2B2BBD744E3D /* BigInt */,
+				1BA13360446DB3E178CF8268 /* CryptoSwift */,
+				FDE2EFECF42D4B5B673B2F6B /* OpenSSL */,
+				4CE76AC46434086023955A01 /* WalletCore */,
+			);
 			productName = BlockidpluginExample;
 			productReference = 13B07F961A680F5B00A75B9A /* BlockidpluginExample.app */;
 			productType = "com.apple.product-type.application";
@@ -151,6 +159,14 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				671E1CDC5729BAB84D70DB4D /* XCRemoteSwiftPackageReference "ios-blockidsdk" */,
+				87A7CD56D5BE77225C6DD204 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */,
+				CFA3F3545B137EE15D614464 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
+				276AE39134A2A3165AE7EB36 /* XCRemoteSwiftPackageReference "OpenSSL" */,
+				13606F9C59A01B9DA4CA53D7 /* XCRemoteSwiftPackageReference "wallet-core" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -373,6 +389,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD = "";
 				LDPLUSPLUS = "";
@@ -450,6 +477,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD = "";
 				LDPLUSPLUS = "";
@@ -504,6 +542,90 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		13606F9C59A01B9DA4CA53D7 /* XCRemoteSwiftPackageReference "wallet-core" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trustwallet/wallet-core.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.6.13;
+			};
+		};
+		276AE39134A2A3165AE7EB36 /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.3.3001;
+			};
+		};
+		671E1CDC5729BAB84D70DB4D /* XCRemoteSwiftPackageReference "ios-blockidsdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/1KBlockID/ios-blockidsdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.30.61;
+			};
+		};
+		7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/attaswift/BigInt.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.7.0;
+			};
+		};
+		87A7CD56D5BE77225C6DD204 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.11.2;
+			};
+		};
+		CFA3F3545B137EE15D614464 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1BA13360446DB3E178CF8268 /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFA3F3545B137EE15D614464 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
+		};
+		4CE76AC46434086023955A01 /* WalletCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13606F9C59A01B9DA4CA53D7 /* XCRemoteSwiftPackageReference "wallet-core" */;
+			productName = WalletCore;
+		};
+		60EFF1AB1C7B2B2BBD744E3D /* BigInt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */;
+			productName = BigInt;
+		};
+		D4349E83FDD134FFDAAD80EB /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87A7CD56D5BE77225C6DD204 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		F945CB69A783581CF374D714 /* BlockID */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 671E1CDC5729BAB84D70DB4D /* XCRemoteSwiftPackageReference "ios-blockidsdk" */;
+			productName = BlockID;
+		};
+		FDE2EFECF42D4B5B673B2F6B /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 276AE39134A2A3165AE7EB36 /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

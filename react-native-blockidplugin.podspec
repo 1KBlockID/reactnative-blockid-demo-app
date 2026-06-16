@@ -16,7 +16,47 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
-  s.dependency 'BlockID'
+  # Required for ObjC to import Swift-generated header in dynamic framework mode
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+    'SWIFT_COMPILATION_MODE' => 'wholemodule'
+  }
+
+  # BlockID SDK is SPM-only (no podspec) since version 1.30.61.
+  # Use React Native's spm_dependency helper (available since RN 0.75) to resolve via SPM.
+  # Requires USE_FRAMEWORKS=dynamic in the consuming app's Podfile.
+  if defined?(spm_dependency)
+    spm_dependency(s,
+      url: 'https://github.com/1KBlockID/ios-blockidsdk.git',
+      requirement: {kind: 'exactVersion', version: '1.30.61'},
+      products: ['BlockID']
+    )
+    spm_dependency(s,
+      url: 'https://github.com/Alamofire/Alamofire.git',
+      requirement: {kind: 'exactVersion', version: '5.11.2'},
+      products: ['Alamofire']
+    )
+    spm_dependency(s,
+      url: 'https://github.com/attaswift/BigInt.git',
+      requirement: {kind: 'exactVersion', version: '5.7.0'},
+      products: ['BigInt']
+    )
+    spm_dependency(s,
+      url: 'https://github.com/krzyzanowskim/CryptoSwift.git',
+      requirement: {kind: 'exactVersion', version: '1.10.0'},
+      products: ['CryptoSwift']
+    )
+    spm_dependency(s,
+      url: 'https://github.com/krzyzanowskim/OpenSSL.git',
+      requirement: {kind: 'exactVersion', version: '3.3.3001'},
+      products: ['OpenSSL']
+    )
+    spm_dependency(s,
+      url: 'https://github.com/trustwallet/wallet-core.git',
+      requirement: {kind: 'exactVersion', version: '4.6.13'},
+      products: ['WalletCore']
+    )
+  end
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.

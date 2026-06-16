@@ -8,11 +8,9 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, '16.0'
 prepare_react_native_project!
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+# BlockID SDK (1.30.61+) is distributed via SPM only.
+# spm_dependency in the plugin podspec requires dynamic frameworks.
+use_frameworks! :linkage => :dynamic
 
 target 'BlockidpluginExample' do
   config = use_native_modules!
@@ -24,27 +22,6 @@ target 'BlockidpluginExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # This is needed to build BlockID dependencies as dynamic framework.
-  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-  'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
-
-  pre_install do |installer|
-    installer.pod_targets.each do |pod|
-      if dynamic_frameworks.include?(pod.name)
-        puts "Overriding the dynamic_framework? method for #{pod.name}"
-        def pod.dynamic_framework?;
-          true
-        end
-        def pod.build_type;
-          Pod::BuildType.dynamic_framework
-        end
-        pod.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-      end
-    end
-  end
-
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.30.40'
-
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
@@ -54,7 +31,6 @@ target 'BlockidpluginExample' do
       # :ccache_enabled => true
     )
     # Fix fmt consteval errors with Xcode 16+
-    # Patch fmt base.h to force FMT_USE_CONSTEVAL=0 (workaround for Xcode 16+ clang)
     xcode_version = `xcrun xcodebuild -version 2>/dev/null`.match(/Xcode (\d+)/)&.captures&.first.to_i
     if xcode_version >= 16
       fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
@@ -70,24 +46,62 @@ target 'BlockidpluginExample' do
     end
 
     installer.pods_project.targets.each do |target|
-          target.build_configurations.each do |config|
-             # set build active architecture to to YES
-          config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+      target.build_configurations.each do |config|
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+        xcconfig_path = config.base_configuration_reference.real_path
+        xcconfig = File.read(xcconfig_path)
+        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+      end
+    end
 
-         # enable simulator support
-          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
+    # Embed SPM frameworks into the app target.
+    # SPM packages added via spm_dependency are linked to the pod target but not
+    # automatically embedded in the app. We need to add them to the app project's
+    # embed frameworks build phase.
+    spm_frameworks = ['BlockID', 'Alamofire', 'BigInt', 'CryptoSwift', 'OpenSSL', 'WalletCore', 'SwiftProtobuf']
+    app_project = Xcodeproj::Project.open(File.join(__dir__, 'BlockidpluginExample.xcodeproj'))
+    app_target = app_project.targets.find { |t| t.name == 'BlockidpluginExample' }
+    if app_target
+      # Add SPM package product dependencies to the app target so they get embedded
+      pods_project = installer.pods_project
+      pods_project.root_object.package_references.each do |pkg_ref|
+        next unless pkg_ref.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
 
-          # set iOS Deployment Target to 16.0
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+        # Find all product dependencies linked to this package in native targets only
+        pods_project.targets.each do |pod_target|
+          next unless pod_target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget)
+          next unless pod_target.respond_to?(:package_product_dependencies)
 
-          if dynamic_frameworks.include?(target.name)
-            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+          pod_target.package_product_dependencies.each do |dep|
+            next unless dep.package == pkg_ref
+            next unless spm_frameworks.include?(dep.product_name)
+
+            # Check if already added to app target
+            already_linked = app_target.package_product_dependencies.any? { |d| d.product_name == dep.product_name }
+            next if already_linked
+
+            # Add the package reference to the app project if not already there
+            existing_pkg = app_project.root_object.package_references.find { |p| p.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference) && p.repositoryURL == pkg_ref.repositoryURL }
+            unless existing_pkg
+              existing_pkg = app_project.new(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
+              existing_pkg.repositoryURL = pkg_ref.repositoryURL
+              existing_pkg.requirement = pkg_ref.requirement
+              app_project.root_object.package_references << existing_pkg
+            end
+
+            # Add product dependency to app target
+            product_dep = app_project.new(Xcodeproj::Project::Object::XCSwiftPackageProductDependency)
+            product_dep.product_name = dep.product_name
+            product_dep.package = existing_pkg
+            app_target.package_product_dependencies << product_dep
           end
-          xcconfig_path = config.base_configuration_reference.real_path
-          xcconfig = File.read(xcconfig_path)
-          xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-          File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
         end
       end
+
+      app_project.save
+    end
   end
 end

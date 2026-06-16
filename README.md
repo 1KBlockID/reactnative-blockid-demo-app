@@ -131,6 +131,23 @@ After `pod install`, you should see SPM logs confirming BlockID and its dependen
 
 Open the `.xcworkspace` file in Xcode. On first open, Xcode will resolve SPM packages (this may take a minute). Then build for a physical device (Cmd+B).
 
+**Important — Linking SPM packages to your app target:**
+
+After `pod install`, you need to add the SPM packages to your app target so they are embedded in the app bundle at runtime. In Xcode:
+
+1. Select your app target → General → Frameworks, Libraries, and Embedded Content
+2. Click "+" and add these packages (they should appear under "Pods" workspace packages):
+   - BlockID
+   - Alamofire
+   - BigInt
+   - CryptoSwift
+   - OpenSSL
+   - WalletCore
+
+Alternatively, add the post_install script from the example app's Podfile which does this programmatically.
+
+Without this step, the app will crash on launch with a `dyld` error (missing dynamic frameworks).
+
 **Info.plist permissions:**
 
 ```

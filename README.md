@@ -81,7 +81,7 @@ make sure you have repo access
 
 ## Configuring iOS
 
-BlockID SDK (1.30.61+) is distributed exclusively via Swift Package Manager (SPM). The plugin's podspec uses React Native's `spm_dependency` helper (available since RN 0.75) to automatically resolve BlockID and its transitive dependencies via SPM during `pod install`.
+BlockID SDK (1.30.40+) is distributed exclusively via Swift Package Manager (SPM). The plugin's podspec uses React Native's `spm_dependency` helper (available since RN 0.75) to automatically resolve BlockID and its transitive dependencies via SPM during `pod install`.
 
 **Podfile setup:**
 

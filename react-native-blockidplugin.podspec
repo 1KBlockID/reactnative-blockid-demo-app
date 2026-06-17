@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
 
   # BlockID SDK is SPM-only (no podspec) since version 1.30.61.
   # Use React Native's spm_dependency helper (available since RN 0.75) to resolve via SPM.
-  # Requires USE_FRAMEWORKS=dynamic in the consuming app's Podfile.
+  # Requires `use_frameworks! :linkage => :dynamic` in the consuming app's Podfile.
   if defined?(spm_dependency)
     spm_dependency(s,
       url: 'https://github.com/1KBlockID/ios-blockidsdk.git',
@@ -58,7 +58,7 @@ Pod::Spec.new do |s|
     )
   else
     raise "[react-native-blockidplugin] spm_dependency is not available. " \
-      "BlockID SDK #{package['version']}+ requires React Native >= 0.75 for SPM support. " \
+      "This plugin (v#{package['version']}) requires React Native >= 0.75 for SPM support. " \
       "Please upgrade React Native."
   end
 

@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   if defined?(spm_dependency)
     spm_dependency(s,
       url: 'https://github.com/1KBlockID/ios-blockidsdk.git',
-      requirement: {kind: 'exactVersion', version: '1.30.61'},
+      requirement: {kind: 'exactVersion', version: s.version.to_s},
       products: ['BlockID']
     )
     spm_dependency(s,
@@ -57,9 +57,9 @@ Pod::Spec.new do |s|
       products: ['WalletCore']
     )
   else
-    Pod::UI.warn "[react-native-blockidplugin] spm_dependency is not available. " \
-      "BlockID SDK 1.30.61+ requires React Native >= 0.75 for SPM support. " \
-      "Please upgrade React Native or the build will fail with missing BlockID symbols."
+    raise "[react-native-blockidplugin] spm_dependency is not available. " \
+      "BlockID SDK #{package['version']}+ requires React Native >= 0.75 for SPM support. " \
+      "Please upgrade React Native."
   end
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.

@@ -122,7 +122,8 @@ end
 Then run:
 
 ```bash
-bundle exec pod install
+cd ios
+pod install
 ```
 
 After `pod install`, you should see SPM logs confirming BlockID and its dependencies (Alamofire, BigInt, CryptoSwift, OpenSSL, WalletCore) are added to the Pods project.

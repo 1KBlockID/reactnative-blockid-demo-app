@@ -65,6 +65,7 @@ target 'BlockidpluginExample' do
     app_project = Xcodeproj::Project.open(File.join(__dir__, 'BlockidpluginExample.xcodeproj'))
     app_target = app_project.targets.find { |t| t.name == 'BlockidpluginExample' }
     if app_target
+      modified = false
       # Add SPM package product dependencies to the app target so they get embedded
       pods_project = installer.pods_project
       pods_project.root_object.package_references.each do |pkg_ref|
@@ -97,11 +98,12 @@ target 'BlockidpluginExample' do
             product_dep.product_name = dep.product_name
             product_dep.package = existing_pkg
             app_target.package_product_dependencies << product_dep
+            modified = true
           end
         end
       end
 
-      app_project.save
+      app_project.save if modified
     end
   end
 end

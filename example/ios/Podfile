@@ -57,11 +57,10 @@ target 'BlockidpluginExample' do
       end
     end
 
-    # Embed SPM frameworks into the app target.
-    # SPM packages added via spm_dependency are linked to the pod target but not
-    # automatically embedded in the app. We need to add them to the app project's
-    # embed frameworks build phase.
-    spm_frameworks = ['BlockID', 'Alamofire', 'BigInt', 'CryptoSwift', 'OpenSSL', 'WalletCore', 'SwiftProtobuf']
+    # Add SPM package product dependencies to the app target so they are
+    # linked and embedded at runtime (SPM packages in the Pods project are
+    # not automatically embedded in the app bundle).
+    spm_frameworks = ['BlockID', 'Alamofire', 'BigInt', 'CryptoSwift', 'OpenSSL', 'WalletCore']
     app_project = Xcodeproj::Project.open(File.join(__dir__, 'BlockidpluginExample.xcodeproj'))
     app_target = app_project.targets.find { |t| t.name == 'BlockidpluginExample' }
     if app_target

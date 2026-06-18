@@ -1,6 +1,10 @@
 #import "Blockidplugin.h"
 
+#if __has_include(<react_native_blockidplugin/react_native_blockidplugin-Swift.h>)
+#import <react_native_blockidplugin/react_native_blockidplugin-Swift.h>
+#else
 #import "react_native_blockidplugin-Swift.h"
+#endif
 @implementation Blockidplugin
 RCT_EXPORT_MODULE()
 

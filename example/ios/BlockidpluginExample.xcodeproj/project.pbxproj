@@ -11,6 +11,12 @@
 		215664112C08CD9A00E7D031 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 215664102C08CD9A00E7D031 /* main.jsbundle */; };
 		46D82E582E4F9AC70044D8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		980D738B2FE3EB9400086714 /* BlockID in Frameworks */ = {isa = PBXBuildFile; productRef = F945CB69A783581CF374D714 /* BlockID */; };
+		980D738C2FE3EB9400086714 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D4349E83FDD134FFDAAD80EB /* Alamofire */; };
+		980D738D2FE3EB9400086714 /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = 60EFF1AB1C7B2B2BBD744E3D /* BigInt */; };
+		980D738E2FE3EB9400086714 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BA13360446DB3E178CF8268 /* CryptoSwift */; };
+		980D738F2FE3EB9400086714 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = FDE2EFECF42D4B5B673B2F6B /* OpenSSL */; };
+		980D73902FE3EB9400086714 /* WalletCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE76AC46434086023955A01 /* WalletCore */; };
 		9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */; };
 		EAC988ADE4E750B2E5386C73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -36,6 +42,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				980D73902FE3EB9400086714 /* WalletCore in Frameworks */,
+				980D738F2FE3EB9400086714 /* OpenSSL in Frameworks */,
+				980D738E2FE3EB9400086714 /* CryptoSwift in Frameworks */,
+				980D738D2FE3EB9400086714 /* BigInt in Frameworks */,
+				980D738C2FE3EB9400086714 /* Alamofire in Frameworks */,
+				980D738B2FE3EB9400086714 /* BlockID in Frameworks */,
 				9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,9 +227,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -232,9 +248,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -422,10 +442,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -509,10 +526,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -565,7 +579,7 @@
 			repositoryURL = "https://github.com/1KBlockID/ios-blockidsdk.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.30.61;
+				version = 1.30.40;
 			};
 		};
 		7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */ = {

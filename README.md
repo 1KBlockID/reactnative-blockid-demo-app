@@ -98,6 +98,8 @@ target 'YourApp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :fabric_enabled => true,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
@@ -110,7 +112,12 @@ target 'YourApp' do
 
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES' if config.name == 'Debug'
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+        xcconfig_path = config.base_configuration_reference.real_path
+        xcconfig = File.read(xcconfig_path)
+        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
       end
     end
   end
@@ -129,6 +136,8 @@ After `pod install`, you should see SPM logs confirming BlockID and its dependen
 **First Xcode build:**
 
 Open the `.xcworkspace` file in Xcode. On first open, Xcode will resolve SPM packages (this may take a minute). Then build for a physical device (Cmd+B).
+
+Note: BlockID SDK does not support iOS Simulator — you must build and run on a physical device.
 
 **Important — Linking SPM packages to your app target:**
 

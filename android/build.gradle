@@ -137,7 +137,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // Exclude legacy Android support library
-  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.30.6A1563EA") {
+  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.40.6A3BA457") {
     exclude group: "com.android.support", module: "support-compat"
   }
 }
@@ -151,9 +151,9 @@ if (isNewArchitectureEnabled()) {
 }
 
 configurations.configureEach {
-  resolutionStrategy.eachDependency {
-    if (requested.group == "org.bouncycastle") {
-      useTarget("org.bouncycastle:bcprov-jdk15to18:1.70")
+  resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    if (details.requested.group == 'org.bouncycastle') {
+      details.useVersion '1.84'
     }
   }
 }

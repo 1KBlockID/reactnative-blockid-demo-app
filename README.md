@@ -15,6 +15,16 @@ react-native-blockidplugin is a wrapper for the iOS and Android native BlockID S
 For help getting started with BlockID sdk development, view the
 [online documentation](https://developer.1kosmos.com/devportal/docs/), which offers guidance and a full API reference.
 
+## Requirements
+
+| Platform | Minimum Version |
+|----------|----------------|
+| iOS | 16.0 |
+| Android | API 28 (Android 9) |
+| React Native | 0.75+ |
+| Xcode | 16+ |
+| Node.js | 22.16.0+ |
+
 ## Installation
 
 **Step 1:**
@@ -71,72 +81,86 @@ make sure you have repo access
 
 ## Configuring iOS
 
-Go to podfile inside ios folder in your React native project and make below changes
+BlockID SDK (1.30.40+) is distributed exclusively via Swift Package Manager (SPM). The plugin's podspec uses React Native's `spm_dependency` helper (available since RN 0.75) to automatically resolve BlockID and its transitive dependencies via SPM during `pod install`.
 
-```js
-  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-    'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
+**Podfile setup:**
 
-    pre_install do |installer|
-      installer.pod_targets.each do |pod|
-        if dynamic_frameworks.include?(pod.name)
-          puts "Overriding the dynamic_framework? method for #{pod.name}"
-          def pod.dynamic_framework?;
-            true
-          end
-          def pod.build_type;
-            Pod::BuildType.dynamic_framework
-          end
-          pod.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-        end
-      end
-    end
+Add `use_frameworks! :linkage => :dynamic` to your Podfile. This is required for SPM dependencies to work with CocoaPods.
 
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.30.30'
+```ruby
+platform :ios, '16.0'
 
+# Required for BlockID SDK (SPM-based dependency)
+use_frameworks! :linkage => :dynamic
 
-    post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+target 'YourApp' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :fabric_enabled => true,
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
     )
+
     installer.pods_project.targets.each do |target|
-          target.build_configurations.each do |config|
-             # set build active architecture to to YES
-          config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
-
-         # enable simulator support
-          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
-
-          # set iOS Deployment Target to 15.1
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.1
-
-          if dynamic_frameworks.include?(target.name)
-            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-          end
-          xcconfig_path = config.base_configuration_reference.real_path
-          xcconfig = File.read(xcconfig_path)
-          xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-          File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
-        end
+      target.build_configurations.each do |config|
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES' if config.name == 'Debug'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+        xcconfig_path = config.base_configuration_reference.real_path
+        xcconfig = File.read(xcconfig_path)
+        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
       end
+    end
   end
+end
 ```
 
-and then
+Then run:
+
+```bash
+cd ios
+pod install
+```
+
+After `pod install`, you should see SPM logs confirming BlockID and its dependencies (Alamofire, BigInt, CryptoSwift, OpenSSL, WalletCore) are added to the Pods project.
+
+**First Xcode build:**
+
+Open the `.xcworkspace` file in Xcode. On first open, Xcode will resolve SPM packages (this may take a minute). Then build for a physical device (Cmd+B).
+
+Note: BlockID SDK does not support iOS Simulator — you must build and run on a physical device.
+
+**Important — Linking SPM packages to your app target:**
+
+After `pod install`, you need to add the SPM packages to your app target so they are embedded in the app bundle at runtime. In Xcode:
+
+1. Select your app target → General → Frameworks, Libraries, and Embedded Content
+2. Click "+" and add these packages (they should appear under "Pods" workspace packages):
+   - BlockID
+   - Alamofire
+   - BigInt
+   - CryptoSwift
+   - OpenSSL
+   - WalletCore
+
+Alternatively, add the post_install script from the example app's Podfile which does this programmatically.
+
+Without this step, the app will crash on launch with a `dyld` error (missing dynamic frameworks).
+
+**Info.plist permissions:**
 
 ```
-bundle install #only one time in your project
-bundle exec pod install
-```
-
-Add permission in your info.plist
-
-```
-NSCameraUsageDescription, NSFaceIDUsageDescription
+NSCameraUsageDescription
+NSFaceIDUsageDescription
 ```
 
 ## Configuring Android:
@@ -162,7 +186,7 @@ Go to build.gradle inside android/app folder in your React project and make belo
 then Go to build.gradle inside android/app folder in your React project and make below changes
 
 ```
-1. make sure minSdkVersion is 26
+1. make sure minSdkVersion is 28
 ```
 
 2. add packaging options in android hierarchy
@@ -194,10 +218,6 @@ configurations.configureEach {
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- The INTERNET permission is required for development. Specifically,
-         the React tool needs it to communicate with the running application
-         to allow setting breakpoints, to provide hot reload, etc.
-    -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -208,7 +228,6 @@ configurations.configureEach {
         android:allowBackup="true"
         tools:replace="android:allowBackup,android:theme,android:label"/>
 </manifest>
-
 ```
 
 Add permission in your manifest

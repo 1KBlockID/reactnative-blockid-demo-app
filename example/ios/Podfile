@@ -5,14 +5,12 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, '15.1'
+platform :ios, '16.0'
 prepare_react_native_project!
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+# BlockID SDK (1.30.40+) is distributed via SPM only.
+# spm_dependency in the plugin podspec requires dynamic frameworks.
+use_frameworks! :linkage => :dynamic
 
 target 'BlockidpluginExample' do
   config = use_native_modules!
@@ -24,27 +22,6 @@ target 'BlockidpluginExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # This is needed to build BlockID dependencies as dynamic framework.
-  dynamic_frameworks = ['Alamofire', 'CryptoSwift', 'BigInt', 'TrustWalletCore',
-  'OpenSSL-Universal', 'PromiseKit', 'KeychainAccess', 'SwiftProtobuf', 'BlockID']
-
-  pre_install do |installer|
-    installer.pod_targets.each do |pod|
-      if dynamic_frameworks.include?(pod.name)
-        puts "Overriding the dynamic_framework? method for #{pod.name}"
-        def pod.dynamic_framework?;
-          true
-        end
-        def pod.build_type;
-          Pod::BuildType.dynamic_framework
-        end
-        pod.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-      end
-    end
-  end
-
-  pod 'BlockID', :git => 'https://github.com/1KBlockID/ios-blockidsdk.git', :tag => '1.30.30'
-
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
@@ -53,25 +30,79 @@ target 'BlockidpluginExample' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-    installer.pods_project.targets.each do |target|
-          target.build_configurations.each do |config|
-             # set build active architecture to to YES
-          config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
-
-         # enable simulator support
-          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
-
-          # set iOS Deployment Target to 15.1
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 15.1
-
-          if dynamic_frameworks.include?(target.name)
-            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-          end
-          xcconfig_path = config.base_configuration_reference.real_path
-          xcconfig = File.read(xcconfig_path)
-          xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-          File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+    # Fix fmt consteval errors with Xcode 16+
+    xcode_version = (`xcrun xcodebuild -version 2>/dev/null`[/Xcode (\d+)/, 1] || "0").to_i
+    if xcode_version >= 16
+      fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
+      if File.exist?(fmt_base_header)
+        content = File.read(fmt_base_header)
+        patched = content.sub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
+        if patched != content
+          File.write(fmt_base_header, patched)
+        else
+          Pod::UI.warn "fmt patch: expected pattern not found in #{fmt_base_header} — header may have changed"
         end
       end
+    end
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES' if config.name == 'Debug'
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 i386"
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+        xcconfig_path = config.base_configuration_reference.real_path
+        xcconfig = File.read(xcconfig_path)
+        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+      end
+    end
+
+    # Add SPM package product dependencies to the app target so they are
+    # linked and embedded at runtime (SPM packages in the Pods project are
+    # not automatically embedded in the app bundle).
+    spm_frameworks = ['BlockID', 'Alamofire', 'BigInt', 'CryptoSwift', 'OpenSSL', 'WalletCore']
+    app_project = Xcodeproj::Project.open(File.join(__dir__, 'BlockidpluginExample.xcodeproj'))
+    app_target = app_project.targets.find { |t| t.name == 'BlockidpluginExample' }
+    if app_target
+      modified = false
+      # Add SPM package product dependencies to the app target so they get embedded
+      pods_project = installer.pods_project
+      pods_project.root_object.package_references.each do |pkg_ref|
+        next unless pkg_ref.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
+
+        # Find all product dependencies linked to this package in native targets only
+        pods_project.targets.each do |pod_target|
+          next unless pod_target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget)
+          next unless pod_target.respond_to?(:package_product_dependencies)
+
+          pod_target.package_product_dependencies.each do |dep|
+            next unless dep.package == pkg_ref
+            next unless spm_frameworks.include?(dep.product_name)
+
+            # Check if already added to app target
+            already_linked = app_target.package_product_dependencies.any? { |d| d.product_name == dep.product_name }
+            next if already_linked
+
+            # Add the package reference to the app project if not already there
+            existing_pkg = app_project.root_object.package_references.find { |p| p.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference) && p.repositoryURL == pkg_ref.repositoryURL }
+            unless existing_pkg
+              existing_pkg = app_project.new(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
+              existing_pkg.repositoryURL = pkg_ref.repositoryURL
+              existing_pkg.requirement = pkg_ref.requirement
+              app_project.root_object.package_references << existing_pkg
+            end
+
+            # Add product dependency to app target
+            product_dep = app_project.new(Xcodeproj::Project::Object::XCSwiftPackageProductDependency)
+            product_dep.product_name = dep.product_name
+            product_dep.package = existing_pkg
+            app_target.package_product_dependencies << product_dep
+            modified = true
+          end
+        end
+      end
+
+      app_project.save if modified
+    end
   end
 end

@@ -35,7 +35,11 @@ class BlockidpluginPackage : TurboReactPackage() {
   }
 
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-    return emptyList()
+    return if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+      emptyList() // TurboModules use getModule() — avoid double-instantiation
+    } else {
+      listOf(BlockidpluginModule(reactContext))
+    }
   }
 
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {

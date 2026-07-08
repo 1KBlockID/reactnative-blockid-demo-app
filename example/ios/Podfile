@@ -31,7 +31,7 @@ target 'BlockidpluginExample' do
       # :ccache_enabled => true
     )
     # Fix fmt consteval errors with Xcode 16+
-    xcode_version = `xcrun xcodebuild -version 2>/dev/null`.match(/Xcode (\d+)/)&.captures&.first.to_i
+    xcode_version = (`xcrun xcodebuild -version 2>/dev/null`[/Xcode (\d+)/, 1] || "0").to_i
     if xcode_version >= 16
       fmt_base_header = "#{Pod::Config.instance.installation_root}/Pods/fmt/include/fmt/base.h"
       if File.exist?(fmt_base_header)

@@ -173,10 +173,10 @@ Go to build.gradle inside android/app folder in your React project and make belo
      mavenCentral()
      gradlePluginPortal()
      maven {
-       url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
+       url 'https://artifactory.1kosmos.net/artifactory/maven-releases-local/'
        credentials {
-         username = "developer"
-         password = "q5k#06ZcjSo#"
+        username = 'developer'
+        password = 'xK9#mPw2$vLq7nBz!'
        }
      }
      maven { url "https://jitpack.io" }

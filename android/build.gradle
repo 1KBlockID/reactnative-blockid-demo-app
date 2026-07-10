@@ -121,10 +121,10 @@ repositories {
   google()
   gradlePluginPortal()
   maven {
-    url 'https://nexus-1k-nonprod.1kosmos.net/repository/maven-releases/'
+    url 'https://artifactory.1kosmos.net/artifactory/maven-releases-local/'
     credentials {
-      username = "developer"
-      password = "q5k#06ZcjSo#"
+      username = 'developer'
+      password = 'xK9#mPw2$vLq7nBz!'
     }
   }
   maven { url "https://jitpack.io" }
@@ -137,7 +137,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // Exclude legacy Android support library
-  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.40.6A3BA457") {
+  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.50.6A4CEBF5") {
     exclude group: "com.android.support", module: "support-compat"
   }
 }

@@ -1,6 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
 import type { TotpResponse } from './WrapperModel';
 
+export { DocType } from './WrapperModel';
+export type { TotpResponse } from './WrapperModel';
+
 const LINKING_ERROR =
   `The package 'react-native-blockidplugin' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +

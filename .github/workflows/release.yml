@@ -1,0 +1,44 @@
+name: Release
+
+# Publishes @1kosmos/react-native-blockidplugin to the in-house JFrog Artifactory
+# npm registry when a version tag (v*) is pushed.
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Configure JFrog npm registry auth
+        run: |
+          {
+            echo "@1kosmos:registry=https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/"
+            echo "//artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:_authToken=${JFROG_NPM_TOKEN}"
+          } > .npmrc
+        env:
+          JFROG_NPM_TOKEN: ${{ secrets.JFROG_NPM_TOKEN }}
+
+      - name: Build package
+        run: yarn prepare
+
+      - name: Release
+        run: yarn release --ci --no-git.requireCleanWorkingDir
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JFROG_NPM_TOKEN: ${{ secrets.JFROG_NPM_TOKEN }}
+
+      - name: Clean up credentials
+        if: always()
+        run: rm -f .npmrc

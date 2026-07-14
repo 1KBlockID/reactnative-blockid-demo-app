@@ -49,6 +49,108 @@ we are managing dependencies via yarn, install yarn
 npm install --global yarn
 ```
 
+## Publishing to the 1Kosmos JFrog registry
+
+`@1kosmos/react-native-blockidplugin` is published to the in-house JFrog
+Artifactory npm registry:
+
+```
+https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
+```
+
+There are two ways to publish.
+
+### Automated (CI)
+
+Pushing a version tag triggers the `Release` GitHub Actions workflow
+(`.github/workflows/release.yml`), which builds and publishes automatically.
+
+```
+git tag v1.30.51
+git push origin v1.30.51
+```
+
+The workflow authenticates using the `JFROG_NPM_TOKEN` repository secret, so no
+token handling is needed locally.
+
+### Manual (local machine)
+
+Use the helper script when you need to publish from your own machine. The token
+is read from an environment variable and written to a temporary `.npmrc` that is
+deleted automatically afterward — it is never committed.
+
+```bash
+# 1. Export your JFrog publish token (do NOT hard-code it anywhere)
+export JFROG_NPM_TOKEN="<your-publish-token>"
+
+# 2a. Dry run — builds and packs the tarball, does not publish
+DRY_RUN=1 yarn release:jfrog
+
+# 2b. Real publish — builds and publishes the current version
+yarn release:jfrog
+```
+
+Bump the version in `package.json` before publishing a new release (or use
+`yarn release` which drives the version via conventional commits).
+
+> `.npmrc` is git-ignored. Never commit a file containing the token.
+
+### Getting the tokens (AWS Secrets Manager)
+
+The Artifactory tokens are **not** stored in this repo. Retrieve them from AWS
+Secrets Manager:
+
+- **Account:** `development-workload` (`992382667796`)
+- **Secret:** `artifectory-creds-mobile-team`
+
+| Secret key | Purpose | Who uses it |
+|------------|---------|-------------|
+| `npm-deploy-token` | Publish (read + write) to `react-native-blockidplugin-local` | Mobile team — publishing |
+| `npm-read-token` | Read-only on `react-native-blockidplugin-local` | Clients — installing |
+
+To retrieve: AWS Console → Secrets Manager → open `artifectory-creds-mobile-team`
+→ **Retrieve secret value**.
+
+### GitHub Actions setup (one-time)
+
+For the CI release workflow to publish, add the publish token as a repository
+secret:
+
+- Secret name: **`JFROG_NPM_TOKEN`**
+- Value: the `npm-deploy-token` value from AWS Secrets Manager
+
+The same token works for the manual CLI flow — export it as `JFROG_NPM_TOKEN`
+before running `yarn release:jfrog`.
+
+### Verify a publish
+
+```bash
+npm view @1kosmos/react-native-blockidplugin \
+  --registry=https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
+```
+
+> **Version immutability:** once a version is published it cannot be overwritten.
+> Always bump the version in `package.json` before publishing.
+
+### Registry architecture (FYI)
+
+DevOps provisioned three repositories behind the scenes:
+
+| Repository | Type | Purpose |
+|------------|------|---------|
+| `react-native-blockidplugin-local` | Local | Source of truth for published `@1kosmos/*` packages |
+| `npm-remote` | Remote | Proxy/cache for public npm (`registry.npmjs.org`) |
+| `react-native-blockidplugin-virtual` | Virtual | Single endpoint aggregating local + remote |
+
+### Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| `401 Unauthorized` | Invalid/expired token | Verify the token; contact DevOps to rotate |
+| `403 Forbidden` | Token lacks permission | Use the correct token (publish vs read) |
+| `You cannot publish over the previously published versions` | Version already exists | Bump the version in `package.json` |
+| `E404 Not Found` | Not published yet / wrong registry URL | Check `.npmrc` registry URL and package name |
+
 ## How to integrate this plugin package to your React native project
 
 **Step 1:**
@@ -71,7 +173,36 @@ yarn
 
 **Step 2:**
 
-Install the react native blockid package as a git dependency
+Install the react native blockid package.
+
+### Option A — Install from the 1Kosmos npm registry (recommended)
+
+`@1kosmos/react-native-blockidplugin` is published to the in-house JFrog Artifactory
+npm registry. Add a `.npmrc` at the root of your project that routes the `@1kosmos`
+scope to the registry (all other dependencies keep resolving from public npm):
+
+```
+# .npmrc
+@1kosmos:registry=https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
+//artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:_authToken=<CLIENT_READ_TOKEN>
+```
+
+Use the **`npm-read-token`** (client read token) here — provided by the 1Kosmos
+team. Then install:
+
+```
+npm install @1kosmos/react-native-blockidplugin
+# or
+yarn add @1kosmos/react-native-blockidplugin
+```
+
+Update the import to use the scoped name:
+
+```
+import { setLicenseKey } from '@1kosmos/react-native-blockidplugin';
+```
+
+### Option B — Install as a git dependency (legacy, still supported)
 
 ```
 yarn add react-native-blockidplugin@https://github.com/1KBlockID/reactnative-blockid-demo-app.git#main

@@ -27,10 +27,11 @@ import {
   stopQRScanning,
   lockSDK,
   unLockSDK,
-} from 'react-native-blockidplugin';
+  DocType,
+  type TotpResponse,
+} from '@1kosmos/react-native-blockidplugin';
 
 import * as AppConstants from './AppConstants';
-import { DocType, type TotpResponse } from '../../src/WrapperModel';
 import { Alert } from 'react-native';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Platform } from 'react-native';

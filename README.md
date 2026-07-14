@@ -66,8 +66,8 @@ Pushing a version tag triggers the `Release` GitHub Actions workflow
 (`.github/workflows/release.yml`), which builds and publishes automatically.
 
 ```
-git tag v1.30.51
-git push origin v1.30.51
+git tag v1.30.52
+git push origin v1.30.52
 ```
 
 The workflow authenticates using the `JFROG_NPM_TOKEN` repository secret, so no

@@ -19,8 +19,11 @@ import { useNavigation, type RouteProp } from '@react-navigation/native';
 import SpinnerOverlay from '../SpinnerOverlay';
 import { ScannerManager, ScannerView, type Layout } from '../ScannerView';
 import type { RootStackParamList } from '../RootStackParam';
-import type { FaceInfo, StatusChangeEvent } from '../../../src/NativeBlockidplugin';
-import NativeBlockidplugin from '../../../src/NativeBlockidplugin';
+import {
+  NativeBlockidplugin,
+  type FaceInfo,
+  type StatusChangeEvent,
+} from '@1kosmos/react-native-blockidplugin';
 
 const createFragment = (viewId: number | null) =>
   UIManager.dispatchViewManagerCommand(

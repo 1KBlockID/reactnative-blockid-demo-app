@@ -1,6 +1,6 @@
 {
   "name": "@1kosmos/react-native-blockidplugin",
-  "version": "1.30.51",
+  "version": "1.30.52",
   "description": "React Native BlockId Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

@@ -58,26 +58,12 @@ Artifactory npm registry:
 https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
 ```
 
-There are two ways to publish.
+Publishing is done **manually** from a local machine using the helper script
+(`scripts/publish-jfrog.sh`, wired to `yarn release:jfrog`). The token is read
+from an environment variable and written to a temporary `.npmrc` that is deleted
+automatically afterward — it is never committed.
 
-### Automated (CI)
-
-Pushing a version tag triggers the `Release` GitHub Actions workflow
-(`.github/workflows/release.yml`), which builds and publishes automatically.
-
-```
-git tag v1.30.52
-git push origin v1.30.52
-```
-
-The workflow authenticates using the `JFROG_NPM_TOKEN` repository secret, so no
-token handling is needed locally.
-
-### Manual (local machine)
-
-Use the helper script when you need to publish from your own machine. The token
-is read from an environment variable and written to a temporary `.npmrc` that is
-deleted automatically afterward — it is never committed.
+> Run this from the **repo root**, not from `example/`.
 
 ```bash
 # 1. Export your JFrog publish token (do NOT hard-code it anywhere)
@@ -90,8 +76,8 @@ DRY_RUN=1 yarn release:jfrog
 yarn release:jfrog
 ```
 
-Bump the version in `package.json` before publishing a new release (or use
-`yarn release` which drives the version via conventional commits).
+Bump the version in `package.json` before publishing a new release (versions are
+immutable — an existing version cannot be overwritten).
 
 > `.npmrc` is git-ignored. Never commit a file containing the token.
 
@@ -111,16 +97,8 @@ Secrets Manager:
 To retrieve: AWS Console → Secrets Manager → open `artifectory-creds-mobile-team`
 → **Retrieve secret value**.
 
-### GitHub Actions setup (one-time)
-
-For the CI release workflow to publish, add the publish token as a repository
-secret:
-
-- Secret name: **`JFROG_NPM_TOKEN`**
-- Value: the `npm-deploy-token` value from AWS Secrets Manager
-
-The same token works for the manual CLI flow — export it as `JFROG_NPM_TOKEN`
-before running `yarn release:jfrog`.
+For publishing, export the `npm-deploy-token` value as `JFROG_NPM_TOKEN` before
+running `yarn release:jfrog`.
 
 ### Verify a publish
 

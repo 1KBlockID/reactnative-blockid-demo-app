@@ -17,7 +17,7 @@
 		980D738E2FE3EB9400086714 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BA13360446DB3E178CF8268 /* CryptoSwift */; };
 		980D738F2FE3EB9400086714 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = FDE2EFECF42D4B5B673B2F6B /* OpenSSL */; };
 		980D73902FE3EB9400086714 /* WalletCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE76AC46434086023955A01 /* WalletCore */; };
-		9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */; };
+		E8AEAD6C6D1797A300390C32 /* Pods_BlockidpluginExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C28C3439A08872E83E312 /* Pods_BlockidpluginExample.framework */; };
 		EAC988ADE4E750B2E5386C73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -29,11 +29,11 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		215664102C08CD9A00E7D031 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		46D82E572E4F9AC00044D8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4AFB18D340C526B4380F9D74 /* Pods-BlockidpluginExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.debug.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.debug.xcconfig"; sourceTree = "<group>"; };
 		59E855746F7EBF5C207DAC31 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = BlockidpluginExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockidpluginExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		713E34B16E5938FF7C888051 /* Pods-BlockidpluginExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.release.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.release.xcconfig"; sourceTree = "<group>"; };
-		738CFCFF3A1761C4E31505FD /* Pods-BlockidpluginExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.debug.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BlockidpluginExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BF1C28C3439A08872E83E312 /* Pods_BlockidpluginExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockidpluginExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB811305A00B57D46F181007 /* Pods-BlockidpluginExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockidpluginExample.release.xcconfig"; path = "Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -48,7 +48,7 @@
 				980D738D2FE3EB9400086714 /* BigInt in Frameworks */,
 				980D738C2FE3EB9400086714 /* Alamofire in Frameworks */,
 				980D738B2FE3EB9400086714 /* BlockID in Frameworks */,
-				9FD1BEE01D6D2CE5E2DF3C12 /* Pods_BlockidpluginExample.framework in Frameworks */,
+				E8AEAD6C6D1797A300390C32 /* Pods_BlockidpluginExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				68B5B23D8EEFA13BC4BBDD6E /* Pods_BlockidpluginExample.framework */,
+				BF1C28C3439A08872E83E312 /* Pods_BlockidpluginExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,8 +111,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				738CFCFF3A1761C4E31505FD /* Pods-BlockidpluginExample.debug.xcconfig */,
-				713E34B16E5938FF7C888051 /* Pods-BlockidpluginExample.release.xcconfig */,
+				4AFB18D340C526B4380F9D74 /* Pods-BlockidpluginExample.debug.xcconfig */,
+				EB811305A00B57D46F181007 /* Pods-BlockidpluginExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -124,13 +124,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BlockidpluginExample" */;
 			buildPhases = (
-				C4F378B81A3C817FF77C90A5 /* [CP] Check Pods Manifest.lock */,
+				48C542403BCF46F4698FF5E8 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				91F4B592B7A4406DCF03E8F2 /* [CP] Embed Pods Frameworks */,
-				B9BECBF2A52BA7A5CA5A4199 /* [CP] Copy Pods Resources */,
+				D0C048594C31A279316A7950 /* [CP] Embed Pods Frameworks */,
+				28B4E9422945CAF35244F543 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -219,24 +219,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		91F4B592B7A4406DCF03E8F2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B9BECBF2A52BA7A5CA5A4199 /* [CP] Copy Pods Resources */ = {
+		28B4E9422945CAF35244F543 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -244,16 +227,20 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C4F378B81A3C817FF77C90A5 /* [CP] Check Pods Manifest.lock */ = {
+		48C542403BCF46F4698FF5E8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -275,6 +262,27 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D0C048594C31A279316A7950 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -291,7 +299,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 738CFCFF3A1761C4E31505FD /* Pods-BlockidpluginExample.debug.xcconfig */;
+			baseConfigurationReference = 4AFB18D340C526B4380F9D74 /* Pods-BlockidpluginExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -324,7 +332,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 713E34B16E5938FF7C888051 /* Pods-BlockidpluginExample.release.xcconfig */;
+			baseConfigurationReference = EB811305A00B57D46F181007 /* Pods-BlockidpluginExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -434,10 +442,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -521,10 +526,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

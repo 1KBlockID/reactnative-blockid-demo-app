@@ -1,6 +1,6 @@
-# react-native-blockidplugin
+# @1kosmos/react-native-blockidplugin
 
-A React native plugin for a BlockID - Low code authentication & identity proofing for developers. This package is created as a Turbo module with backward compatibility,
+A React Native plugin for BlockID — low-code authentication & identity proofing for developers. This package is created as a Turbo module with backward compatibility,
 considering the old Native Module used by the legacy architecture will be deprecated once new architecture becomes stable.
 
 ## Getting Started
@@ -10,7 +10,7 @@ This project is a starting point for a React native
 a specialized package that includes platform-specific implementation code for
 Android and/or iOS.
 
-react-native-blockidplugin is a wrapper for the iOS and Android native BlockID SDK, designed to facilitate easy API access for React native projects. With this plugin, you can use react native code to interact with the native BlockID SDKs on both iOS and Android platforms.
+`@1kosmos/react-native-blockidplugin` is a wrapper for the iOS and Android native BlockID SDK, designed to facilitate easy API access for React Native projects. With this plugin, you can use React Native code to interact with the native BlockID SDKs on both iOS and Android platforms.
 
 For help getting started with BlockID sdk development, view the
 [online documentation](https://developer.1kosmos.com/devportal/docs/), which offers guidance and a full API reference.
@@ -49,13 +49,7 @@ we are managing dependencies via yarn, install yarn
 npm install --global yarn
 ```
 
-## Publishing
-
-See [PUBLISHING.md](./PUBLISHING.md) for the step-by-step manual publish guide.
-
 ## How to integrate this plugin package to your React native project
-
-See [INSTALL.md](./INSTALL.md) for the full step-by-step installation guide.
 
 **Quick start:**
 
@@ -74,19 +68,6 @@ Create a new React Native project:
 npx @react-native-community/cli@latest init MyProject
 cd MyProject
 ```
-
-**Step 2:**
-
-Follow the [INSTALL guide](./INSTALL.md) to set up the token and install the
-package from the 1Kosmos npm registry.
-
-Alternatively, install as a git dependency (legacy, still supported):
-
-```bash
-yarn add react-native-blockidplugin@https://github.com/1KBlockID/reactnative-blockid-demo-app.git#main
-```
-
-Make sure you have repo access.
 
 ## Configuring iOS
 
@@ -245,12 +226,12 @@ Add permission in your manifest
 camera
 ```
 
-### react-native-blockidplugin usage:
+### @1kosmos/react-native-blockidplugin usage:
 
-Import blockidplugin in your react native project
+Import the plugin in your React Native project
 
 ```
-import { setLicenseKey } from 'react-native-blockidplugin';
+import { setLicenseKey } from '@1kosmos/react-native-blockidplugin';
 ```
 
 Example Usage

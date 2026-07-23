@@ -3,6 +3,9 @@
 Step-by-step guide for the mobile team to publish new versions to the 1Kosmos
 JFrog Artifactory npm registry.
 
+> **Note:** The publish script (`scripts/publish-jfrog.sh`) is bash-only.
+> On Windows, use Git Bash or WSL.
+
 ## Prerequisites
 
 - Node.js (v22.16.0+) and Yarn (3.6.1, bundled via `.yarn/releases/`)
@@ -14,7 +17,7 @@ JFrog Artifactory npm registry.
 The token lives in AWS Secrets Manager:
 
 - **Account:** `development-workload` (`992382667796`)
-- **Secret name:** `artifectory-creds-mobile-team`
+- **Secret name:** `artifectory-creds-mobile-team` _(note: this is the actual name in AWS, not a typo)_
 - **Key:** `npm-deploy-token`
 
 Steps:
@@ -26,14 +29,25 @@ Steps:
 ## Step 2 — Export the token in your terminal
 
 ```bash
+# macOS / Linux / Git Bash
 export JFROG_NPM_TOKEN="<paste npm-deploy-token here>"
+```
+
+```powershell
+# Windows PowerShell
+$env:JFROG_NPM_TOKEN="<paste npm-deploy-token here>"
 ```
 
 Verify it's set:
 
 ```bash
+# macOS / Linux / Git Bash
 echo "length: ${#JFROG_NPM_TOKEN}"
-# Should print a number > 0
+```
+
+```powershell
+# Windows PowerShell
+$env:JFROG_NPM_TOKEN.Length
 ```
 
 > ⚠️ Do NOT hard-code this token anywhere. Do NOT commit it to source control.
@@ -53,7 +67,14 @@ Edit `package.json` and increment the `version` field:
 ## Step 4 — Dry run (optional but recommended)
 
 ```bash
+# macOS / Linux / Git Bash
 DRY_RUN=1 yarn release:jfrog
+```
+
+```powershell
+# Windows PowerShell (Git Bash)
+# Run from Git Bash since the script is bash-only:
+# DRY_RUN=1 yarn release:jfrog
 ```
 
 This builds the library and packs a tarball without publishing. Review the output

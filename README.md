@@ -110,9 +110,24 @@ Should print a number > 0.
 
 Create a file called `.npmrc` at the root of your React Native project (next to `package.json`):
 
-```
+**macOS / Linux:**
+
+```bash
+cat > .npmrc <<'EOF'
 @1kosmos:registry=https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
 //artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:_authToken=${NPM_READ_TOKEN}
+//artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:always-auth=true
+EOF
+```
+
+**Windows PowerShell:**
+
+```powershell
+@"
+@1kosmos:registry=https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/
+//artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:_authToken=${NPM_READ_TOKEN}
+//artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/:always-auth=true
+"@ | Set-Content -Path .npmrc -Encoding utf8
 ```
 
 This routes only `@1kosmos/*` packages to the private registry. All other

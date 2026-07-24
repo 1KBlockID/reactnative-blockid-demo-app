@@ -38,29 +38,33 @@ The token is shared securely by the 1Kosmos mobile team. Contact your 1Kosmos re
 
 ### Step 2 — Set the token in your terminal
 
+**macOS / Linux:**
+
 ```bash
-# macOS / Linux
 export NPM_READ_TOKEN="eyJ2ZXIiOiIyIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYiLCJraWQiOiJEMnFRSHYyRlZPVmVMNnZtLUJJckJjb1BKaHVxWkR5REZlc3ViWDBRbTdzIn0.eyJzdWIiOiJqZnJ0QDAxaHo3NW5iODNqYzVhMDFlZmp3eTIwa2JkL3VzZXJzL3N2Yy1ucG0tY2xpZW50LXJlYWQiLCJzY3AiOiJtZW1iZXItb2YtZ3JvdXBzOm5wbS1jbGllbnQtcmVhZGVycyIsImF1ZCI6ImpmcnRAMDFoejc1bmI4M2pjNWEwMWVmand5MjBrYmQiLCJpc3MiOiJqZnJ0QDAxaHo3NW5iODNqYzVhMDFlZmp3eTIwa2JkL3VzZXJzL2F0dWwucGFuZGV5IiwiaWF0IjoxNzgzNTg5MTUyLCJqdGkiOiJkOWQ4ZjIxNi1jZGZlLTRlY2ItOWU2MS05NTYwNTZiNGVjZDkifQ.kpNiMuh7ZV7GPwhMTUXCRaWHPIjHFpZEnk0T6IkgamXb7nGEehB5FFdrfO8c504HDbAi0zkf7I5nntGUBSaPl5osO3IrVgxYju6Jhc8kP0MP05PYZtSxIgJDiWooqN8wKszlKTmm73Lp8Mn4dGUYAKi4X0TN8brzHzbel4wcfRA7cp1Am6APRzoaqpWNofZ9h6Su4r3T5Dfn6A6a-t_Rxe1CXQZS9uNdR8uogx_Fdd9TSrNb2rIzjYlOwzOsCGB5oku6vq5Oxx_g2A2rN2a66RCWLg76PTtobELTN1hcPV3zYsaaXSopmVDaulICxhkNp1JFAztaCnNqncQ0NXc3_A"
 ```
 
+**Windows PowerShell:**
+
 ```powershell
-# Windows PowerShell
 $env:NPM_READ_TOKEN="eyJ2ZXIiOiIyIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYiLCJraWQiOiJEMnFRSHYyRlZPVmVMNnZtLUJJckJjb1BKaHVxWkR5REZlc3ViWDBRbTdzIn0.eyJzdWIiOiJqZnJ0QDAxaHo3NW5iODNqYzVhMDFlZmp3eTIwa2JkL3VzZXJzL3N2Yy1ucG0tY2xpZW50LXJlYWQiLCJzY3AiOiJtZW1iZXItb2YtZ3JvdXBzOm5wbS1jbGllbnQtcmVhZGVycyIsImF1ZCI6ImpmcnRAMDFoejc1bmI4M2pjNWEwMWVmand5MjBrYmQiLCJpc3MiOiJqZnJ0QDAxaHo3NW5iODNqYzVhMDFlZmp3eTIwa2JkL3VzZXJzL2F0dWwucGFuZGV5IiwiaWF0IjoxNzgzNTg5MTUyLCJqdGkiOiJkOWQ4ZjIxNi1jZGZlLTRlY2ItOWU2MS05NTYwNTZiNGVjZDkifQ.kpNiMuh7ZV7GPwhMTUXCRaWHPIjHFpZEnk0T6IkgamXb7nGEehB5FFdrfO8c504HDbAi0zkf7I5nntGUBSaPl5osO3IrVgxYju6Jhc8kP0MP05PYZtSxIgJDiWooqN8wKszlKTmm73Lp8Mn4dGUYAKi4X0TN8brzHzbel4wcfRA7cp1Am6APRzoaqpWNofZ9h6Su4r3T5Dfn6A6a-t_Rxe1CXQZS9uNdR8uogx_Fdd9TSrNb2rIzjYlOwzOsCGB5oku6vq5Oxx_g2A2rN2a66RCWLg76PTtobELTN1hcPV3zYsaaXSopmVDaulICxhkNp1JFAztaCnNqncQ0NXc3_A"
 ```
 
 Verify it's set:
 
+**macOS / Linux:**
+
 ```bash
-# macOS / Linux
 echo "length: ${#NPM_READ_TOKEN}"
-# Should print a number > 0
 ```
 
+**Windows PowerShell:**
+
 ```powershell
-# Windows PowerShell
 $env:NPM_READ_TOKEN.Length
-# Should print a number > 0
 ```
+
+Should print a number > 0.
 
 ### Step 3 — Create `.npmrc` in your project root
 

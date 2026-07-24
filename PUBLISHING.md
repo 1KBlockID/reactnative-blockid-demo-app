@@ -28,25 +28,29 @@ Steps:
 
 ## Step 2 — Export the token in your terminal
 
+**macOS / Linux / Git Bash:**
+
 ```bash
-# macOS / Linux / Git Bash
 export JFROG_NPM_TOKEN="<paste npm-deploy-token here>"
 ```
 
+**Windows PowerShell:**
+
 ```powershell
-# Windows PowerShell
 $env:JFROG_NPM_TOKEN="<paste npm-deploy-token here>"
 ```
 
 Verify it's set:
 
+**macOS / Linux / Git Bash:**
+
 ```bash
-# macOS / Linux / Git Bash
 echo "length: ${#JFROG_NPM_TOKEN}"
 ```
 
+**Windows PowerShell:**
+
 ```powershell
-# Windows PowerShell
 $env:JFROG_NPM_TOKEN.Length
 ```
 
@@ -66,16 +70,13 @@ Edit `package.json` and increment the `version` field:
 
 ## Step 4 — Dry run (optional but recommended)
 
+**macOS / Linux / Git Bash:**
+
 ```bash
-# macOS / Linux / Git Bash
 DRY_RUN=1 yarn release:jfrog
 ```
 
-```powershell
-# Windows PowerShell (Git Bash)
-# Run from Git Bash since the script is bash-only:
-# DRY_RUN=1 yarn release:jfrog
-```
+**Windows:** Run from Git Bash since the script is bash-only.
 
 This builds the library and packs a tarball without publishing. Review the output
 to confirm the correct version and file count.

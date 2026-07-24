@@ -29,6 +29,46 @@ For help getting started with BlockID SDK development, view the
 - A React Native project (0.75+)
 - The **client read token** (`npm-read-token`) — provided by the 1Kosmos mobile team
 
+### Environment setup
+
+Make sure your system has at least Node.js v22.16.0 installed:
+
+```
+https://nodejs.org/en/download/package-manager
+```
+
+Then install React Native CLI:
+
+```bash
+npm install -g react-native-cli
+```
+
+Make sure you have Xcode and Android Studio setup in your bash/zsh profiles for mac and windows respectively.
+
+We are managing dependencies via yarn, install yarn:
+
+```bash
+npm install --global yarn
+```
+
+### Create a new React Native project
+
+```bash
+npx react-native init MyProject
+```
+
+or
+
+```bash
+npx @react-native-community/cli@latest init MyProject
+```
+
+In the root folder execute yarn:
+
+```bash
+yarn
+```
+
 ### Step 1 — Get the read token
 
 The token is shared securely by the 1Kosmos mobile team. Contact your 1Kosmos representative if you don't have one.

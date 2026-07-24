@@ -155,7 +155,7 @@ After `pod install`, you should see SPM logs confirming BlockID and its dependen
 
 Open the `.xcworkspace` file in Xcode. On first open, Xcode will resolve SPM packages (this may take a minute). Then build for a physical device (Cmd+B).
 
-> Note: BlockID SDK requires a physical device. Simulator builds are supported from v1.30.50+.
+Note: Simulator builds are supported from BlockID SDK v1.30.50+. Earlier versions require a physical device.
 
 ### Linking SPM packages to your app target
 

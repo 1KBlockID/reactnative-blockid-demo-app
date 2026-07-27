@@ -1648,7 +1648,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-blockidplugin (1.30.59):
+  - react-native-blockidplugin (1.30.50-dev.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -2746,7 +2746,7 @@ SPEC CHECKSUMS:
   React-logger: 7cfc7b1ae1f8e5fe5097f9c746137cc3a8fad4ce
   React-Mapbuffer: 8f620d1794c6b59a8c3862c3ae820a2e9e6c9bb0
   React-microtasksnativemodule: dcf5321c9a41659a6718df8a5f202af1577c6825
-  react-native-blockidplugin: 8054dae47cf9f87768986934fb31833151115ffe
+  react-native-blockidplugin: 2e4f84980f9a81862a7df9e910441978f28cdae1
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-safe-area-context: 62985d6ddaba032b8dafcd9d68ff278c625e959b
   React-NativeModulesApple: 342e280bb9fc2aa5f61f6c257b309a86b995e12d

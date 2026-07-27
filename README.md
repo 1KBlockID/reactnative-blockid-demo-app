@@ -153,7 +153,7 @@ yarn add @1kosmos/react-native-blockidplugin
 npm list @1kosmos/react-native-blockidplugin
 ```
 
-Should show the installed version (e.g., `@1kosmos/react-native-blockidplugin@1.30.52`).
+Should show the installed version (e.g., `@1kosmos/react-native-blockidplugin@1.30.50`).
 
 ## Configuring iOS
 

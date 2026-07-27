@@ -62,7 +62,7 @@ $env:JFROG_NPM_TOKEN.Length
 Edit `package.json` and increment the `version` field:
 
 ```bash
-# Example: 1.30.52 → 1.30.53
+# Example: 1.30.50-dev.1 → 1.30.50-dev.2 (dev) or 1.30.50 (release)
 ```
 
 > **Version immutability:** you cannot overwrite a published version. Always bump

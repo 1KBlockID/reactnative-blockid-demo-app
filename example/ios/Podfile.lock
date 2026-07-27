@@ -1648,7 +1648,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-blockidplugin (1.30.50):
+  - react-native-blockidplugin (1.30.50-dev.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -1679,7 +1679,7 @@ PODS:
     - Yoga
   - react-native-get-random-values (1.11.0):
     - React-Core
-  - react-native-safe-area-context (5.7.0):
+  - react-native-safe-area-context (5.4.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -1698,8 +1698,8 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.7.0)
-    - react-native-safe-area-context/fabric (= 5.7.0)
+    - react-native-safe-area-context/common (= 5.4.0)
+    - react-native-safe-area-context/fabric (= 5.4.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1710,7 +1710,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/common (5.7.0):
+  - react-native-safe-area-context/common (5.4.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -1739,7 +1739,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/fabric (5.7.0):
+  - react-native-safe-area-context/fabric (5.4.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2363,7 +2363,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSVG (15.15.4):
+  - RNSVG (15.15.5):
     - boost
     - DoubleConversion
     - fast_float
@@ -2390,10 +2390,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.15.4)
+    - RNSVG/common (= 15.15.5)
     - SocketRocket
     - Yoga
-  - RNSVG/common (15.15.4):
+  - RNSVG/common (15.15.5):
     - boost
     - DoubleConversion
     - fast_float
@@ -2496,7 +2496,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
-  - react-native-blockidplugin (from `../..`)
+  - "react-native-blockidplugin (from `../node_modules/@1kosmos/react-native-blockidplugin`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -2625,7 +2625,7 @@ EXTERNAL SOURCES:
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-blockidplugin:
-    :path: "../.."
+    :path: "../node_modules/@1kosmos/react-native-blockidplugin"
   react-native-get-random-values:
     :path: "../node_modules/react-native-get-random-values"
   react-native-safe-area-context:
@@ -2746,9 +2746,9 @@ SPEC CHECKSUMS:
   React-logger: 7cfc7b1ae1f8e5fe5097f9c746137cc3a8fad4ce
   React-Mapbuffer: 8f620d1794c6b59a8c3862c3ae820a2e9e6c9bb0
   React-microtasksnativemodule: dcf5321c9a41659a6718df8a5f202af1577c6825
-  react-native-blockidplugin: 621225140849d42b57d32609471c9ec20da3cb0c
+  react-native-blockidplugin: 2e4f84980f9a81862a7df9e910441978f28cdae1
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
-  react-native-safe-area-context: 4cd26e0865366ae470c15ed17d86f043a495cb37
+  react-native-safe-area-context: 62985d6ddaba032b8dafcd9d68ff278c625e959b
   React-NativeModulesApple: 342e280bb9fc2aa5f61f6c257b309a86b995e12d
   React-oscompat: 56d6de59f9ae95cd006a1c40be2cde83bc06a4e1
   React-perflogger: 4008bd05a8b6c157b06608c0ea0b8bd5d9c5e6c9
@@ -2783,7 +2783,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: f81a4123948293222e10914287bd66aacbf09a2f
   RNPermissions: 0881426c2124d8cf73a2ac7fd76e1faff727f5d7
   RNScreens: 8132b09d1edf29ba411894b19bb05f25277b2c64
-  RNSVG: 692186309bfdaf6866d26d73344e3a6896a83874
+  RNSVG: ce8672dee470e1af3fbdaf1351d36d15e89b3d92
   RNVectorIcons: 0567525e0a344458329daa09068cf9e8090ec791
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: ce248fb32065c9b00451491b06607f1c25b2f1ed

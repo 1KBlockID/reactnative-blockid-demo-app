@@ -90,3 +90,6 @@ example/android/build/
 example/android/local.properties
 example/.bundle/
 example/.DS_Store
+
+# npm registry auth (may contain JFrog token) — never commit
+.npmrc

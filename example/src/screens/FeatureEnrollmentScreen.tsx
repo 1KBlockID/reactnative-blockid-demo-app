@@ -11,7 +11,7 @@ import {
 import type { RootStackParamList } from '../RootStackParam';
 import type { RouteProp } from '@react-navigation/native';
 import HomeViewModel from '../HomeViewModel';
-import { DocType } from '../../../src/WrapperModel';
+import { DocType } from '@1kosmos/react-native-blockidplugin';
 import SpinnerOverlay from '../SpinnerOverlay';
 import liveId from '../../assets/liveid.png';
 import qr from '../../assets/qr.png';

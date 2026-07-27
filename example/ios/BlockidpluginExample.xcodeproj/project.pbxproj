@@ -577,7 +577,7 @@
 			repositoryURL = "https://github.com/1KBlockID/ios-blockidsdk.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.30.59;
+				version = 1.30.50;
 			};
 		};
 		7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */ = {

@@ -249,13 +249,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -270,13 +266,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BlockidpluginExample/Pods-BlockidpluginExample-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -442,7 +434,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -526,7 +521,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -579,7 +577,7 @@
 			repositoryURL = "https://github.com/1KBlockID/ios-blockidsdk.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.30.50;
+				version = 1.30.59;
 			};
 		};
 		7F7994879544CEEF78D432F2 /* XCRemoteSwiftPackageReference "BigInt" */ = {

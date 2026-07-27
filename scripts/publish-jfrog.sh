@@ -59,6 +59,15 @@ if [[ "${DRY_RUN:-0}" == "1" ]]; then
 fi
 
 echo "==> Publishing to ${REGISTRY_URL}"
-npm publish --ignore-scripts
+
+# Detect prerelease versions (contain a hyphen after the patch, e.g. 1.30.50-dev.1)
+# and tag them as "dev" so they don't override the "latest" dist-tag for partners.
+CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+if [[ "${CURRENT_VERSION}" == *-* ]]; then
+  echo "    (prerelease detected: ${CURRENT_VERSION} → tagging as 'dev')"
+  npm publish --ignore-scripts --tag dev
+else
+  npm publish --ignore-scripts --tag latest
+fi
 
 echo "==> Publish complete."

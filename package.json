@@ -1,6 +1,6 @@
 {
-  "name": "react-native-blockidplugin",
-  "version": "1.30.40",
+  "name": "@1kosmos/react-native-blockidplugin",
+  "version": "1.30.50",
   "description": "React Native BlockId Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -26,13 +26,14 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-blockidplugin-example",
+    "example": "npm --prefix example run",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "release:jfrog": "bash scripts/publish-jfrog.sh"
   },
   "keywords": [
     "react-native",
@@ -50,7 +51,8 @@
   },
   "homepage": "https://github.com/1KBlockID/reactnative-blockid-demo-app#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://artifactory.1kosmos.net/artifactory/api/npm/react-native-blockidplugin-local/",
+    "access": "restricted"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
@@ -82,9 +84,6 @@
     "react": "*",
     "react-native": ">=0.75.0"
   },
-  "workspaces": [
-    "example"
-  ],
   "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
@@ -107,7 +106,7 @@
       "publish": true
     },
     "github": {
-      "release": true
+      "release": false
     },
     "plugins": {
       "@release-it/conventional-changelog": {

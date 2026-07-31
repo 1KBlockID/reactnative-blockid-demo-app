@@ -164,7 +164,6 @@
     "jsSrcsDir": "src"
   },
   "dependencies": {
-    "@1kosmos/react-native-blockidplugin": "^1.30.50",
     "react-native-get-random-values": "^1.11.0",
     "react-native-permissions": "^5.2.5"
   }

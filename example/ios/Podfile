@@ -38,7 +38,17 @@ target 'BlockidpluginExample' do
         content = File.read(fmt_base_header)
         patched = content.sub('#if FMT_USE_CONSTEVAL', '#if 0 // Patched: disable consteval for Xcode 16+ compatibility')
         if patched != content
-          File.write(fmt_base_header, patched)
+          # fmt ships its headers read-only (mode 444) and CocoaPods re-extracts
+          # them on every install, so grant write access before patching and put
+          # the original mode back afterwards. Without this, File.write raises
+          # EACCES and aborts the whole post_install hook.
+          original_mode = File.stat(fmt_base_header).mode
+          begin
+            File.chmod(original_mode | 0o200, fmt_base_header)
+            File.write(fmt_base_header, patched)
+          ensure
+            File.chmod(original_mode, fmt_base_header)
+          end
         else
           Pod::UI.warn "fmt patch: expected pattern not found in #{fmt_base_header} — header may have changed"
         end
@@ -63,12 +73,44 @@ target 'BlockidpluginExample' do
     app_target = app_project.targets.find { |t| t.name == 'BlockidpluginExample' }
     if app_target
       modified = false
-      # Add SPM package product dependencies to the app target so they get embedded
       pods_project = installer.pods_project
+
+      # Requirement hashes can come from disk (string keys) or from the podspec
+      # via spm_dependency (symbol keys), so normalise before comparing.
+      normalize_req = lambda do |req|
+        (req || {}).each_with_object({}) { |(k, v), h| h[k.to_s] = v.to_s }
+      end
+
       pods_project.root_object.package_references.each do |pkg_ref|
         next unless pkg_ref.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
 
-        # Find all product dependencies linked to this package in native targets only
+        # Sync the package reference itself FIRST, independently of whether its
+        # products are already linked to the app target. The Pods project is
+        # regenerated on every `pod install` and carries the version declared in
+        # the plugin podspec, so it is the source of truth. Without the update
+        # branch below, an SDK version bump never reaches the app project and
+        # Xcode keeps resolving whatever was pinned on the first install.
+        app_pkg = app_project.root_object.package_references.find do |p|
+          p.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference) &&
+            p.repositoryURL == pkg_ref.repositoryURL
+        end
+
+        if app_pkg.nil?
+          app_pkg = app_project.new(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
+          app_pkg.repositoryURL = pkg_ref.repositoryURL
+          app_pkg.requirement = pkg_ref.requirement
+          app_project.root_object.package_references << app_pkg
+          Pod::UI.puts "[SPM] app project: adding #{pkg_ref.repositoryURL} #{normalize_req.call(pkg_ref.requirement)}"
+          modified = true
+        elsif normalize_req.call(app_pkg.requirement) != normalize_req.call(pkg_ref.requirement)
+          Pod::UI.puts "[SPM] app project: updating #{pkg_ref.repositoryURL} " \
+            "#{normalize_req.call(app_pkg.requirement)} -> #{normalize_req.call(pkg_ref.requirement)}"
+          app_pkg.requirement = pkg_ref.requirement
+          modified = true
+        end
+
+        # Then link any products that are not on the app target yet, so they get
+        # embedded in the app bundle.
         pods_project.targets.each do |pod_target|
           next unless pod_target.is_a?(Xcodeproj::Project::Object::PBXNativeTarget)
           next unless pod_target.respond_to?(:package_product_dependencies)
@@ -76,25 +118,13 @@ target 'BlockidpluginExample' do
           pod_target.package_product_dependencies.each do |dep|
             next unless dep.package == pkg_ref
             next unless spm_frameworks.include?(dep.product_name)
+            next if app_target.package_product_dependencies.any? { |d| d.product_name == dep.product_name }
 
-            # Check if already added to app target
-            already_linked = app_target.package_product_dependencies.any? { |d| d.product_name == dep.product_name }
-            next if already_linked
-
-            # Add the package reference to the app project if not already there
-            existing_pkg = app_project.root_object.package_references.find { |p| p.is_a?(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference) && p.repositoryURL == pkg_ref.repositoryURL }
-            unless existing_pkg
-              existing_pkg = app_project.new(Xcodeproj::Project::Object::XCRemoteSwiftPackageReference)
-              existing_pkg.repositoryURL = pkg_ref.repositoryURL
-              existing_pkg.requirement = pkg_ref.requirement
-              app_project.root_object.package_references << existing_pkg
-            end
-
-            # Add product dependency to app target
             product_dep = app_project.new(Xcodeproj::Project::Object::XCSwiftPackageProductDependency)
             product_dep.product_name = dep.product_name
-            product_dep.package = existing_pkg
+            product_dep.package = app_pkg
             app_target.package_product_dependencies << product_dep
+            Pod::UI.puts "[SPM] app target: linking #{dep.product_name}"
             modified = true
           end
         end

@@ -1,12 +1,13 @@
 buildscript {
     ext {
-        buildToolsVersion = "36.0.0"
+        buildToolsVersion = "37.0.0"
         minSdkVersion = 28
-        compileSdkVersion = 36
-        targetSdkVersion = 36
+        compileSdkVersion = 37
+        targetSdkVersion = 37
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.3.0"
-        agp_version = '8.8.0'
+        // MOB-7471: AGP 9.1.1 supports Android 17 (API 37.0); requires Gradle 9.3.1.
+        agp_version = '9.1.1'
     }
     repositories {
         google()
@@ -17,6 +18,19 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
+}
+
+// MOB-7471: Expose SDK versions at the project ext so autolinked RN native modules
+// (e.g. react-native-gesture-handler via safeExtGet) resolve compileSdk/targetSdk.
+// AGP 8.8 rejects a missing compileSdk. The buildscript{ext{}} block above is a separate
+// scope, so the same values are declared here at project level for subprojects to read.
+ext {
+  buildToolsVersion = "37.0.0"
+  minSdkVersion = 28
+  compileSdkVersion = 37
+  targetSdkVersion = 37
+  ndkVersion = "27.1.12297006"
+  kotlinVersion = "2.3.0"
 }
 
 allprojects {

@@ -77,8 +77,12 @@ android {
   compileSdk rootProject.ext.compileSdkVersion
 
   namespace "com.blockidpluginexample"
+  // MOB-7471: AGP 9 disables resource-values (resValue) by default. The RN toolchain and
+  // some native modules inject resValue entries into defaultConfig, so re-enable the feature.
+  buildFeatures {
+    resValues true
+  }
   defaultConfig {
-    namespace "com.blockidpluginexample"
     applicationId "com.blockidpluginexample"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
@@ -102,7 +106,7 @@ android {
       // see https://reactnative.dev/docs/signed-apk-android.
       signingConfig signingConfigs.debug
       minifyEnabled enableProguardInReleaseBuilds
-      proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
     }
   }
   packaging {

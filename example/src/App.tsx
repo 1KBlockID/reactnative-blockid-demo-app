@@ -78,15 +78,27 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ navigation }) => {
   );
 };
 
+// Defined at module scope (not inline in App) so the navigator header does not create a
+// new component type on every render — satisfies react/no-unstable-nested-components.
+const renderFeatureHeader = ({
+  navigation,
+}: {
+  navigation: unknown;
+}): React.ReactElement => (
+  <CustomHeader
+    navigation={navigation as FeatureEnrollmentScreenNavigationProp}
+  />
+);
+
 export default function App() {
   return (
     <NavigationContainer theme={Theme}>
       <Stack.Navigator
         initialRouteName="Home"
+        detachInactiveScreens={false}
         screenOptions={{
           cardStyle: { backgroundColor: 'white' },
           headerTintColor: 'black',
-          detachInactiveScreens: false,
         }}
       >
         <Stack.Screen
@@ -98,13 +110,15 @@ export default function App() {
           name="Featurelist"
           component={FeatureEnrollmentScreen}
           options={{
-            header: ({ navigation }) => (
-              <CustomHeader navigation={navigation as FeatureEnrollmentScreenNavigationProp} />
-            ),
+            header: renderFeatureHeader,
           }}
         />
         <Stack.Screen name="TOTP" component={TOTPScreen} />
-        <Stack.Screen name="LiveID" component={LiveIDScreen} options={{ title: 'LiveID' }} />
+        <Stack.Screen
+          name="LiveID"
+          component={LiveIDScreen}
+          options={{ title: 'LiveID' }}
+        />
         <Stack.Screen name="QRScan" component={QRScreen} />
         <Stack.Screen name="QRAuth" component={QRAuthScreen} />
       </Stack.Navigator>

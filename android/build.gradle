@@ -1,6 +1,7 @@
 buildscript {
   ext {
-    agp_version = '8.8.0'
+    // MOB-7471: AGP 9.1.1 supports Android 17 (API 37.0); requires Gradle 9.3.1.
+    agp_version = '9.1.1'
   }
 
   def kotlin_version = rootProject.ext.has("kotlinVersion")
@@ -63,11 +64,13 @@ android {
     }
   }
 
-  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+  // MOB-7471: AGP 9 requires the compileSdk/minSdk/targetSdk property form
+  // (the old compileSdkVersion/minSdkVersion/targetSdkVersion methods no longer register).
+  compileSdk getExtOrIntegerDefault("compileSdkVersion")
 
   defaultConfig {
-    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
-    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    minSdk getExtOrIntegerDefault("minSdkVersion")
+    targetSdk getExtOrIntegerDefault("targetSdkVersion")
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
   }
 
@@ -137,7 +140,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // 1Kosmos SDK
-  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.70.6ABE0E39") {
+  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.90.dev.6AEE1C45") {
     exclude group: "com.android.support", module: "support-compat"
   }
 }

@@ -335,10 +335,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
             } else {
               val params = Arguments.createMap().apply {
                 putString("status", "failed")
-                putMap("error", Arguments.createMap().apply {
-                  putInt("code", p3?.code ?: -1)
-                  putString("description", p3?.message)
-                })
+                putMap("error", liveIDErrorMap(p3))
               }
               emitOnValueChanged(params)
             }
@@ -375,6 +372,21 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
     }
   }
 
+  /**
+   * Builds the `error` map for a LiveID `failed` event.
+   * Besides `code` and `description`, it forwards the SDK's ErrorResponse object (a JSON string)
+   * under `responseObj`. For liveness failures (412006) this holds the liveness result
+   * (requestID, mobileSessionID, certifications with confidence/quality and thresholds),
+   * so the app can log the real reason. The key is omitted when the SDK returns no details.
+   */
+  private fun liveIDErrorMap(errorResponse: ErrorResponse?): WritableMap {
+    return Arguments.createMap().apply {
+      putInt("code", errorResponse?.code ?: -1)
+      putString("description", errorResponse?.message)
+      errorResponse?.`object`?.let { putString("responseObj", it) }
+    }
+  }
+
   private fun registerLiveID(
     bitmap: Bitmap, signatureToken: String, livenessResult: String?, mobileSessionID: String?,
     mobileDocumentID: String?,
@@ -391,10 +403,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
-          putMap("error", Arguments.createMap().apply {
-            putInt("code", errorResponse?.code ?: -1)
-            putString("description", errorResponse?.message)
-          })
+          putMap("error", liveIDErrorMap(errorResponse))
         }
         emitOnValueChanged(params)
       }
@@ -417,10 +426,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
-          putMap("error", Arguments.createMap().apply {
-            putInt("code", errorResponse?.code ?: -1)
-            putString("description", errorResponse?.message)
-          })
+          putMap("error", liveIDErrorMap(errorResponse))
         }
         emitOnValueChanged(params)
       }
@@ -443,10 +449,7 @@ class BlockidpluginModule internal constructor(context: ReactApplicationContext)
       } else {
         val params = Arguments.createMap().apply {
           putString("status", "failed")
-          putMap("error", Arguments.createMap().apply {
-            putInt("code", errorResponse?.code ?: -1)
-            putString("description", errorResponse?.message)
-          })
+          putMap("error", liveIDErrorMap(errorResponse))
         }
         emitOnValueChanged(params)
       }

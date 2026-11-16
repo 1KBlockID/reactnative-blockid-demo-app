@@ -331,9 +331,25 @@ extension BlockIdWrapper: BlockID.QRScanResponseDelegate {
 // MARK: LiveIDResponseDelegate
 
 extension BlockIdWrapper: LiveIDResponseDelegate {
+    /// Builds the `error` payload for a LiveID `failed` event.
+    /// Besides `code` and `description`, it forwards the SDK's `responseObj` as a JSON string
+    /// under `responseObj`. For liveness failures (412006) this holds the liveness result
+    /// (requestID, mobileSessionID, certifications with confidence/quality and thresholds),
+    /// so the app can log the real reason. The key is omitted when the SDK returns no details.
+    private func liveIDErrorPayload(_ error: BlockID.ErrorResponse?) -> [String: Any] {
+        var payload: [String: Any] = ["code": error?.code ?? -1, "description": error?.message ?? ""]
+        if let responseObj = error?.responseObj,
+           JSONSerialization.isValidJSONObject(responseObj),
+           let data = try? JSONSerialization.data(withJSONObject: responseObj),
+           let json = String(data: data, encoding: .utf8) {
+            payload["responseObj"] = json
+        }
+        return payload
+    }
+
     public func liveIdDetectionCompleted(_ liveIdImage: UIImage?, signatureToken: String?, livenessResult: String?, mobileSessionId: String?, mobileDocumentId: String?, error: BlockID.ErrorResponse?) {
         guard let face = liveIdImage, let signToken = signatureToken else {
-            blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+            blockIdLiveIDResponse?(["status": "failed", "error": liveIDErrorPayload(error)])
             return
         }
 
@@ -355,7 +371,7 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
     }
 
     public func liveIdDidDetectErrorInScanning(error: BlockID.ErrorResponse?) {
-        blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+        blockIdLiveIDResponse?(["status": "failed", "error": liveIDErrorPayload(error)])
         liveIdScannerHelper?.stopLiveIDScanning()
     }
 
@@ -369,7 +385,8 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             if (status == true) {
                 self?.blockIdLiveIDResponse?(["status": "completed"])
             } else {
-                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+                guard let self = self else { return }
+                self.blockIdLiveIDResponse?(["status": "failed", "error": self.liveIDErrorPayload(error)])
             }
         }
     }
@@ -383,7 +400,8 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
             if (status == true) {
                 self?.blockIdLiveIDResponse?(["status": "completed"])
             } else {
-                self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+                guard let self = self else { return }
+                self.blockIdLiveIDResponse?(["status": "failed", "error": self.liveIDErrorPayload(error)])
             }
         }
     }
@@ -395,7 +413,8 @@ extension BlockIdWrapper: LiveIDResponseDelegate {
           if (status == true) {
               self?.blockIdLiveIDResponse?(["status": "completed"])
           } else {
-              self?.blockIdLiveIDResponse?(["status": "failed", "error": ["code": error?.code ?? -1, "description": error?.message ?? ""]])
+              guard let self = self else { return }
+              self.blockIdLiveIDResponse?(["status": "failed", "error": self.liveIDErrorPayload(error)])
           }
       }
 

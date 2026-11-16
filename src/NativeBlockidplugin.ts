@@ -86,6 +86,14 @@ export type StatusChangeEvent = {
 export interface ErrorResponse {
   code: number | null;
   description: string | null;
+  /**
+   * Raw SDK error details as a JSON string, when the native SDK provides them.
+   * For LiveID liveness failures (code 412006) this contains the liveness
+   * result: requestID, mobileSessionID and result.certifications[] with
+   * confidence, quality and the tenant thresholds (min_confidence, min_quality).
+   * Null when the SDK returns no details.
+   */
+  responseObj?: string | null;
 }
 
 export interface FaceInfo {

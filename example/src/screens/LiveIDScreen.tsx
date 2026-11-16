@@ -83,15 +83,22 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
         );
       } else if (event.status === 'failed') {
         console.log(event.error);
+        // responseObj is the SDK's raw error details as a JSON string. For liveness
+        // failures (412006) it contains requestID, mobileSessionID and the
+        // face_liveness certification (confidence, quality, min thresholds).
+        if (event.error?.responseObj) {
+          console.error('[LiveIDScreen] responseObj:', event.error.responseObj);
+        }
+        const errorCode = event.error?.code ?? -1;
+        const errorDescription = event.error?.description?.trim();
         setLoading(false);
         setFaceState(null);
+        const fallbackMessage = isVerification
+          ? 'Failed to Verify Live ID. Try again!'
+          : 'Failed to register Live ID. Try again!';
         Alert.alert(
           'Info',
-          isVerification
-            ? (event.error?.description ??
-                'Failed to Verify Live ID. Try again!')
-            : (event.error?.description ??
-                'Failed to register Live ID. Try again!'),
+          `${errorDescription || fallbackMessage}\n\nError code: ${errorCode}`,
           [
             {
               text: 'Ok',

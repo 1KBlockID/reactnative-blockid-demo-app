@@ -45,67 +45,69 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [isPortrait, setIsPortrait] = useState(true);
   const [layout, setLayout] = useState<Layout | null>(null);
-  
+
   const listenerSubscription = useRef<null | EventSubscription>(null);
   const ref = useRef(null);
-  
+
   const { isVerification } = route.params;
 
   const startLiveIDScanning = async () => {
     if (buttonDisabled) return;
     setButtonDisabled(true);
-    
+
     listenerSubscription.current?.remove();
-    listenerSubscription.current = NativeBlockidplugin.onValueChanged((event: StatusChangeEvent) => {
-      if (event.status === 'faceLivenessCheckStarted') {
-        setLoading(true);
-        setFaceState(null);
-      } else if (event.status === 'focusOnFaceChanged') {
-        setFaceState(event.info);
-      } else if (event.status === 'completed') {
-        setLoading(false);
-        setFaceState(null);
-        Alert.alert(
-          'Info',
-          isVerification
-            ? 'Live ID Verified successfully'
-            : 'Live ID Registered successfully',
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
-                if (navigation.canGoBack()) {
-                  navigation.goBack();
-                }
+    listenerSubscription.current = NativeBlockidplugin.onValueChanged(
+      (event: StatusChangeEvent) => {
+        if (event.status === 'faceLivenessCheckStarted') {
+          setLoading(true);
+          setFaceState(null);
+        } else if (event.status === 'focusOnFaceChanged') {
+          setFaceState(event.info);
+        } else if (event.status === 'completed') {
+          setLoading(false);
+          setFaceState(null);
+          Alert.alert(
+            'Info',
+            isVerification
+              ? 'Live ID Verified successfully'
+              : 'Live ID Registered successfully',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  if (navigation.canGoBack()) {
+                    navigation.goBack();
+                  }
+                },
               },
-            },
-          ]
-        );
-      } else if (event.status === 'failed') {
-        console.log(event.error);
-        setLoading(false);
-        setFaceState(null);
-        Alert.alert(
-          'Info',
-          isVerification
-            ? (event.error?.description ??
-                'Failed to Verify Live ID. Try again!')
-            : (event.error?.description ??
-                'Failed to register Live ID. Try again!'),
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
-                if (navigation.canGoBack()) {
-                  navigation.goBack();
-                }
+            ]
+          );
+        } else if (event.status === 'failed') {
+          console.log(event.error);
+          setLoading(false);
+          setFaceState(null);
+          Alert.alert(
+            'Info',
+            isVerification
+              ? (event.error?.description ??
+                  'Failed to Verify Live ID. Try again!')
+              : (event.error?.description ??
+                  'Failed to register Live ID. Try again!'),
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  if (navigation.canGoBack()) {
+                    navigation.goBack();
+                  }
+                },
               },
-            },
-          ]
-        );
+            ]
+          );
+        }
       }
-    });
-    
+    );
+
     const viewModel = HomeViewModel.getInstance();
     isVerification
       ? viewModel.verifyFaceWithLiveness()
@@ -125,7 +127,10 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
       setIsPortrait(height >= width);
     };
 
-    const subscription = Dimensions.addEventListener('change', handleOrientationChange);
+    const subscription = Dimensions.addEventListener(
+      'change',
+      handleOrientationChange
+    );
     handleOrientationChange();
 
     return () => {
@@ -142,10 +147,12 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
           Platform.OS === 'android' && { height: isPortrait ? '100%' : '70%' },
         ]}
         onLayout={(event) => {
-          if (Platform.OS === 'android') {
-            const { x, y, width, height } = event.nativeEvent.layout;
-            setLayout({ x, y, width, height });
-          }
+          // MOB-7471: measure the container on both platforms. Under the RN New
+          // Architecture (Fabric), the legacy ScannerView rendered via the interop layer
+          // collapses to a 0-size frame when it relies on absoluteFill, so the iOS camera
+          // preview is not visible. Giving the ScannerView an explicit measured size fixes it.
+          const { x, y, width, height } = event.nativeEvent.layout;
+          setLayout({ x, y, width, height });
         }}
       >
         {layout && Platform.OS === 'android' ? (
@@ -156,8 +163,11 @@ const LiveIDScreen: React.FC<Props> = ({ route }) => {
             }}
             ref={ref}
           />
-        ) : Platform.OS === 'ios' ? (
-          <ScannerView style={styles.scannerView} ref={ref} />
+        ) : Platform.OS === 'ios' && layout ? (
+          <ScannerView
+            style={{ width: layout.width, height: layout.height }}
+            ref={ref}
+          />
         ) : null}
         <Image source={require('../../assets/live.png')} style={styles.image} />
       </View>

@@ -137,7 +137,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // 1Kosmos SDK
-  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.80.6AE059A0") {
+  implementation("com.onekosmos.blockid.sdk:blockidsdk:1.30.90.dev.6AEE1C45") {
     exclude group: "com.android.support", module: "support-compat"
   }
 }
